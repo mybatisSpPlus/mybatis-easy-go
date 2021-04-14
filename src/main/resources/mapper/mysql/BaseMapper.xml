@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mybatis.sp.plus.spring.BaseMapper">
+
+    <sql id="fields">
+        <foreach collection="action.fields" separator="," item="field">
+            <choose>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@isFunction(field)">
+                    <choose>
+                        <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(field) == 'Avg'.toString()">
+                            AVG(<include refid="fieldField"></include>)
+                        </when>
+                        <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(field) == 'Concat'.toString()">
+                            CONCAT(
+                            <foreach collection="field.objs" separator="," item="obj">
+                                <choose>
+                                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@isConstantField(obj)">
+                                        #{obj}
+                                    </when>
+                                    <otherwise>
+                                        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(obj)">
+                                            `${obj.tableName}`.
+                                        </if>
+                                        `${obj.name}`
+                                    </otherwise>
+                                </choose>
+                            </foreach>
+                            )
+                        </when>
+                        <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(field) == 'Count'.toString()">
+                            COUNT(<include refid="fieldField"></include>)
+                        </when>
+                        <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(field) == 'Format'.toString()">
+                            FORMAT(<include refid="fieldField"></include>,#{field.format})
+                        </when>
+                        <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(field) == 'Lcase'.toString()">
+                            LCASE(<include refid="fieldField"></include>)
+                        </when>
+                        <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(field) == 'Ucase'.toString()">
+                            UCASE(<include refid="fieldField"></include>)
+                        </when>
+                        <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(field) == 'Len'.toString()">
+                            LENGTH(<include refid="fieldField"></include>)
+                        </when>
+                        <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(field) == 'Max'.toString()">
+                            MAX(<include refid="fieldField"></include>)
+                        </when>
+                        <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(field) == 'Min'.toString()">
+                            MIN(<include refid="fieldField"></include>)
+                        </when>
+                        <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(field) == 'Mid'.toString()">
+                            <choose>
+                                <when test="condition.value.length==-1">
+                                    MID(<include refid="fieldField"></include>,#{field.start})
+                                </when>
+                                <otherwise>
+                                    MID(<include refid="fieldField"></include>,#{field.start},#{field.length})
+                                </otherwise>
+                            </choose>
+                        </when>
+                        <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(field) == 'Now'.toString()">
+                            NOW()
+                        </when>
+                        <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(field) == 'Round'.toString()">
+                            ROUND(<include refid="fieldField"></include>,#{field.decimals})
+                        </when>
+                        <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(field) == 'Sum'.toString()">
+                            SUM(<include refid="fieldField"></include>)
+                        </when>
+                        <otherwise></otherwise>
+                    </choose>
+                </when>
+                <otherwise>
+                    <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(field.tableName)">
+                        `${field.tableName}`.
+                    </if>
+                    `${field.name}`
+                </otherwise>
+            </choose>
+            <if test="field.alias != null">
+                AS `${field.alias.name}`
+            </if>
+        </foreach>
+    </sql>
+    <sql id="fieldField">
+        <choose>
+            <when test="@com.mybatis.sp.plus.QueryBuilderHelper@isConstantField(field.field)">
+                #{field.field.constant}
+            </when>
+            <otherwise>
+                <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(field.field.tableName)">
+                    `${field.field.tableName}`.
+                </if>
+                `${field.field.name}`
+            </otherwise>
+        </choose>
+    </sql>
+    <sql id="conditionField">
+        <choose>
+            <when test="@com.mybatis.sp.plus.QueryBuilderHelper@isFunction(condition.field)">
+                <choose>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.field) == 'Avg'.toString()">
+                        AVG(<include refid="conditionFieldField"></include>)
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.field) == 'Concat'.toString()">
+                        CONCAT(
+                        <foreach collection="condition.field.objs" separator="," item="obj">
+                            <choose>
+                                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@isConstantField(obj)">
+                                    #{obj}
+                                </when>
+                                <otherwise>
+                                    <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(obj)">
+                                        `${obj.tableName}`.
+                                    </if>
+                                    `${obj.name}`
+                                </otherwise>
+                            </choose>
+                        </foreach>
+                        )
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.field) == 'Count'.toString()">
+                        COUNT(<include refid="conditionFieldField"></include>)
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.field) == 'Format'.toString()">
+                        FORMAT(<include refid="conditionFieldField"></include>,#{condition.field.format})
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.field) == 'Lcase'.toString()">
+                        LCASE(<include refid="conditionFieldField"></include>)
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.field) == 'Ucase'.toString()">
+                        UCASE(<include refid="conditionFieldField"></include>)
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.field) == 'Len'.toString()">
+                        LENGTH(<include refid="conditionFieldField"></include>)
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.field) == 'Max'.toString()">
+                        MAX(<include refid="conditionFieldField"></include>)
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.field) == 'Min'.toString()">
+                        MIN(<include refid="conditionFieldField"></include>)
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.field) == 'Mid'.toString()">
+                        <choose>
+                            <when test="condition.value.length==-1">
+                                MID(<include refid="conditionFieldField"></include>,#{condition.field.start})
+                            </when>
+                            <otherwise>
+                                MID(<include refid="conditionFieldField"></include>,#{condition.field.start},#{condition.field.length})
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.field) == 'Now'.toString()">
+                        NOW()
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.field) == 'Round'.toString()">
+                        ROUND(<include refid="conditionFieldField"></include>,#{condition.field.decimals})
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.field) == 'Sum'.toString()">
+                        SUM(<include refid="conditionFieldField"></include>)
+                    </when>
+                    <otherwise></otherwise>
+                </choose>
+            </when>
+            <when test="@com.mybatis.sp.plus.QueryBuilderHelper@isConstantField(condition.field)">
+                #{condition.field.constant}
+            </when>
+            <otherwise>
+                <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(condition.field.tableName)">
+                    `${condition.field.tableName}`.
+                </if>
+                `${condition.field.name}`
+            </otherwise>
+        </choose>
+    </sql>
+    <sql id="conditionFieldField">
+        <choose>
+            <when test="@com.mybatis.sp.plus.QueryBuilderHelper@isConstantField(condition.field.field)">
+                #{condition.field.field.constant}
+            </when>
+            <otherwise>
+                <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(condition.field.field.tableName)">
+                    `${condition.field.field.tableName}`.
+                </if>
+                `${condition.field.field.name}`
+            </otherwise>
+        </choose>
+    </sql>
+    <sql id="conditionValue">
+        <choose>
+            <when test="@com.mybatis.sp.plus.QueryBuilderHelper@isFunction(condition.value)">
+                <choose>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.value) == 'Avg'.toString()">
+                        AVG(<include refid="conditionValueField"></include>)
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.value) == 'Concat'.toString()">
+                        CONCAT(
+                        <foreach collection="condition.value.objs" separator="," item="obj">
+                            <choose>
+                                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@isConstantField(obj)">
+                                    #{obj}
+                                </when>
+                                <otherwise>
+                                    <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(obj)">
+                                        `${obj.tableName}`.
+                                    </if>
+                                    `${obj.name}`
+                                </otherwise>
+                            </choose>
+                        </foreach>
+                        )
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.value) == 'Count'.toString()">
+                        COUNT(<include refid="conditionValueField"></include>)
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.value) == 'Format'.toString()">
+                        FORMAT(<include refid="conditionValueField"></include>,#{condition.value.format})
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.value) == 'Lcase'.toString()">
+                        LCASE(<include refid="conditionValueField"></include>)
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.value) == 'Ucase'.toString()">
+                        UCASE(<include refid="conditionValueField"></include>)
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.value) == 'Len'.toString()">
+                        LENGTH(<include refid="conditionValueField"></include>)
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.value) == 'Max'.toString()">
+                        MAX(<include refid="conditionValueField"></include>)
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.value) == 'Min'.toString()">
+                        MIN(<include refid="conditionValueField"></include>)
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.value) == 'Mid'.toString()">
+                        <choose>
+                            <when test="condition.value.length==-1">
+                                MID(<include refid="conditionValueField"></include>,#{condition.value.start})
+                            </when>
+                            <otherwise>
+                                MID(<include refid="conditionValueField"></include>,#{condition.value.start},#{condition.value.length})
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.value) == 'Now'.toString()">
+                        NOW()
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.value) == 'Round'.toString()">
+                        ROUND(<include refid="conditionValueField"></include>,#{condition.value.decimals})
+                    </when>
+                    <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition.value) == 'Sum'.toString()">
+                        SUM(<include refid="conditionValueField"></include>)
+                    </when>
+                    <otherwise></otherwise>
+                </choose>
+            </when>
+            <otherwise> #{condition.value}</otherwise>
+        </choose>
+    </sql>
+    <sql id="conditionValueField">
+        <choose>
+            <when test="@com.mybatis.sp.plus.QueryBuilderHelper@isConstantField(condition.value.field)">
+                #{condition.value.field.constant}
+            </when>
+            <otherwise>
+                <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(condition.value.field.tableName)">
+                    `${condition.value.field.tableName}`.
+                </if>
+                `${condition.value.field.name}`
+            </otherwise>
+        </choose>
+    </sql>
+    <sql id="table">
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(action.table.name)">
+            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(action.table.schema)">
+                `${action.table.schema}`.
+            </if>
+            `${action.table.name}`
+            <if test="action.table.alias != null">
+                AS `${action.table.alias.name}`
+            </if>
+        </if>
+    </sql>
+    <sql id="conditions">
+        <if test="action.conditions!=null and action.conditions.size()>0">
+           <foreach collection="action.conditions" item="condition" separator=" ">
+               <choose>
+                   <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition) == 'ConditionBegin'.toString()">
+                       (
+                   </when>
+                   <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition) == 'ConditionEnd'.toString()">
+                        )
+                   </when>
+                   <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition) == 'Between'.toString()">
+                       <include refid="conditionField"></include> #{condition.startValue} AND #{condition.endValue}
+                   </when>
+                   <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition) == 'Not'.toString()">
+                        NOT
+                   </when>
+                   <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition) == 'Eq'.toString()">
+                       <include refid="conditionField"></include> = <include refid="conditionValue"></include>
+                   </when>
+                   <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition) == 'Neq'.toString()">
+                       <include refid="conditionField"></include> &lt;> <include refid="conditionValue"></include>
+                   </when>
+                   <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition) == 'Gt'.toString()">
+                       <include refid="conditionField"></include> > <include refid="conditionValue"></include>
+                   </when>
+                   <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition) == 'Gte'.toString()">
+                       <include refid="conditionField"></include> >= <include refid="conditionValue"></include>
+                   </when>
+                   <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition) == 'Lt'.toString()">
+                       <include refid="conditionField"></include> &lt; <include refid="conditionValue"></include>
+                   </when>
+                   <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition) == 'Lte'.toString()">
+                       <include refid="conditionField"></include> &lt;= <include refid="conditionValue"></include>
+                   </when>
+                   <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition) == 'In'.toString()">
+                       <include refid="conditionField"></include> IN
+                        <foreach collection="condition.values" open="(" separator="," close=")" item="value">
+                           #{value}
+                        </foreach>
+                   </when>
+                   <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition) == 'IsNotNull'.toString()">
+                       <include refid="conditionField"></include> IS NOT NULL
+                   </when>
+                   <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition) == 'IsNull'.toString()">
+                       <include refid="conditionField"></include> IS NULL
+                   </when>
+                   <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition) == 'Like'.toString()">
+                       <include refid="conditionField"></include> LIKE CONCAT('%',<include refid="conditionValue"></include>,'%')
+                   </when>
+                   <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition) == 'Regx'.toString()">
+                       <include refid="conditionField"></include> REGEXP <include refid="conditionValue"></include>
+                   </when>
+               </choose>
+               <if test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(condition) != 'ConditionBegin'.toString()">
+                   <if test="!condition.lastOne">
+                       <choose>
+                           <when test="condition.OrWithNext">
+                               OR
+                           </when>
+                           <otherwise>
+                               AND
+                           </otherwise>
+                       </choose>
+                   </if>
+               </if>
+           </foreach>
+        </if>
+    </sql>
+    <select id="executeQuery" resultType="map" databaseId="mysql">
+        <foreach collection="actionChain" item="action" separator=" ">
+            <choose>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(action) == 'Select'.toString()">
+                    SELECT
+                    <if test="action.distinct">
+                        DISTINCT
+                    </if>
+                    <include refid="fields"></include>
+                </when>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(action) == 'From'.toString()">
+                    FROM <include refid="table"></include>
+                </when>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(action) == 'SubActionBegin'.toString()">
+                    (
+                </when>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(action) == 'SubActionEnd'.toString()">
+                    ) AS `${action.alias.name}`
+                </when>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(action) == 'LeftJoin'.toString()">
+                    LEFT JOIN <include refid="table"></include>
+                </when>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(action) == 'RightJoin'.toString()">
+                    RIGHT JOIN <include refid="table"></include>
+                </when>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(action) == 'InnerJoin'.toString()">
+                    INNER JOIN <include refid="table"></include>
+                </when>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(action) == 'FullJoin'.toString()">
+                    FULL JOIN <include refid="table"></include>
+                </when>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(action) == 'On'.toString()">
+                    ON <include refid="conditions"></include>
+                </when>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(action) == 'Where'.toString()">
+                    WHERE <include refid="conditions"></include>
+                </when>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(action) == 'GroupBy'.toString()">
+                    GROUP BY <include refid="fields"></include>
+                </when>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(action) == 'Having'.toString()">
+                    HAVING <include refid="conditions"></include>
+                </when>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(action) == 'Orders'.toString()">
+                    ORDER BY
+                    <if test="orders!=null and orders.size()>0">
+                        <foreach collection="orders" separator="," item="order">
+                            <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(order.field.tableName)">
+                                `${order.field.tableName}`.
+                            </if>
+                            `${order.field.name}`
+                            <if test="order.desc">
+                                DESC
+                            </if>
+                        </foreach>
+                    </if>
+                </when>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(action) == 'Limit'.toString()">
+                    LIMIT ${action.limit} OFFSET ${action.offset}
+                </when>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(action) == 'UnionAll'.toString()">
+                    UNION ALL
+                </when>
+                <when test="@com.mybatis.sp.plus.QueryBuilderHelper@getTypeName(action) == 'Union'.toString()">
+                    UNION
+                </when>
+                <otherwise></otherwise>
+            </choose>
+        </foreach>
+
+    </select>
+    
+</mapper>

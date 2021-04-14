@@ -1,0 +1,67 @@
+package com.mybatis.sp.plus;
+
+import com.mybatis.sp.plus.functions.*;
+import com.mybatis.sp.plus.meta.Field;
+
+/**
+ * @author zhouyu4034@sefonsoft.com
+ * @date 2021/4/12 22:44
+ */
+public class FunctionMethods {
+
+    public static Count count(Field field){
+        return new Count(field);
+    }
+
+    public static Concat concat(Field... objs){
+        return new Concat(objs);
+    }
+
+    public static Format format(Field field, String format){
+        return new Format(field,format);
+    }
+
+    public static Mid mid(Field field, int start) {
+       return new Mid(field,start);
+    }
+
+    public static Mid mid(Field field, int start, int length) {
+        return new Mid(field,start,length);
+    }
+
+    public static Lcase lcase(Field field){
+        return new Lcase(field);
+    }
+
+    public static Ucase ucase(Field field){
+        return new Ucase(field);
+    }
+
+    public static Len len(Field field){
+        return new Len(field);
+    }
+
+    public static Avg avg(Field field){
+        return new Avg(field);
+    }
+
+    public static Max max(Field field){
+        return new Max(field);
+    }
+
+    public static Min min(Field field){
+        return new Min(field);
+    }
+
+    public static Sum sum(Field field){
+        return new Sum(field);
+    }
+
+    public static Round round(Field field, int decimals){
+        return new Round(field,decimals);
+    }
+
+    public static Now now(){
+        return new Now();
+    }
+}
