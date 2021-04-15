@@ -93,4 +93,11 @@ public class Result {
         return function.apply(resultList);
     }
 
+    public <T> T convertToUnionOne(Function<List<Map<String,Object>>,T> function){
+        if (resultList.size()>0) {
+            return function.apply(resultList);
+        }else {
+            return null;
+        }
+    }
 }
