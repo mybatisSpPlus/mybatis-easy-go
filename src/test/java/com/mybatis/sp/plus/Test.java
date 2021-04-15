@@ -61,7 +61,7 @@ public class Test {
     @org.junit.Test
     public void inserTest() throws Exception {
         truncate("LABEL").execute();
-        insertInto("LABEL").select(field("*")).from(table("data_metadata.LABEL")).executeInsert();
+        //insertInto("LABEL").select(field("*")).from(table("data_metadata.LABEL")).executeInsert();
         insertInto("LABEL").values(Arrays.asList(123,"Test1")).executeInsert();
         insertInto("LABEL").fields("guid","labelName").values(Arrays.asList(1234,"Test122")).executeInsert();
     }

@@ -6,10 +6,14 @@ spring:
   datasource:
     druid:
       #   数据源基本配置
-      username: sdc
-      password: Cdsf@119
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://db-metadata-govern.sefon.com:53302/data_metadata?serverTimezone=Asia/Shanghai&noAccessToProcedureBodies=true&useUnicode=true&characterEncoding=utf8&useCursorFetch=true
+      username: DATA_METADATA
+      password: 123456789
+      driver-class-name: dm.jdbc.driver.DmDriver
+      url: jdbc:dm://10.0.8.46:5236/DAMENG
+      #username: sdc
+      #password: Cdsf@119
+      #driver-class-name: com.mysql.cj.jdbc.Driver
+      #url: jdbc:mysql://db-metadata-govern.sefon.com:53302/data_metadata_er?serverTimezone=Asia/Shanghai&noAccessToProcedureBodies=true&useUnicode=true&characterEncoding=utf8&useCursorFetch=true
       type: com.alibaba.druid.pool.DruidDataSource
       #   Druid数据源配置
       initial-size: 10
@@ -31,4 +35,4 @@ spring:
           slow-sql-millis: 100
 
 mybatis:
-  mapper-locations: classpath*:mapper/*/*Mapper.xml
+  mapper-locations: classpath*:mapper/*Mapper.xml
