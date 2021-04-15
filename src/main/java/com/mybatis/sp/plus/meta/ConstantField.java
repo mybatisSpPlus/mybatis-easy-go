@@ -1,7 +1,11 @@
 package com.mybatis.sp.plus.meta;
 
 import com.mybatis.sp.plus.exception.SelfCheckException;
+import com.mybatis.sp.plus.step.Step;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author zhouyu4034@sefonsoft.com
@@ -33,4 +37,5 @@ public class ConstantField extends Field {
             throw new SelfCheckException("ConstantField constant can not be blank or null");
         }
     }
+
 }

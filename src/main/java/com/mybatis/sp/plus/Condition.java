@@ -1,5 +1,7 @@
 package com.mybatis.sp.plus;
 
+import com.mybatis.sp.plus.conditions.And;
+import com.mybatis.sp.plus.conditions.Or;
 import com.mybatis.sp.plus.exception.SelfCheckException;
 
 /**
@@ -7,28 +9,30 @@ import com.mybatis.sp.plus.exception.SelfCheckException;
  * @date 2021/4/8 10:40
  */
 public abstract class Condition {
-    /**
-     * 与下个条件是or的关系，默认false
-     */
-    boolean orWithNext;
 
-    boolean lastOne;
-
-    public boolean isOrWithNext() {
-        return orWithNext;
+    public And and(Condition condition){
+        if (this instanceof And){
+            ((And) this).addAnd(condition);
+            return (And) this;
+        }else {
+            And and=new And();
+            and.addAnd(condition);
+            and.addAnd(this);
+            return and;
+        }
     }
-
-    public void setOrWithNext(boolean orWithNext) {
-        this.orWithNext = orWithNext;
-    }
-
-    public boolean isLastOne() {
-        return lastOne;
-    }
-
-    public void setLastOne(boolean lastOne) {
-        this.lastOne = lastOne;
+    public Or or(Condition condition){
+        if (this instanceof Or){
+            ((Or) this).addOr(condition);
+            return (Or) this;
+        }else {
+            Or or = new Or();
+            or.addOr(condition);
+            or.addOr(this);
+            return or;
+        }
     }
 
     public abstract void selfCheck() throws SelfCheckException;
+
 }

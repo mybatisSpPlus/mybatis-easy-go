@@ -21,12 +21,24 @@ public class FunctionMethods {
         return new Format(field,format);
     }
 
-    public static Mid mid(Field field, int start) {
-       return new Mid(field,start);
+    public static Substr substr(Field field, int start) {
+       return new Substr(field,start);
     }
 
-    public static Mid mid(Field field, int start, int length) {
-        return new Mid(field,start,length);
+    public static Substr substr(Field field, int start, int length) {
+        return new Substr(field,start,length);
+    }
+
+    public static Instr instr(Field field, Object target){
+        return new Instr(field,target);
+    }
+
+    public static Instr instr(Field field, Object target, int start, int times) {
+       return new Instr(field,target,start,times);
+    }
+
+    public static Replace replace(Field field,Object oldStr,Object newStr){
+        return new Replace(field,oldStr,newStr);
     }
 
     public static Lcase lcase(Field field){

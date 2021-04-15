@@ -1,12 +1,6 @@
 package com.mybatis.sp.plus;
 
 import com.google.common.collect.Sets;
-import com.mybatis.sp.plus.actions.From;
-import com.mybatis.sp.plus.actions.Join;
-import com.mybatis.sp.plus.actions.SubActionBegin;
-import com.mybatis.sp.plus.actions.SubActionEnd;
-import com.mybatis.sp.plus.conditions.*;
-import com.mybatis.sp.plus.exception.SelfCheckException;
 import com.mybatis.sp.plus.meta.ConstantField;
 import com.mybatis.sp.plus.meta.Table;
 import org.apache.commons.lang3.StringUtils;
@@ -20,77 +14,6 @@ import java.util.*;
  * @date 2021/4/13 14:23
  */
 public class QueryBuilderHelper {
-
-    public static List<Action> formatActionChain(List<Action> actionTree) throws SelfCheckException {
-        List<Action> result=new ArrayList<>();
-        for (Action action : actionTree) {
-            action.selfCheck();
-            if (action instanceof From){
-                Table table= ((From) action).getTable();
-                if (table.getActions()!=null&&table.getActions().size()>0){
-                    result.add(action);
-                    result.add(new SubActionBegin());
-                    result.addAll(formatActionChain(table.getActions()));
-                    result.add(new SubActionEnd(table.getAlias()));
-                }else {
-                    result.add(action);
-                }
-            }else if (action instanceof Join){
-                Table table= ((Join) action).getTable();
-                if (table.getActions()!=null&&table.getActions().size()>0){
-                    result.add(action);
-                    result.add(new SubActionBegin());
-                    result.addAll(formatActionChain(table.getActions()));
-                    result.add(new SubActionEnd(table.getAlias()));
-                }else {
-                    result.add(action);
-                }
-            }else {
-                result.add(action);
-            }
-        }
-        return result;
-    }
-
-    public static List<Condition> formatConditionChain(List<Condition> conditions) throws SelfCheckException {
-        List<Condition> result=new ArrayList<>();
-        for (Condition condition : conditions) {
-            //避免重复循环检查，在最外层直接进行一次检查
-            condition.selfCheck();
-            result.addAll(formatConditionChain(condition));
-        }
-        //整体结束了
-        result.get(result.size()-1).setLastOne(true);
-        return result;
-    }
-
-    private static List<Condition> formatConditionChain(Condition condition) throws SelfCheckException {
-        List<Condition> result=new ArrayList<>();
-        if (condition instanceof And){
-            result.add(new ConditionBegin());
-            for (Condition condition1 : ((And) condition).getAndCondition()) {
-                result.addAll(formatConditionChain(condition1));
-            }
-            //在一个括号内结束了
-            result.get(result.size()-1).setLastOne(true);
-            result.add(new ConditionEnd());
-        }else if (condition instanceof Or){
-            result.add(new ConditionBegin());
-            for (Condition condition1 : ((Or) condition).getOrCondition()) {
-                condition1.setOrWithNext(true);
-                result.addAll(formatConditionChain(condition1));
-            }
-            //在一个括号内结束了
-            result.get(result.size()-1).setLastOne(true);
-            result.add(new ConditionEnd());
-        }else if (condition instanceof Not){
-            result.add(condition);
-            result.addAll(formatConditionChain(((Not) condition).getNotCondition()));
-        }else {
-            result.add(condition);
-        }
-        return result;
-    }
 
     /**
      * @param clazz      目标类型，可以是父类
@@ -264,8 +187,21 @@ public class QueryBuilderHelper {
         return obj.getClass().getSimpleName();
     }
 
+    public static boolean isTable(Object obj){
+        return obj instanceof Table;
+    }
+
     public static boolean isFunction(Object obj){
         return obj instanceof Function;
+    }
+
+    /**
+     * 是字段，但是不是函数
+     * @param obj
+     * @return
+     */
+    public static boolean isField(Object obj){
+        return obj instanceof com.mybatis.sp.plus.meta.Field&&!(obj instanceof Function);
     }
 
     public static boolean isConstantField(Object obj){
@@ -274,7 +210,7 @@ public class QueryBuilderHelper {
 
     public static com.mybatis.sp.plus.meta.Field fieldNameToField(String fieldName){
         com.mybatis.sp.plus.meta.Field field=new com.mybatis.sp.plus.meta.Field();
-        if (fieldName.contains("\\.")){
+        if (fieldName.contains(".")){
             String[] strs=fieldName.split("\\.");
             field.setTableName(strs[0]).setName(strs[1]);
         }else {
@@ -285,7 +221,7 @@ public class QueryBuilderHelper {
 
     public static Table tableNameToTable(String tableName){
         Table table=new Table();
-        if (tableName.contains("\\.")){
+        if (tableName.contains(".")){
             String[] strs=tableName.split("\\.");
             table.setSchema(strs[0]).setName(strs[1]);
         }else {
@@ -293,4 +229,5 @@ public class QueryBuilderHelper {
         }
         return table;
     }
+
 }

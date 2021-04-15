@@ -48,8 +48,6 @@ public class Round  extends Function {
         if (decimals<0){
             throw new SelfCheckException("decimals can not be litter than 0 in function Round");
         }
-        if (field instanceof Function){
-            throw new SelfCheckException("function using in function is not supported ");
-        }
+
     }
 }

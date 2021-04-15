@@ -11,4 +11,6 @@ public class InnerJoin extends Join {
     public InnerJoin(Table table) {
         super(table);
     }
+
+
 }

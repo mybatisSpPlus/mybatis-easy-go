@@ -1,6 +1,6 @@
 package com.mybatis.sp.plus.spring;
 
-import com.mybatis.sp.plus.Action;
+import com.mybatis.sp.plus.step.Step;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,5 +14,13 @@ import java.util.Map;
 @Mapper
 public interface BaseMapper {
 
-    List<Map<String, Object>> executeQuery(@Param("actionChain") List<Action> actionChain);
+    List<Map<String, Object>> executeQuery(@Param("steps") List<Step> steps);
+
+    int executeUpdate(@Param("steps") List<Step> steps);
+
+    int executeInsert(@Param("steps") List<Step> steps);
+
+    int executeDelete(@Param("steps") List<Step> steps);
+
+    void execute(@Param("steps")List<Step> steps);
 }

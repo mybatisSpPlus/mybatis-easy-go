@@ -11,4 +11,5 @@ public class LeftJoin extends Join {
     public LeftJoin(Table table) {
         super(table);
     }
+
 }

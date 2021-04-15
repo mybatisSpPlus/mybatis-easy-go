@@ -51,6 +51,13 @@ public class On extends Action {
         return this;
     }
 
+    public Set set(){
+        Set set=new Set();
+        getBuilders().getActionTree().add(set);
+        set.setBuilders(getBuilders());
+        return set;
+    }
+
     public Where where(Condition... condition) {
         Where where=new Where(condition);
         getBuilders().getActionTree().add(where);
@@ -173,10 +180,6 @@ public class On extends Action {
     public void selfCheck() throws SelfCheckException {
         if (conditions.size()==0){
             throw new SelfCheckException("conditions can not be empty in action On");
-        }else {
-            for (Condition condition : conditions) {
-                condition.selfCheck();
-            }
         }
     }
 }

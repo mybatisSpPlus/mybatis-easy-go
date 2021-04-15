@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mybatis.sp.plus.spring.BaseMapper">
+
+    <sql id="steps">
+        <foreach collection="steps" item="step">
+            <choose>
+                <when test="step.stepName!=null">
+                    ${step.stepName}
+                </when>
+                <otherwise>
+                    #{step.stepValue}
+                </otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <!--查询模板-->
+    <select id="executeQuery" resultType="map" databaseId="mysql">
+        <include refid="steps"></include>
+    </select>
+    <!--插入模板-->
+    <insert id="executeInsert">
+        <include refid="steps"></include>
+    </insert>
+    <!--更新模板-->
+    <update id="executeUpdate">
+        <include refid="steps"></include>
+    </update>
+    <!--删除模板-->
+    <delete id="executeDelete">
+        <include refid="steps"></include>
+    </delete>
+    <!--不确定请求类型的模板-->
+    <update id="execute">
+        <include refid="steps"></include>
+    </update>
+</mapper>

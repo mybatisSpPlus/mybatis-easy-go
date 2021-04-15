@@ -33,8 +33,6 @@ public class Avg extends Function {
         if (field==null){
             throw new SelfCheckException("field can not be null in function Avg");
         }
-        if (field instanceof Function){
-            throw new SelfCheckException("function using in function is not supported ");
-        }
+
     }
 }

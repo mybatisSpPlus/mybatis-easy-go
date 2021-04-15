@@ -8,23 +8,23 @@ import com.mybatis.sp.plus.meta.Field;
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/4/13 9:28
  */
-public class Mid  extends Function {
+public class Substr extends Function {
 
     Field field;
 
     int start;
 
-    int length=-1;
+    int length;
 
-    public Mid() {
+    public Substr() {
     }
 
-    public Mid(Field field, int start) {
+    public Substr(Field field, int start) {
         this.field = field;
         this.start = start;
     }
 
-    public Mid(Field field, int start, int length) {
+    public Substr(Field field, int start, int length) {
         this.field = field;
         this.start = start;
         this.length = length;
@@ -34,7 +34,7 @@ public class Mid  extends Function {
         return field;
     }
 
-    public Mid setField(Field field) {
+    public Substr setField(Field field) {
         this.field = field;
         return this;
     }
@@ -43,7 +43,7 @@ public class Mid  extends Function {
         return start;
     }
 
-    public Mid setStart(int start) {
+    public Substr setStart(int start) {
         this.start = start;
         return this;
     }
@@ -52,7 +52,7 @@ public class Mid  extends Function {
         return length;
     }
 
-    public Mid setLength(int length) {
+    public Substr setLength(int length) {
         this.length = length;
         return this;
     }
@@ -60,7 +60,7 @@ public class Mid  extends Function {
     @Override
     public void selfCheck() throws SelfCheckException {
         if (field==null){
-            throw new SelfCheckException("field can not be null in function Mid");
+            throw new SelfCheckException("field can not be null in function Substr");
         }
     }
 }

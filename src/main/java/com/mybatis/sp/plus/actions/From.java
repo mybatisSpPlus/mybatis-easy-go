@@ -130,12 +130,14 @@ public class From extends Action {
         orders.setBuilders(getBuilders());
         return orders;
     }
+
     public Limit limit(int limit, int offset) {
         Limit limit1=new Limit(limit, offset);
         getBuilders().getActionTree().add(limit1);
         limit1.setBuilders(getBuilders());
         return limit1;
     }
+
     public Limit limit(int limit) {
         Limit limit1=new Limit(limit);
         getBuilders().getActionTree().add(limit1);
@@ -153,8 +155,8 @@ public class From extends Action {
     public void selfCheck() throws SelfCheckException {
         if(table==null){
             throw new SelfCheckException("table can not be null in action From");
-        }else {
-            table.selfCheck();
         }
     }
+
+
 }

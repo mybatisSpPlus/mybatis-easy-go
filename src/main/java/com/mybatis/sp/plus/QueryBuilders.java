@@ -1,14 +1,14 @@
 package com.mybatis.sp.plus;
 
-import com.mybatis.sp.plus.actions.Delete;
-import com.mybatis.sp.plus.actions.Insert;
-import com.mybatis.sp.plus.actions.Select;
-import com.mybatis.sp.plus.actions.Update;
+import com.mybatis.sp.plus.actions.*;
 import com.mybatis.sp.plus.meta.Field;
+import com.mybatis.sp.plus.meta.Table;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.mybatis.sp.plus.QueryBuilderHelper.tableNameToTable;
 
 /**
  * @author zhouyu4034@sefonsoft.com
@@ -38,19 +38,39 @@ public class QueryBuilders {
         return select;
     }
 
-    public Update update() {
-
-        return null;
+    public Update update(Table table) {
+        Update update=new Update(table);
+        update.setBuilders(this);
+        actionTree.add(update);
+        return update;
     }
 
-    public Insert insert() {
-
-        return null;
+    public InsertInto insertInto(Table table) {
+        InsertInto insertInto=new InsertInto(table);
+        insertInto.setBuilders(this);
+        actionTree.add(insertInto);
+        return insertInto;
     }
 
     public Delete delete() {
+        Delete delete=new Delete();
+        delete.setBuilders(this);
+        actionTree.add(delete);
+        return delete;
+    }
 
-        return null;
+    public Delete delete(Table... table) {
+        Delete delete=new Delete(table);
+        delete.setBuilders(this);
+        actionTree.add(delete);
+        return delete;
+    }
+
+    public Truncate truncate(Table table) {
+        Truncate truncate=new Truncate(table);
+        truncate.setBuilders(this);
+        actionTree.add(truncate);
+        return truncate;
     }
 
     public List<Action> getActionTree() {

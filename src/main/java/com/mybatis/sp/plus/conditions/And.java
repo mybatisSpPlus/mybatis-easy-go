@@ -46,8 +46,5 @@ public class And extends Condition {
         if (andCondition.size()==0){
             throw new SelfCheckException("conditions can not be null in condition And");
         }
-        for (Condition condition : andCondition) {
-            condition.selfCheck();
-        }
     }
 }

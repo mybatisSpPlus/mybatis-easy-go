@@ -62,10 +62,7 @@ public class Having extends Action {
     public void selfCheck() throws SelfCheckException {
         if (conditions.size()==0){
             throw new SelfCheckException("conditions can not be empty in action Having");
-        }else {
-            for (Condition condition : conditions) {
-                condition.selfCheck();
-            }
         }
     }
+
 }

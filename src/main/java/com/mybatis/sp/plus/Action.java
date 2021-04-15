@@ -1,14 +1,17 @@
 package com.mybatis.sp.plus;
 
-import com.mybatis.sp.plus.actions.Having;
-import com.mybatis.sp.plus.actions.On;
-import com.mybatis.sp.plus.actions.Where;
+import com.mybatis.sp.plus.actions.Delete;
+import com.mybatis.sp.plus.actions.InsertInto;
+import com.mybatis.sp.plus.actions.Select;
+import com.mybatis.sp.plus.actions.Update;
 import com.mybatis.sp.plus.exception.SelfCheckException;
 import com.mybatis.sp.plus.meta.Alias;
 import com.mybatis.sp.plus.meta.Result;
 import com.mybatis.sp.plus.meta.Table;
 import com.mybatis.sp.plus.spring.BaseMapper;
 import com.mybatis.sp.plus.spring.BeanHelper;
+import com.mybatis.sp.plus.step.*;
+import org.mybatis.spring.SqlSessionTemplate;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +32,9 @@ public abstract class Action {
         this.builders = builders;
         return this;
     }
+    public Table asTable(){
+        return new Table().setActions(builders.getActionTree());
+    }
 
     public Table asTable(Alias alias){
         return new Table().setAlias(alias).setActions(builders.getActionTree());
@@ -38,35 +44,39 @@ public abstract class Action {
         return new Table().setAlias(new Alias(alias)).setActions(builders.getActionTree());
     }
 
-    public void execute(){
-
-    }
-
-    public int executeUpdate(){
-        return 0;
-    }
-
-    public int executeInsert(){
-        return 0;
-    }
-
-    public int executeDelete(){
-        return 0;
-    }
-
-
-    public Result executeSelect() throws Exception {
-        List<Action> actions= QueryBuilderHelper.formatActionChain(builders.getActionTree());
-        for (Action action : actions) {
-            if (action instanceof Where){
-                ((Where) action).setConditions(QueryBuilderHelper.formatConditionChain(((Where) action).getConditions()));
-            }else if (action instanceof On){
-                ((On) action).setConditions(QueryBuilderHelper.formatConditionChain(((On) action).getConditions()));
-            }else if (action instanceof Having){
-                ((Having) action).setConditions(QueryBuilderHelper.formatConditionChain(((Having) action).getConditions()));
+    public void execute() throws Exception {
+        List<Action> actions=builders.getActionTree();
+        List<Step> steps=getStepGenerator(builders.getActionTree()).toStep();
+        if(actions.size()>0){
+            Action start=actions.get(0);
+            if (start instanceof Select){
+                executeSelect();
+            }else if (start instanceof Delete){
+                executeDelete();
+            }else if (start instanceof Update){
+                executeUpdate();
+            }else if (start instanceof InsertInto){
+                executeInsert();
+            }else {
+                getMapper().execute(steps);
             }
         }
-        List<Map<String,Object>> map=getMapper().executeQuery(actions);
+    }
+
+    public int executeUpdate() throws Exception {
+        return getMapper().executeUpdate(getStepGenerator(builders.getActionTree()).toStep());
+    }
+
+    public int executeInsert() throws Exception {
+        return getMapper().executeInsert(getStepGenerator(builders.getActionTree()).toStep());
+    }
+
+    public int executeDelete() throws Exception {
+        return getMapper().executeDelete(getStepGenerator(builders.getActionTree()).toStep());
+    }
+
+    public Result executeSelect() throws Exception {
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator(builders.getActionTree()).toStep());
         return new Result(map);
     }
 
@@ -75,6 +85,30 @@ public abstract class Action {
         return BeanHelper.getBean(BaseMapper.class);
     }
 
+    public StepGenerator getStepGenerator(List<Action> actions){
+        SqlSessionTemplate sessionTemplate=BeanHelper.getBean(SqlSessionTemplate.class);
+        StepGenerator stepGenerator;
+        switch (sessionTemplate.getConfiguration().getDatabaseId()){
+            case "mysql":
+                stepGenerator= new MysqlStepGenerator(actions);
+                break;
+            case "oracle":
+                stepGenerator= new OracleStepGenerator(actions);
+                break;
+            case "dm":
+                stepGenerator= new DmStepGenerator(actions);
+                break;
+            case "postgresql":
+                stepGenerator=new PgStepGenerator(actions);
+                break;
+            default:
+                stepGenerator=new StepGenerator(actions,"");
+        }
+        return stepGenerator;
+    }
+
+
     public abstract void selfCheck() throws SelfCheckException;
+
 }
 

@@ -1,12 +1,13 @@
 package com.mybatis.sp.plus.meta;
 
+import com.mybatis.sp.plus.Meta;
 import com.mybatis.sp.plus.exception.SelfCheckException;
 
 /**
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/4/8 10:48
  */
-public class Order{
+public class Order  extends Meta {
 
     Field field;
     boolean desc;
@@ -42,6 +43,5 @@ public class Order{
         if (field==null){
             throw new SelfCheckException("field can not be null in order");
         }
-        field.selfCheck();
     }
 }

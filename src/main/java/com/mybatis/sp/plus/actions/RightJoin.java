@@ -11,4 +11,5 @@ public class RightJoin extends Join {
     public RightJoin(Table table) {
         super(table);
     }
+
 }

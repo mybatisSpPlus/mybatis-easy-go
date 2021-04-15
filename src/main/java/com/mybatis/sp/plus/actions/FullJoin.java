@@ -11,4 +11,6 @@ public class FullJoin extends Join {
     public FullJoin(Table table) {
         super(table);
     }
+
+
 }

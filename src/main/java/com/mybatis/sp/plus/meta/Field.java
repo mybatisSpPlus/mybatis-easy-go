@@ -1,14 +1,17 @@
 package com.mybatis.sp.plus.meta;
 
+import com.mybatis.sp.plus.Meta;
 import com.mybatis.sp.plus.conditions.*;
 import com.mybatis.sp.plus.exception.SelfCheckException;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Objects;
 
 /**
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/4/8 10:44
  */
-public class Field {
+public class Field  extends Meta {
 
     private String tableName;
 
@@ -70,6 +73,7 @@ public class Field {
         return setAlias(alias);
     }
 
+
     public Field as(String alias) {
         return setAlias(new Alias(alias));
     }
@@ -126,5 +130,21 @@ public class Field {
         if (StringUtils.isBlank(name)){
             throw new SelfCheckException("field name can not be blank");
         }
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Field)) return false;
+        Field field = (Field) o;
+        return Objects.equals(getTableName(), field.getTableName()) &&
+                getName().equals(field.getName()) &&
+                Objects.equals(getAlias(), field.getAlias());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTableName(), getName(), getAlias());
     }
 }

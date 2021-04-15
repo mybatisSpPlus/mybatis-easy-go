@@ -39,6 +39,8 @@ public class Lt extends Condition {
         this.value = value;
         return this;
     }
+
+
     @Override
     public void selfCheck() throws SelfCheckException {
         if (field==null||value==null){

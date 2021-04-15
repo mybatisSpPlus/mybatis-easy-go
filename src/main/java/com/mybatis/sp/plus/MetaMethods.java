@@ -1,9 +1,9 @@
 package com.mybatis.sp.plus;
 
-import com.mybatis.sp.plus.meta.Alias;
-import com.mybatis.sp.plus.meta.ConstantField;
-import com.mybatis.sp.plus.meta.Field;
-import com.mybatis.sp.plus.meta.Table;
+import com.mybatis.sp.plus.meta.*;
+
+import static com.mybatis.sp.plus.QueryBuilderHelper.fieldNameToField;
+import static com.mybatis.sp.plus.QueryBuilderHelper.tableNameToTable;
 
 /**
  * @author zhouyu4034@sefonsoft.com
@@ -19,19 +19,19 @@ public class MetaMethods {
     }
 
     public static Table table(String name){
-        return new Table(name);
+        return tableNameToTable(name);
     }
 
     public static Table table(String name, Alias alias){
-        return new Table(name,alias);
+        return tableNameToTable(name).setAlias(alias);
     }
 
     public static Field field(String name){
-        return new Field(name);
+        return fieldNameToField(name);
     }
 
     public static Field field(String name, Alias alias){
-        return new Field(name,alias);
+        return fieldNameToField(name).setAlias(alias);
     }
 
     public static Field field(String tableName, String name){
@@ -44,6 +44,10 @@ public class MetaMethods {
 
     public static ConstantField constantField(Object constant){
         return new ConstantField(constant);
+    }
+
+    public static StarField starField(){
+        return new StarField();
     }
 
     public static Alias alias(String name){

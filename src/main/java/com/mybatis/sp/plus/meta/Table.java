@@ -1,6 +1,7 @@
 package com.mybatis.sp.plus.meta;
 
 import com.mybatis.sp.plus.Action;
+import com.mybatis.sp.plus.Meta;
 import com.mybatis.sp.plus.exception.SelfCheckException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/4/8 10:44
  */
-public class Table {
+public class Table  extends Meta {
 
     List<Action> actions=new ArrayList<>();
 
@@ -76,6 +77,10 @@ public class Table {
         return setAlias(alias);
     }
 
+    public Table as(String alias) {
+        return setAlias(new Alias(alias));
+    }
+
     public String getSchema() {
         return schema;
     }
@@ -89,12 +94,7 @@ public class Table {
         if (StringUtils.isBlank(name)&&actions.size()==0){
             throw new SelfCheckException("table name can not be null where it‘s not a sub query");
         }
-        if (actions.size()>0){
-            if (alias==null){
-                throw new SelfCheckException("sub query alias can not be null");
-            }else {
-                alias.selfCheck();
-            }
-        }
     }
+
+
 }

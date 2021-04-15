@@ -67,15 +67,28 @@ public class GroupBy extends Action {
         unionAll.setBuilders(getBuilders());
         return unionAll;
     }
-
+    public Limit limit(Limit limit) {
+        getBuilders().getActionTree().add(limit);
+        limit.setBuilders(getBuilders());
+        return limit;
+    }
+    public Limit limit(int limit, int offset) {
+        Limit limit1=new Limit(limit, offset);
+        getBuilders().getActionTree().add(limit1);
+        limit1.setBuilders(getBuilders());
+        return limit1;
+    }
+    public Limit limit(int limit) {
+        Limit limit1=new Limit(limit);
+        getBuilders().getActionTree().add(limit1);
+        limit1.setBuilders(getBuilders());
+        return limit1;
+    }
     @Override
     public void selfCheck() throws SelfCheckException {
         if (fields.size()==0){
             throw new SelfCheckException("fields can not be empty in action Group");
-        }else {
-            for (Field field : fields) {
-                field.selfCheck();
-            }
         }
     }
+
 }

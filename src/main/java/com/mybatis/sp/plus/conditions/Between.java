@@ -56,6 +56,5 @@ public class Between extends Condition {
         if (field==null||startValue==null||endValue==null){
             throw new SelfCheckException("field、start value、end value can not be null in condition Between");
         }
-        field.selfCheck();
     }
 }

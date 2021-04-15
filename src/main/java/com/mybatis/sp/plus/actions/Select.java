@@ -103,10 +103,6 @@ public class Select extends Action {
     public void selfCheck() throws SelfCheckException {
         if (fields.size()==0){
             throw new SelfCheckException("fields can not be empty in action select");
-        }else {
-            for (Field field : fields) {
-                field.selfCheck();
-            }
         }
     }
 }

@@ -34,8 +34,6 @@ public class Min  extends Function {
         if (field==null){
             throw new SelfCheckException("field can not be null in function Min");
         }
-        if (field instanceof Function){
-            throw new SelfCheckException("function using in function is not supported ");
-        }
+
     }
 }
