@@ -3,6 +3,7 @@ package com.mybatis.sp.plus.actions;
 import com.mybatis.sp.plus.Action;
 import com.mybatis.sp.plus.Condition;
 import com.mybatis.sp.plus.exception.SelfCheckException;
+import com.mybatis.sp.plus.meta.Alias;
 import com.mybatis.sp.plus.meta.Field;
 import com.mybatis.sp.plus.meta.Order;
 import com.mybatis.sp.plus.meta.Table;
@@ -149,6 +150,16 @@ public class From extends Action {
         getBuilders().getActionTree().add(limit);
         limit.setBuilders(getBuilders());
         return limit;
+    }
+
+    public From as(Alias alias) {
+        table.setAlias(alias);
+        return this;
+    }
+
+    public From as(String alias) {
+        table.setAlias(new Alias(alias));
+        return this;
     }
 
     @Override
