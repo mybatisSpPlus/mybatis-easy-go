@@ -80,4 +80,13 @@ public class Test {
                 ).groupBy("labelName").limit(1).executeSelect().convertToList(Long.class);
         System.out.println(list);
     }
+    @org.junit.Test
+    public void oracleTest() throws Exception {
+        System.out.println(select(starField()).from("ALFREDO.mysql50data").limit(10).executeSelect().getResultList());
+    }
+
+    @org.junit.Test
+    public void oracleTest1() throws Exception {
+        System.out.println(select(starField()).from("ALFREDO.mysql50data").limit(10,100).executeSelect().getResultList());
+    }
 }

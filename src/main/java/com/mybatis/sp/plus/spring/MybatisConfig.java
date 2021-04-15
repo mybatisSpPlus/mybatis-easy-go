@@ -1,5 +1,10 @@
 package com.mybatis.sp.plus.spring;
 
+import com.mybatis.sp.plus.Action;
+import com.mybatis.sp.plus.step.DmStepGenerator;
+import com.mybatis.sp.plus.step.MysqlStepGenerator;
+import com.mybatis.sp.plus.step.OracleStepGenerator;
+import com.mybatis.sp.plus.step.PgStepGenerator;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
 import org.springframework.context.annotation.Bean;
@@ -35,6 +40,11 @@ public class MybatisConfig {
         properties.setProperty("Sybase", "sybase");
         properties.setProperty("Hana", "hana");
         databaseIdProvider.setProperties(properties);
+        Action.dbTypeToStepGenerator.put("mysql", MysqlStepGenerator.class);
+        Action.dbTypeToStepGenerator.put("postgresql", PgStepGenerator.class);
+        Action.dbTypeToStepGenerator.put("oracle", OracleStepGenerator.class);
+        Action.dbTypeToStepGenerator.put("dm", DmStepGenerator.class);
+
         return databaseIdProvider;
     }
 }

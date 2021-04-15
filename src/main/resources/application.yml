@@ -6,10 +6,16 @@ spring:
   datasource:
     druid:
       #   数据源基本配置
-      username: DATA_METADATA
-      password: 123456789
-      driver-class-name: dm.jdbc.driver.DmDriver
-      url: jdbc:dm://10.0.8.46:5236/DAMENG
+      #username: DATA_METADATA
+      #password: 123456789
+      #driver-class-name: dm.jdbc.driver.DmDriver
+      #url: jdbc:dm://10.0.8.46:5236/DAMENG
+
+      username: tpcuser
+      password: oracle
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      url: jdbc:oracle:thin:@10.0.6.101:1521:tpc
+
       #username: sdc
       #password: Cdsf@119
       #driver-class-name: com.mysql.cj.jdbc.Driver
@@ -22,7 +28,7 @@ spring:
       max-wait: 28800
       pool-prepared-statements: true
       max-pool-prepared-statement-per-connection-size: 20
-      validation-query: select 1
+      validation-query: select 1 from dual
       validation-query-timeout: 60000
       test-on-borrow: false
       test-on-return: false

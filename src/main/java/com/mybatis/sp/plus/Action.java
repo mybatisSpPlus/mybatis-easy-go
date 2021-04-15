@@ -13,6 +13,7 @@ import com.mybatis.sp.plus.spring.BeanHelper;
 import com.mybatis.sp.plus.step.*;
 import org.mybatis.spring.SqlSessionTemplate;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,8 @@ import java.util.Map;
  * @date 2021/4/8 10:41
  */
 public abstract class Action {
+
+    public static HashMap<String,Class> dbTypeToStepGenerator=new HashMap<>();
 
     QueryBuilders builders;
 
@@ -46,7 +49,7 @@ public abstract class Action {
 
     public void execute() throws Exception {
         List<Action> actions=builders.getActionTree();
-        List<Step> steps=getStepGenerator(builders.getActionTree()).toStep();
+        List<Step> steps=getStepGenerator().toStep();
         if(actions.size()>0){
             Action start=actions.get(0);
             if (start instanceof Select){
@@ -64,49 +67,36 @@ public abstract class Action {
     }
 
     public int executeUpdate() throws Exception {
-        return getMapper().executeUpdate(getStepGenerator(builders.getActionTree()).toStep());
+        return getMapper().executeUpdate(getStepGenerator().toStep());
     }
 
     public int executeInsert() throws Exception {
-        return getMapper().executeInsert(getStepGenerator(builders.getActionTree()).toStep());
+        return getMapper().executeInsert(getStepGenerator().toStep());
     }
 
     public int executeDelete() throws Exception {
-        return getMapper().executeDelete(getStepGenerator(builders.getActionTree()).toStep());
+        return getMapper().executeDelete(getStepGenerator().toStep());
     }
 
     public Result executeSelect() throws Exception {
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator(builders.getActionTree()).toStep());
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
         return new Result(map);
     }
-
 
     public BaseMapper getMapper(){
         return BeanHelper.getBean(BaseMapper.class);
     }
 
-    public StepGenerator getStepGenerator(List<Action> actions){
+    public StepGenerator getStepGenerator() throws Exception {
         SqlSessionTemplate sessionTemplate=BeanHelper.getBean(SqlSessionTemplate.class);
         StepGenerator stepGenerator;
-        switch (sessionTemplate.getConfiguration().getDatabaseId()){
-            case "mysql":
-                stepGenerator= new MysqlStepGenerator(actions);
-                break;
-            case "oracle":
-                stepGenerator= new OracleStepGenerator(actions);
-                break;
-            case "dm":
-                stepGenerator= new DmStepGenerator(actions);
-                break;
-            case "postgresql":
-                stepGenerator=new PgStepGenerator(actions);
-                break;
-            default:
-                stepGenerator=new StepGenerator(actions,"");
+        if (dbTypeToStepGenerator.containsKey(sessionTemplate.getConfiguration().getDatabaseId())){
+            stepGenerator= (StepGenerator) dbTypeToStepGenerator.get(sessionTemplate.getConfiguration().getDatabaseId()).getConstructor(List.class).newInstance(builders.getActionTree());
+        }else {
+            stepGenerator=new StepGenerator(builders.getActionTree(),"");
         }
         return stepGenerator;
     }
-
 
     public abstract void selfCheck() throws SelfCheckException;
 

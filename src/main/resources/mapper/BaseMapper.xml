@@ -16,7 +16,7 @@
     </sql>
 
     <!--查询模板-->
-    <select id="executeQuery" resultType="map" databaseId="mysql">
+    <select id="executeQuery" resultType="map">
         <include refid="steps"></include>
     </select>
     <!--插入模板-->
