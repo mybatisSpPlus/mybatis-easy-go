@@ -1,6 +1,7 @@
 package com.mybatis.sp.plus;
 
 import com.google.common.collect.Sets;
+import com.mybatis.sp.plus.meta.Alias;
 import com.mybatis.sp.plus.meta.ConstantField;
 import com.mybatis.sp.plus.meta.Table;
 import org.apache.commons.lang3.StringUtils;
@@ -226,6 +227,19 @@ public class QueryBuilderHelper {
             table.setSchema(strs[0]).setName(strs[1]);
         }else {
             table.setName(tableName);
+        }
+        if (table.getName().toLowerCase().contains(" as ")){
+            String[] strs=table.getName().toLowerCase().split(" as ");
+            String ftableName=table.getName().substring(0,strs[0].length());
+            String aliasName=tableName.substring(strs[0].length()+4);
+            table.setName(ftableName);
+            table.setAlias(new Alias(aliasName));
+        }else {
+            String[] strs = table.getName().split("\\s+");
+            if (strs.length>1){
+                table.setName(strs[0]);
+                table.setAlias(new Alias(strs[1]));
+            }
         }
         return table;
     }
