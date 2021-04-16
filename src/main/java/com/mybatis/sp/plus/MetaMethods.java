@@ -54,4 +54,20 @@ public class MetaMethods {
         return new Alias(name);
     }
 
+    public static Order order(Field field){
+        return new Order(field,false);
+    }
+
+    public static Order order(String fieldName){
+        return new Order(fieldNameToField(fieldName),false);
+    }
+
+    public static Order order(Field field,boolean Desc){
+        return new Order(field,Desc);
+    }
+
+    public static Order order(String fieldName,boolean Desc){
+        return new Order(fieldNameToField(fieldName),Desc);
+    }
+
 }
