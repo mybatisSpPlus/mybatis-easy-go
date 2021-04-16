@@ -255,8 +255,8 @@ public class QueryBuilderHelper {
 
     public static String[] getNameAndAlias(String s){
         String[] strs=s.toLowerCase().split(" as ");
-        String name=s.substring(0,strs[0].length());
-        String alias=s.substring(strs[0].length()+4);
+        String name=s.substring(0,strs[0].length()).trim();
+        String alias=s.substring(strs[0].length()+4).trim();
         return new String[]{name,alias};
     }
 }
