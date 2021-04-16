@@ -640,8 +640,10 @@ public class StepGenerator {
                 break;
             case "Substr":
                 SubstrToStep((Substr) function);
+                break;
             case "Instr":
                 InstrToStep((Instr) function);
+                break;
             case "Replace":
                 ReplaceToStep((Replace) function);
                 break;
