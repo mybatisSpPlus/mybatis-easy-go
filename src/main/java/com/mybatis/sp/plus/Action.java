@@ -1,5 +1,7 @@
 package com.mybatis.sp.plus;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.mybatis.sp.plus.actions.Delete;
 import com.mybatis.sp.plus.actions.InsertInto;
 import com.mybatis.sp.plus.actions.Select;
@@ -81,6 +83,22 @@ public abstract class Action {
     public Result executeSelect() throws Exception {
         List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
         return new Result(map);
+    }
+
+    public <T> T executeOneSelect(Class<T> tClass) throws Exception {
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        return  new Result(map).convertToOne(tClass);
+    }
+
+    public <T> List<T> executeListSelect(Class<T> tClass) throws Exception {
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        return  new Result(map).convertToList(tClass);
+    }
+
+    public <T> Page<T> executePageSelect(int pageNum, int pageSize, Class<T> tClass) throws Exception{
+        PageHelper.startPage(pageNum,pageSize);
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        return  new Result(map).convertToPage(tClass);
     }
 
     public BaseMapper getMapper(){

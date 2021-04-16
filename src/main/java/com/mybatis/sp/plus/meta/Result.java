@@ -83,6 +83,7 @@ public class Result {
         }
         return new Page<>(0,0);
     }
+
     public <T> Page<T> convertToPage(Class<T> tClass, BiFunction<Class<T>,List<Map<String,Object>>,Page<T>> function) {
         return function.apply(tClass,resultList);
     }
