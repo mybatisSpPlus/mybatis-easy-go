@@ -18,6 +18,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * @author zhouyu4034@sefonsoft.com
@@ -90,9 +92,34 @@ public abstract class Action {
         return  new Result(map).convertToOne(tClass);
     }
 
+    public <T> T executeOneSelect(Class<T> tClass, BiFunction<Class<T>,Map<String,Object>,T> function) throws Exception {
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        return  new Result(map).convertToOne(tClass,function);
+    }
+
+    public <T> T executeOneSelect(String typeName, BiFunction<String,Map<String,Object>,T> function) throws Exception {
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        return  new Result(map).convertToOne(typeName,function);
+    }
+
     public <T> List<T> executeListSelect(Class<T> tClass) throws Exception {
         List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
         return  new Result(map).convertToList(tClass);
+    }
+
+    public <T> List<T> executeListSelect(Class<T> tClass, BiFunction<Class<T>,List<Map<String,Object>>,List<T>> function) throws Exception {
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        return  new Result(map).convertToList(tClass,function);
+    }
+
+    public <T> List<T> executeListSelect(String typeName, BiFunction<String,List<Map<String,Object>>,List<T>> function) throws Exception {
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        return  new Result(map).convertToList(typeName,function);
+    }
+
+    public <T> List<T> executeListSelect(Function<List<Map<String,Object>>,List<T>> function) throws Exception {
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        return  new Result(map).convertToList(function);
     }
 
     public <T> Page<T> executePageSelect(int pageNum, int pageSize, Class<T> tClass) throws Exception{
@@ -100,6 +127,25 @@ public abstract class Action {
         List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
         return  new Result(map).convertToPage(tClass);
     }
+
+    public <T> Page<T> executePageSelect(int pageNum, int pageSize, Class<T> tClass, BiFunction<Class<T>,List<Map<String,Object>>,Page<T>> function) throws Exception{
+        PageHelper.startPage(pageNum,pageSize);
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        return  new Result(map).convertToPage(tClass,function);
+    }
+
+    public <T> Page<T> executePageSelect(int pageNum, int pageSize, String typeName, BiFunction<String,List<Map<String,Object>>,Page<T>> function) throws Exception{
+        PageHelper.startPage(pageNum,pageSize);
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        return  new Result(map).convertToPage(typeName,function);
+    }
+
+    public <T> Page<T> executePageSelect(int pageNum, int pageSize, Function<List<Map<String,Object>>,Page<T>> function) throws Exception{
+        PageHelper.startPage(pageNum,pageSize);
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        return  new Result(map).convertToPage(function);
+    }
+
 
     public BaseMapper getMapper(){
         return BeanHelper.getBean(BaseMapper.class);
