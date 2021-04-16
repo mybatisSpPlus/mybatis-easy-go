@@ -217,6 +217,17 @@ public class QueryBuilderHelper {
         }else {
             field.setName(fieldName);
         }
+        if (field.getName().toLowerCase().contains(" as ")){
+            String[] strs=getNameAndAlias(field.getName());
+            field.setName(strs[0]);
+            field.setAlias(new Alias(strs[1]));
+        }else {
+            String[] strs = field.getName().split("\\s+");
+            if (strs.length>1){
+                field.setName(strs[0]);
+                field.setAlias(new Alias(strs[1]));
+            }
+        }
         return field;
     }
 
@@ -229,11 +240,9 @@ public class QueryBuilderHelper {
             table.setName(tableName);
         }
         if (table.getName().toLowerCase().contains(" as ")){
-            String[] strs=table.getName().toLowerCase().split(" as ");
-            String ftableName=table.getName().substring(0,strs[0].length());
-            String aliasName=tableName.substring(strs[0].length()+4);
-            table.setName(ftableName);
-            table.setAlias(new Alias(aliasName));
+            String[] strs=getNameAndAlias(table.getName());
+            table.setName(strs[0]);
+            table.setAlias(new Alias(strs[1]));
         }else {
             String[] strs = table.getName().split("\\s+");
             if (strs.length>1){
@@ -244,4 +253,10 @@ public class QueryBuilderHelper {
         return table;
     }
 
+    public static String[] getNameAndAlias(String s){
+        String[] strs=s.toLowerCase().split(" as ");
+        String name=s.substring(0,strs[0].length());
+        String alias=s.substring(strs[0].length()+4);
+        return new String[]{name,alias};
+    }
 }
