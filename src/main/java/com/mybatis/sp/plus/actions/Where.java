@@ -80,7 +80,7 @@ public class Where extends Action {
         return groupBy;
     }
 
-    public Orders order(Order... order) {
+    public Orders orderBy(Order... order) {
         Orders orders=new Orders(order);
         getBuilders().getActionTree().add(orders);
         orders.setBuilders(getBuilders());

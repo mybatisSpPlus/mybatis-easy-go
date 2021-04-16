@@ -151,7 +151,7 @@ public class On extends Action {
         groupBy.setBuilders(getBuilders());
         return groupBy;
     }
-    public Orders order(Order... order) {
+    public Orders orderBy(Order... order) {
         Orders orders=new Orders(order);
         getBuilders().getActionTree().add(orders);
         orders.setBuilders(getBuilders());
