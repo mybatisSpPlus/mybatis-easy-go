@@ -32,26 +32,48 @@ public class StepGenerator {
     }
 
     public LinkedList<Step> toStep() throws Exception {
+        return toStep(false,false);
+    }
+
+    public LinkedList<Step> toStep(boolean printSql,boolean setParameter) throws Exception {
         steps.clear();
         for (Action action : actions) {
             actionToStep(action);
+        }
+        if (printSql){
+            System.out.println(toSql(setParameter));
         }
         return steps;
     }
 
     public String toSql() throws Exception {
-        toStep();
+        return toSql(false);
+    }
+
+    public String toSql(boolean setParameter) throws Exception {
+        if (steps.size()==0){
+            toStep();
+        }
         StringBuffer sb = new StringBuffer();
         for (Step step : steps) {
             if (StringUtils.isNotBlank(step.getStepName())) {
                 sb.append(step.getStepName());
             } else {
-                sb.append("?");
+                if (setParameter){
+                    if (step.getStepValue() instanceof String){
+                        sb.append("'"+step.getStepValue()+"'");
+                    }else {
+                        sb.append(step.getStepValue());
+                    }
+                }else {
+                    sb.append("?");
+                }
             }
             sb.append(" ");
         }
         return sb.toString();
     }
+
 
     public void InsertIntoToStep(InsertInto insertInto) throws Exception {
         steps.add(new Step("INSERT INTO"));
@@ -92,6 +114,9 @@ public class StepGenerator {
 
     public void SelectToStep(Select select) throws Exception {
         steps.add(new Step("SELECT"));
+        if (select.isDistinct()){
+            steps.add(new Step("DISTINCT"));
+        }
         for (Field field : select.getFields()) {
             fieldToStep(field);
             steps.add(new Step(","));

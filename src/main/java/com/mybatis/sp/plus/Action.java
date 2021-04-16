@@ -31,14 +31,24 @@ public abstract class Action {
 
     QueryBuilders builders;
 
+    StepGenerator stepGenerator;
+
+    private boolean printSql;
+
+    private boolean setParameter;
+
+
+
     public QueryBuilders getBuilders() {
         return builders;
     }
+
 
     public Action setBuilders(QueryBuilders builders) {
         this.builders = builders;
         return this;
     }
+
     public Table asTable(){
         return new Table().setActions(builders.getActionTree());
     }
@@ -53,7 +63,7 @@ public abstract class Action {
 
     public void execute() throws Exception {
         List<Action> actions=builders.getActionTree();
-        List<Step> steps=getStepGenerator().toStep();
+        List<Step> steps=getStepGenerator().toStep(printSql,setParameter);
         if(actions.size()>0){
             Action start=actions.get(0);
             if (start instanceof Select){
@@ -71,78 +81,78 @@ public abstract class Action {
     }
 
     public int executeUpdate() throws Exception {
-        return getMapper().executeUpdate(getStepGenerator().toStep());
+        return getMapper().executeUpdate(getStepGenerator().toStep(printSql,setParameter));
     }
 
     public int executeInsert() throws Exception {
-        return getMapper().executeInsert(getStepGenerator().toStep());
+        return getMapper().executeInsert(getStepGenerator().toStep(printSql,setParameter));
     }
 
     public int executeDelete() throws Exception {
-        return getMapper().executeDelete(getStepGenerator().toStep());
+        return getMapper().executeDelete(getStepGenerator().toStep(printSql,setParameter));
     }
 
     public Result executeSelect() throws Exception {
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
         return new Result(map);
     }
 
     public <T> T executeOneSelect(Class<T> tClass) throws Exception {
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
         return  new Result(map).convertToOne(tClass);
     }
 
     public <T> T executeOneSelect(Class<T> tClass, BiFunction<Class<T>,Map<String,Object>,T> function) throws Exception {
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
         return  new Result(map).convertToOne(tClass,function);
     }
 
     public <T> T executeOneSelect(String typeName, BiFunction<String,Map<String,Object>,T> function) throws Exception {
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
         return  new Result(map).convertToOne(typeName,function);
     }
 
     public <T> List<T> executeListSelect(Class<T> tClass) throws Exception {
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
         return  new Result(map).convertToList(tClass);
     }
 
     public <T> List<T> executeListSelect(Class<T> tClass, BiFunction<Class<T>,List<Map<String,Object>>,List<T>> function) throws Exception {
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
         return  new Result(map).convertToList(tClass,function);
     }
 
     public <T> List<T> executeListSelect(String typeName, BiFunction<String,List<Map<String,Object>>,List<T>> function) throws Exception {
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
         return  new Result(map).convertToList(typeName,function);
     }
 
     public <T> List<T> executeListSelect(Function<List<Map<String,Object>>,List<T>> function) throws Exception {
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
         return  new Result(map).convertToList(function);
     }
 
     public <T> Page<T> executePageSelect(int pageNum, int pageSize, Class<T> tClass) throws Exception{
         PageHelper.startPage(pageNum,pageSize);
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
         return  new Result(map).convertToPage(tClass);
     }
 
     public <T> Page<T> executePageSelect(int pageNum, int pageSize, Class<T> tClass, BiFunction<Class<T>,List<Map<String,Object>>,Page<T>> function) throws Exception{
         PageHelper.startPage(pageNum,pageSize);
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
         return  new Result(map).convertToPage(tClass,function);
     }
 
     public <T> Page<T> executePageSelect(int pageNum, int pageSize, String typeName, BiFunction<String,List<Map<String,Object>>,Page<T>> function) throws Exception{
         PageHelper.startPage(pageNum,pageSize);
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
         return  new Result(map).convertToPage(typeName,function);
     }
 
     public <T> Page<T> executePageSelect(int pageNum, int pageSize, Function<List<Map<String,Object>>,Page<T>> function) throws Exception{
         PageHelper.startPage(pageNum,pageSize);
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep());
+        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
         return  new Result(map).convertToPage(function);
     }
 
@@ -152,14 +162,33 @@ public abstract class Action {
     }
 
     public StepGenerator getStepGenerator() throws Exception {
-        SqlSessionTemplate sessionTemplate=BeanHelper.getBean(SqlSessionTemplate.class);
-        StepGenerator stepGenerator;
-        if (dbTypeToStepGenerator.containsKey(sessionTemplate.getConfiguration().getDatabaseId())){
-            stepGenerator= (StepGenerator) dbTypeToStepGenerator.get(sessionTemplate.getConfiguration().getDatabaseId()).getConstructor(List.class).newInstance(builders.getActionTree());
-        }else {
-            stepGenerator=new StepGenerator(builders.getActionTree(),"");
+        if (stepGenerator==null) {
+            SqlSessionTemplate sessionTemplate = BeanHelper.getBean(SqlSessionTemplate.class);
+            if (dbTypeToStepGenerator.containsKey(sessionTemplate.getConfiguration().getDatabaseId())) {
+                stepGenerator = (StepGenerator) dbTypeToStepGenerator.get(sessionTemplate.getConfiguration().getDatabaseId()).getConstructor(List.class).newInstance(builders.getActionTree());
+            } else {
+                stepGenerator = new StepGenerator(builders.getActionTree(), "");
+            }
         }
         return stepGenerator;
+    }
+
+    public boolean isPrintSql() {
+        return printSql;
+    }
+
+    public Action setPrintSql(boolean printSql) {
+        this.printSql = printSql;
+        return this;
+    }
+
+    public boolean isSetParameter() {
+        return setParameter;
+    }
+
+    public Action setSetParameter(boolean setParameter) {
+        this.setParameter = setParameter;
+        return this;
     }
 
     public abstract void selfCheck() throws SelfCheckException;
