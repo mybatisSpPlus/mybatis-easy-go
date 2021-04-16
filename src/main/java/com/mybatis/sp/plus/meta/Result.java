@@ -78,7 +78,7 @@ public class Result {
                         .setPageSize(((Page<Map<String, Object>>) resultList).getPageSize());
                 page.addAll(result);
                 page.setTotal(((Page<Map<String, Object>>) resultList).getTotal());
-                return (Page<T>) resultList;
+                return (Page<T>) result;
             }
         }
         return new Page<>(0,0);
