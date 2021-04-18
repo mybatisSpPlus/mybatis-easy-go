@@ -22,7 +22,6 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
-import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -47,10 +46,6 @@ public class AnnotationProcessor extends AbstractProcessor {
     // 提供了创建标识符的一些方法
     private Names names;
 
-    private Elements elementsUtils;
-
-    private Context context;
-
     public AnnotationProcessor() {
     }
 
@@ -60,10 +55,9 @@ public class AnnotationProcessor extends AbstractProcessor {
         super.init(processingEnv);
         this.messager = processingEnv.getMessager();
         this.trees = JavacTrees.instance(processingEnv);
-        this.context = ((JavacProcessingEnvironment) processingEnv).getContext();
+        Context context = ((JavacProcessingEnvironment) processingEnv).getContext();
         this.treeMaker = TreeMaker.instance(context);
         this.names = Names.instance(context);
-        this.elementsUtils=processingEnv.getElementUtils();
     }
 
     public static void main(String[] args) {
