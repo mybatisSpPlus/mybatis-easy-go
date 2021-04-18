@@ -1,6 +1,5 @@
 package com.mybatis.sp.plus.annotation;
 
-import com.mybatis.sp.plus.functionAnnotation._From_Source;
 import com.mybatis.sp.plus.functionAnnotation._GroupBy_Source;
 
 import java.lang.annotation.ElementType;

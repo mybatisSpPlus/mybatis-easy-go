@@ -4,14 +4,10 @@ import com.mybatis.sp.plus.Action;
 import com.mybatis.sp.plus.Condition;
 import com.mybatis.sp.plus.annotation.*;
 import com.mybatis.sp.plus.exception.SelfCheckException;
-import com.mybatis.sp.plus.meta.Field;
-import com.mybatis.sp.plus.meta.Order;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.mybatis.sp.plus.QueryBuilderHelper.fieldNameToField;
 
 /**
  * @author zhouyu4034@sefonsoft.com

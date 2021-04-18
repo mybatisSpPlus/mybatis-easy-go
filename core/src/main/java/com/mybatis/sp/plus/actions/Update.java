@@ -5,8 +5,6 @@ import com.mybatis.sp.plus.annotation.*;
 import com.mybatis.sp.plus.exception.SelfCheckException;
 import com.mybatis.sp.plus.meta.Table;
 
-import static com.mybatis.sp.plus.QueryBuilderHelper.tableNameToTable;
-
 /**
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/4/8 10:28

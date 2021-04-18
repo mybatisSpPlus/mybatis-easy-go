@@ -5,9 +5,9 @@ import com.mybatis.sp.plus.Condition;
 import com.mybatis.sp.plus.Function;
 import com.mybatis.sp.plus.Meta;
 import com.mybatis.sp.plus.actions.*;
-import com.mybatis.sp.plus.meta.*;
-import com.mybatis.sp.plus.functions.*;
 import com.mybatis.sp.plus.conditions.*;
+import com.mybatis.sp.plus.functions.*;
+import com.mybatis.sp.plus.meta.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedList;

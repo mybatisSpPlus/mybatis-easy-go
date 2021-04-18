@@ -1,7 +1,6 @@
 package com.mybatis.sp.plus.actions;
 
 import com.mybatis.sp.plus.Action;
-import com.mybatis.sp.plus.Condition;
 import com.mybatis.sp.plus.annotation._On;
 import com.mybatis.sp.plus.exception.SelfCheckException;
 import com.mybatis.sp.plus.meta.Alias;

@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static com.mybatis.sp.plus.QueryBuilderHelper.fieldNameToField;
 import static com.mybatis.sp.plus.QueryBuilderHelper.tableNameToTable;
 
 /**
