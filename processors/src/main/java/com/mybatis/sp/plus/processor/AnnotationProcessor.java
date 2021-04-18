@@ -60,13 +60,9 @@ public class AnnotationProcessor extends AbstractProcessor {
         this.names = Names.instance(context);
     }
 
-    public static void main(String[] args) {
-        System.out.println(16L& 16L);
-    }
     public static <T> Object getFieldValue(T object, String property) {
         if (object != null && property != null) {
             Class<T> currClass = (Class<T>) object.getClass();
-
             try {
                 Field field = currClass.getDeclaredField(property);
                 field.setAccessible(true);
@@ -108,8 +104,6 @@ public class AnnotationProcessor extends AbstractProcessor {
                         } catch (Exception e) {
                             messager.printMessage(Diagnostic.Kind.ERROR, e.toString());
                         }
-
-
                     }
                 }
             }
