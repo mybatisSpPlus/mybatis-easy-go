@@ -13,7 +13,7 @@ public class Alias  extends Meta {
     private String name;
 
     public Alias(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     public String getName() {
@@ -21,7 +21,7 @@ public class Alias  extends Meta {
     }
 
     public Alias setName(String name) {
-        this.name = name;
+        this.name = name.trim();
         return this;
     }
 

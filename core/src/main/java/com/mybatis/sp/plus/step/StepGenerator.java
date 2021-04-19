@@ -712,6 +712,9 @@ public class StepGenerator {
         } else if (field instanceof Function) {
             functionToStep((Function) field);
         } else {
+            if (StringUtils.isNotBlank(field.getSpecialPrefix())) {
+                steps.add(new Step(field.getSpecialPrefix()));
+            }
             if (StringUtils.isNotBlank(field.getTableName())) {
                 steps.add(new Step(dialect + field.getTableName() + dialect));
                 steps.add(new Step("."));

@@ -27,22 +27,22 @@ public class Table  extends Meta {
     }
 
     public Table(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     public Table(String schema, String name) {
-        this.schema = schema;
-        this.name = name;
+        this.schema = schema.trim();
+        this.name = name.trim();
     }
 
     public Table(String name, Alias alias) {
-        this.name = name;
+        this.name = name.trim();
         this.alias = alias;
     }
 
     public Table(String schema, String name, Alias alias) {
-        this.schema = schema;
-        this.name = name;
+        this.schema = schema.trim();
+        this.name = name.trim();
         this.alias = alias;
     }
 
@@ -51,7 +51,7 @@ public class Table  extends Meta {
     }
 
     public Table setName(String name) {
-        this.name = name;
+        this.name = name.trim();
         return this;
     }
 
@@ -86,7 +86,7 @@ public class Table  extends Meta {
     }
 
     public Table setSchema(String schema) {
-        this.schema = schema;
+        this.schema = schema.trim();
         return this;
     }
 

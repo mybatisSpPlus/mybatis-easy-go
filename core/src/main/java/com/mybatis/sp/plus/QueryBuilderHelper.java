@@ -203,29 +203,43 @@ public class QueryBuilderHelper {
      * @param obj
      * @return
      */
-    public static boolean isField(Object obj){
-        return obj instanceof com.mybatis.sp.plus.meta.Field&&!(obj instanceof Function);
+    public static boolean isField(Object obj) {
+        return obj instanceof com.mybatis.sp.plus.meta.Field && !(obj instanceof Function);
     }
 
-    public static boolean isConstantField(Object obj){
+    public static boolean isConstantField(Object obj) {
         return obj instanceof ConstantField;
     }
 
-    public static com.mybatis.sp.plus.meta.Field fieldNameToField(String fieldName){
-        com.mybatis.sp.plus.meta.Field field=new com.mybatis.sp.plus.meta.Field();
-        if (fieldName.contains(".")){
-            String[] strs=fieldName.split("\\.");
-            field.setTableName(strs[0].trim()).setName(strs[1].trim());
-        }else {
-            field.setName(fieldName.trim());
+    /**
+     * 将字段名转为字段对象，支持的格式
+     * [spPrefix @] [tableName.]field [as] [alias]
+     *
+     * @param fieldName
+     * @return
+     */
+    public static com.mybatis.sp.plus.meta.Field fieldNameToField(String fieldName) {
+        com.mybatis.sp.plus.meta.Field field = new com.mybatis.sp.plus.meta.Field();
+        //判断是否有特殊前缀
+        if (fieldName.contains("@")) {
+            String[] strs = fieldName.split("@");
+            field.setSpecialPrefix(strs[0].trim());
+            fieldName = strs[1].trim();
         }
-        if (field.getName().toLowerCase().contains(" as ")){
-            String[] strs=getNameAndAlias(field.getName());
+        //对点拆分,判断是否有表名
+        if (fieldName.contains(".")) {
+            String[] strs = fieldName.split("\\.");
+            field.setTableName(strs[0].trim());
+            fieldName = strs[1].trim();
+        }
+        //对表名判断是否有别名
+        if (fieldName.toLowerCase().contains(" as ")) {
+            String[] strs = getNameAndAlias(field.getName());
             field.setName(strs[0]);
             field.setAlias(new Alias(strs[1]));
-        }else {
-            String[] strs = field.getName().split("\\s+");
-            if (strs.length>1) {
+        } else {
+            String[] strs = fieldName.split("\\s+");
+            if (strs.length > 1) {
                 field.setName(strs[0].trim());
                 field.setAlias(new Alias(strs[1].trim()));
             }

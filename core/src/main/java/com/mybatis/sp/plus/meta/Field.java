@@ -11,7 +11,11 @@ import java.util.Objects;
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/4/8 10:44
  */
-public class Field  extends Meta {
+public class Field extends Meta {
+    /**
+     * 比如mysql的BINARY
+     */
+    private String specialPrefix;
 
     private String tableName;
 
@@ -23,22 +27,23 @@ public class Field  extends Meta {
     }
 
     public Field(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     public Field(String name, Alias alias) {
-        this.name = name;
+        this.name = name.trim();
         this.alias = alias;
     }
 
     public Field(String tableName, String name) {
-        this.tableName = tableName;
+        this.tableName = tableName.trim();
         this.name = name;
     }
 
+
     public Field(String tableName, String name, Alias alias) {
-        this.tableName = tableName;
-        this.name = name;
+        this.tableName = tableName.trim();
+        this.name = name.trim();
         this.alias = alias;
     }
 
@@ -56,7 +61,16 @@ public class Field  extends Meta {
     }
 
     public Field setName(String name) {
-        this.name = name;
+        this.name = name.trim();
+        return this;
+    }
+
+    public String getSpecialPrefix() {
+        return specialPrefix;
+    }
+
+    public Field setSpecialPrefix(String specialPrefix) {
+        this.specialPrefix = specialPrefix;
         return this;
     }
 

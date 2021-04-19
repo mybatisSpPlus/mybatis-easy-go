@@ -13,5 +13,4 @@ public class MysqlStepGenerator extends StepGenerator {
     public MysqlStepGenerator(List<Action> actions) {
         super(actions,"`");
     }
-
 }
