@@ -99,26 +99,34 @@ public class Field  extends Meta {
     }
 
     public Lt lt( Object value){
-        return new Lt(this,value);
+        return new Lt(this, value);
     }
 
-    public Lte lte( Object value){
-        return new Lte(this,value);
+    public Lte lte(Object value) {
+        return new Lte(this, value);
     }
 
-    public Like like( String value){
-        return new Like(this,value);
+    public Like like(String value) {
+        return new Like(this, value);
     }
 
-    public Regx regx( String value){
-        return new Regx(this,value);
+    public StartWith startWith(String value) {
+        return new StartWith(this, value);
     }
 
-    public In in( Object... values){
-        return new In(this,values);
+    public EndWith endWith(String value) {
+        return new EndWith(this, value);
     }
 
-    public IsNull isNull(){
+    public Regx regx(String value) {
+        return new Regx(this, value);
+    }
+
+    public In in(Object... values) {
+        return new In(this, values);
+    }
+
+    public IsNull isNull() {
         return new IsNull(this);
     }
 
