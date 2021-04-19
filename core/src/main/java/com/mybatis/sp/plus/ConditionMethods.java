@@ -41,26 +41,34 @@ public class ConditionMethods {
     }
 
     public static Lt lt(Field field, Object value){
-        return new Lt(field,value);
+        return new Lt(field, value);
     }
 
-    public static Lte lte(Field field, Object value){
-        return new Lte(field,value);
+    public static Lte lte(Field field, Object value) {
+        return new Lte(field, value);
     }
 
-    public static Like like(Field field, String value){
-        return new Like(field,value);
+    public static Like like(Field field, String value) {
+        return new Like(field, value);
     }
 
-    public static Regx regx(Field field, String value){
-        return new Regx(field,value);
+    public static StartWith startWith(Field field, String value) {
+        return new StartWith(field, value);
     }
 
-    public static In in(Field field, Object... values){
-        return new In(field,values);
+    public static EndWith endWith(Field field, String value) {
+        return new EndWith(field, value);
     }
 
-    public static IsNull isNull(Field field){
+    public static Regx regx(Field field, String value) {
+        return new Regx(field, value);
+    }
+
+    public static In in(Field field, Object... values) {
+        return new In(field, values);
+    }
+
+    public static IsNull isNull(Field field) {
         return new IsNull(field);
     }
 
@@ -101,24 +109,35 @@ public class ConditionMethods {
         return new Lt(field,value);
     }
 
-    public static Lte lte(String fieldName, Object value){
-        Field field= QueryBuilderHelper.fieldNameToField(fieldName);
-        return new Lte(field,value);
+    public static Lte lte(String fieldName, Object value) {
+        Field field = QueryBuilderHelper.fieldNameToField(fieldName);
+        return new Lte(field, value);
     }
 
-    public static Like like(String fieldName, String value){
-        Field field= QueryBuilderHelper.fieldNameToField(fieldName);
-        return new Like(field,value);
+    public static Like like(String fieldName, String value) {
+        Field field = QueryBuilderHelper.fieldNameToField(fieldName);
+        return new Like(field, value);
     }
 
-    public static Regx regx(String fieldName, String value){
-        Field field= QueryBuilderHelper.fieldNameToField(fieldName);
-        return new Regx(field,value);
+    public static StartWith startWith(String fieldName, String value) {
+        Field field = QueryBuilderHelper.fieldNameToField(fieldName);
+        return new StartWith(field, value);
     }
 
-    public static In in(String fieldName,Object... values){
-        Field field= QueryBuilderHelper.fieldNameToField(fieldName);
-        return new In(field,values);
+    public static EndWith endWith(String fieldName, String value) {
+        Field field = QueryBuilderHelper.fieldNameToField(fieldName);
+        return new EndWith(field, value);
+    }
+
+
+    public static Regx regx(String fieldName, String value) {
+        Field field = QueryBuilderHelper.fieldNameToField(fieldName);
+        return new Regx(field, value);
+    }
+
+    public static In in(String fieldName, Object... values) {
+        Field field = QueryBuilderHelper.fieldNameToField(fieldName);
+        return new In(field, values);
     }
 
     public static IsNull isNull(String fieldName){

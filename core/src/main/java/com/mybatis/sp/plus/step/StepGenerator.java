@@ -440,6 +440,18 @@ public class StepGenerator {
         steps.add(new Step().setStepValue("%" + like.getValue() + "%"));
     }
 
+    public void StartWithToStep(StartWith startWith) throws Exception {
+        fieldToStep(startWith.getField());
+        steps.add(new Step("LIKE"));
+        steps.add(new Step().setStepValue(startWith.getValue() + "%"));
+    }
+
+    public void EndWithToStep(EndWith endWith) throws Exception {
+        fieldToStep(endWith.getField());
+        steps.add(new Step("LIKE"));
+        steps.add(new Step().setStepValue("%" + endWith.getValue()));
+    }
+
     public void NotToStep() {
         steps.add(new Step("NOT"));
     }
@@ -492,6 +504,12 @@ public class StepGenerator {
                 break;
             case "Like":
                 LikeToStep((Like) condition);
+                break;
+            case "StartWith":
+                StartWithToStep((StartWith) condition);
+                break;
+            case "EndWith":
+                EndWithToStep((EndWith) condition);
                 break;
             case "Not":
                 NotToStep();
