@@ -149,8 +149,8 @@ public class Field extends Meta {
     }
 
     public void selfCheck() throws SelfCheckException {
-        if (StringUtils.isBlank(name)){
-            throw new SelfCheckException("field name can not be blank");
+        if (StringUtils.isBlank(name) && alias == null) {
+            throw new SelfCheckException("field name ,alias can not be both blank");
         }
     }
 

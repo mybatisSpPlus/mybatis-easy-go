@@ -240,10 +240,11 @@ public class QueryBuilderHelper {
         } else {
             String[] strs = fieldName.split("\\s+");
             if (strs.length > 1) {
-                field.setName(strs[0].trim());
+                fieldName = strs[0].trim();
                 field.setAlias(new Alias(strs[1].trim()));
             }
         }
+        field.setName(fieldName);
         return field;
     }
 
