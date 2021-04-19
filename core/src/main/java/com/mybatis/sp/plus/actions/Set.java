@@ -34,8 +34,8 @@ public class Set extends Action {
         return this;
     }
 
-    public Set addFieldValue(Field field, Object value) {
-        this.fieldValue.put(field,value);
+    public Set setFieldValue(Field field, Object value) {
+        this.fieldValue.put(field, value);
         return this;
     }
 
