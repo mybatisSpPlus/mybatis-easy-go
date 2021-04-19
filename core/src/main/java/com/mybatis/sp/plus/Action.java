@@ -103,24 +103,29 @@ public abstract class Action {
         return  new Result(map).convertToOne(tClass);
     }
 
-    public <T> T executeOneSelect(Class<T> tClass, BiFunction<Class<T>,Map<String,Object>,T> function) throws Exception {
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
-        return  new Result(map).convertToOne(tClass,function);
+    public <T> T executeOneSelect(Class<T> tClass, BiFunction<Class<T>, Map<String, Object>, T> function) throws Exception {
+        List<Map<String, Object>> map = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
+        return new Result(map).convertToOne(tClass, function);
     }
 
-    public <T> T executeOneSelect(String typeName, BiFunction<String,Map<String,Object>,T> function) throws Exception {
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
-        return  new Result(map).convertToOne(typeName,function);
+    public <T> T executeOneSelect(String typeName, BiFunction<String, Map<String, Object>, T> function) throws Exception {
+        List<Map<String, Object>> map = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
+        return new Result(map).convertToOne(typeName, function);
+    }
+
+    public <T> T executeOneSelect(Function<Map<String, Object>, T> function) throws Exception {
+        List<Map<String, Object>> map = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
+        return new Result(map).convertToOne(function);
     }
 
     public <T> List<T> executeListSelect(Class<T> tClass) throws Exception {
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
-        return  new Result(map).convertToList(tClass);
+        List<Map<String, Object>> map = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
+        return new Result(map).convertToList(tClass);
     }
 
-    public <T> List<T> executeListSelect(Class<T> tClass, BiFunction<Class<T>,List<Map<String,Object>>,List<T>> function) throws Exception {
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
-        return  new Result(map).convertToList(tClass,function);
+    public <T> List<T> executeListSelect(Class<T> tClass, BiFunction<Class<T>, List<Map<String, Object>>, List<T>> function) throws Exception {
+        List<Map<String, Object>> map = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
+        return new Result(map).convertToList(tClass, function);
     }
 
     public <T> List<T> executeListSelect(String typeName, BiFunction<String,List<Map<String,Object>>,List<T>> function) throws Exception {
