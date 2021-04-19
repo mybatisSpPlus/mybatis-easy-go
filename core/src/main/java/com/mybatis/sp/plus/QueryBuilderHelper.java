@@ -215,9 +215,9 @@ public class QueryBuilderHelper {
         com.mybatis.sp.plus.meta.Field field=new com.mybatis.sp.plus.meta.Field();
         if (fieldName.contains(".")){
             String[] strs=fieldName.split("\\.");
-            field.setTableName(strs[0]).setName(strs[1]);
+            field.setTableName(strs[0].trim()).setName(strs[1].trim());
         }else {
-            field.setName(fieldName);
+            field.setName(fieldName.trim());
         }
         if (field.getName().toLowerCase().contains(" as ")){
             String[] strs=getNameAndAlias(field.getName());
@@ -225,9 +225,9 @@ public class QueryBuilderHelper {
             field.setAlias(new Alias(strs[1]));
         }else {
             String[] strs = field.getName().split("\\s+");
-            if (strs.length>1){
-                field.setName(strs[0]);
-                field.setAlias(new Alias(strs[1]));
+            if (strs.length>1) {
+                field.setName(strs[0].trim());
+                field.setAlias(new Alias(strs[1].trim()));
             }
         }
         return field;
@@ -245,9 +245,9 @@ public class QueryBuilderHelper {
         Table table=new Table();
         if (tableName.contains(".")){
             String[] strs=tableName.split("\\.");
-            table.setSchema(strs[0]).setName(strs[1]);
+            table.setSchema(strs[0].trim()).setName(strs[1].trim());
         }else {
-            table.setName(tableName);
+            table.setName(tableName.trim());
         }
         if (table.getName().toLowerCase().contains(" as ")){
             String[] strs=getNameAndAlias(table.getName());
@@ -255,9 +255,9 @@ public class QueryBuilderHelper {
             table.setAlias(new Alias(strs[1]));
         }else {
             String[] strs = table.getName().split("\\s+");
-            if (strs.length>1){
-                table.setName(strs[0]);
-                table.setAlias(new Alias(strs[1]));
+            if (strs.length>1) {
+                table.setName(strs[0].trim());
+                table.setAlias(new Alias(strs[1].trim()));
             }
         }
         return table;
