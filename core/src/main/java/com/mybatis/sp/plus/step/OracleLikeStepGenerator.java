@@ -115,7 +115,7 @@ public class OracleLikeStepGenerator extends StepGenerator{
         steps.add(new Step("INSTR("));
         fieldToStep(instr.getField());
         steps.add(new Step(","));
-        ValueToStep(instr.getTarget());
+        valueToStep(instr.getTarget());
         steps.add(new Step(","));
         steps.add(new Step().setStepValue(instr.getStart()));
         steps.add(new Step(","));

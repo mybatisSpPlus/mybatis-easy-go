@@ -360,7 +360,7 @@ public class StepGenerator {
         }
     }
 
-    public void ValueToStep(Object value) throws Exception {
+    public void valueToStep(Object value) throws Exception {
         if (value instanceof Function) {
             functionToStep((Function) value);
         } else if (value instanceof Field) {
@@ -375,37 +375,37 @@ public class StepGenerator {
     public void EqToStep(Eq eq) throws Exception {
         fieldToStep(eq.getField());
         steps.add(new Step("="));
-        ValueToStep(eq.getValue());
+        valueToStep(eq.getValue());
     }
 
     public void NeqToStep(Neq neq) throws Exception {
         fieldToStep(neq.getField());
         steps.add(new Step("!="));
-        ValueToStep(neq.getValue());
+        valueToStep(neq.getValue());
     }
 
     public void GtToStep(Gt gt) throws Exception {
         fieldToStep(gt.getField());
         steps.add(new Step(">"));
-        ValueToStep(gt.getValue());
+        valueToStep(gt.getValue());
     }
 
     public void GteToStep(Gte gte) throws Exception {
         fieldToStep(gte.getField());
         steps.add(new Step(">="));
-        ValueToStep(gte.getValue());
+        valueToStep(gte.getValue());
     }
 
     public void LtToStep(Lt lt) throws Exception {
         fieldToStep(lt.getField());
         steps.add(new Step("<"));
-        ValueToStep(lt.getValue());
+        valueToStep(lt.getValue());
     }
 
     public void LteToStep(Lte lte) throws Exception {
         fieldToStep(lte.getField());
         steps.add(new Step("<="));
-        ValueToStep(lte.getValue());
+        valueToStep(lte.getValue());
     }
 
     public void InToStep(In in) throws Exception {
@@ -414,7 +414,7 @@ public class StepGenerator {
         if (in.getValues().size() > 0) {
             steps.add(new Step("("));
             for (Object value : in.getValues()) {
-                ValueToStep(value);
+                valueToStep(value);
                 steps.add(new Step(","));
             }
             steps.removeLast();
@@ -528,6 +528,16 @@ public class StepGenerator {
         steps.add(new Step(")"));
     }
 
+    public void CaseToStep(Case caze) throws Exception {
+        steps.add(new Step("CASE WHEN"));
+        conditionToStep(caze.getWhen());
+        steps.add(new Step("THEN"));
+        valueToStep(caze.getThenValue());
+        steps.add(new Step("ELSE"));
+        valueToStep(caze.getElseValue());
+        steps.add(new Step("END"));
+    }
+
     public void ConcatToStep(Concat concat) throws Exception {
         steps.add(new Step("CONCAT("));
         for (Field obj : concat.getObjs()) {
@@ -613,7 +623,7 @@ public class StepGenerator {
         steps.add(new Step("INSTR("));
         fieldToStep(instr.getField());
         steps.add(new Step(","));
-        ValueToStep(instr.getTarget());
+        valueToStep(instr.getTarget());
         steps.add(new Step(")"));
     }
 
@@ -621,9 +631,9 @@ public class StepGenerator {
         steps.add(new Step("REPLACE("));
         fieldToStep(replace.getField());
         steps.add(new Step(","));
-        ValueToStep(replace.getOldStr());
+        valueToStep(replace.getOldStr());
         steps.add(new Step(","));
-        ValueToStep(replace.getNewStr());
+        valueToStep(replace.getNewStr());
         steps.add(new Step(")"));
     }
 
@@ -632,6 +642,9 @@ public class StepGenerator {
         switch (name) {
             case "Avg":
                 AvgToStep((Avg) function);
+                break;
+            case "Case":
+                CaseToStep((Case) function);
                 break;
             case "Concat":
                 ConcatToStep((Concat) function);

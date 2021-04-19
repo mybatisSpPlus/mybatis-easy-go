@@ -9,16 +9,24 @@ import com.mybatis.sp.plus.meta.Field;
  */
 public class FunctionMethods {
 
-    public static Count count(Field field){
+    public static Case caze() {
+        return new Case();
+    }
+
+    public static Case caze(Condition when, Object thenValue, Object elseValue) {
+        return new Case(when, thenValue, elseValue);
+    }
+
+    public static Count count(Field field) {
         return new Count(field);
     }
 
-    public static Concat concat(Field... objs){
+    public static Concat concat(Field... objs) {
         return new Concat(objs);
     }
 
-    public static Format format(Field field, String format){
-        return new Format(field,format);
+    public static Format format(Field field, String format) {
+        return new Format(field, format);
     }
 
     public static Substr substr(Field field, int start) {
@@ -36,7 +44,6 @@ public class FunctionMethods {
     public static Instr instr(Field field, Object target, int start, int times) {
        return new Instr(field,target,start,times);
     }
-
     public static Replace replace(Field field,Object oldStr,Object newStr){
         return new Replace(field,oldStr,newStr);
     }
