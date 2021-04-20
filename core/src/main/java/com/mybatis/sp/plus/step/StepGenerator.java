@@ -174,12 +174,14 @@ public class StepGenerator {
     }
 
     public void HavingToStep(Having having) throws Exception {
-        steps.add(new Step("HAVING"));
-        for (Condition condition : having.getConditions()) {
-            conditionToStep(condition);
-            steps.add(new Step("AND"));
+        if (having.getConditions().size() > 0) {
+            steps.add(new Step("HAVING"));
+            for (Condition condition : having.getConditions()) {
+                conditionToStep(condition);
+                steps.add(new Step("AND"));
+            }
+            steps.removeLast();
         }
-        steps.removeLast();
     }
 
     public void OrdersToStep(Orders orders) throws Exception {

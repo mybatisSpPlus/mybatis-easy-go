@@ -44,9 +44,14 @@ public class Count  extends Function {
         return this;
     }
 
+    public Count distinct() {
+        this.distinct = true;
+        return this;
+    }
+
     @Override
     public void selfCheck() throws SelfCheckException {
-        if (field==null){
+        if (field == null) {
             throw new SelfCheckException("field can not be null in function Count");
         }
 

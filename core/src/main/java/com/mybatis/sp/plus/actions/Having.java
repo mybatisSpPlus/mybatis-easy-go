@@ -57,16 +57,13 @@ public class Having extends Action {
 
     @Override
     public void selfCheck() throws SelfCheckException {
-        //先将EmptyCondition去掉;
+        //此处不再进行check，而是将EmptyCondition去掉，如果最终Having中没有条件，在构建step时会跳过;
         Iterator<Condition> iterator = conditions.iterator();
         while (iterator.hasNext()) {
             Condition condition = iterator.next();
             if (condition instanceof EmptyCondition) {
                 iterator.remove();
             }
-        }
-        if (conditions.size() == 0) {
-            throw new SelfCheckException("conditions can not be empty in action Having");
         }
     }
 
