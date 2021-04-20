@@ -3,10 +3,12 @@ package com.mybatis.sp.plus.actions;
 import com.mybatis.sp.plus.Action;
 import com.mybatis.sp.plus.Condition;
 import com.mybatis.sp.plus.annotation.*;
+import com.mybatis.sp.plus.conditions.EmptyCondition;
 import com.mybatis.sp.plus.exception.SelfCheckException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -52,11 +54,12 @@ public class Where extends Action {
 
     @Override
     public void selfCheck() throws SelfCheckException {
-        if (conditions.size()==0){
-            throw new SelfCheckException("conditions can not be empty in action Where");
-        }else {
-            for (Condition condition : conditions) {
-                condition.selfCheck();
+        //此处不再进行check，而是将EmptyCondition去掉，如果最终where中没有条件，在构建step时会跳过;
+        Iterator<Condition> iterator = conditions.iterator();
+        while (iterator.hasNext()) {
+            Condition condition = iterator.next();
+            if (condition instanceof EmptyCondition) {
+                iterator.remove();
             }
         }
     }

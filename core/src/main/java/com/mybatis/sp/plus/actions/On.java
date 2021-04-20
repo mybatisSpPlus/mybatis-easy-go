@@ -3,10 +3,12 @@ package com.mybatis.sp.plus.actions;
 import com.mybatis.sp.plus.Action;
 import com.mybatis.sp.plus.Condition;
 import com.mybatis.sp.plus.annotation.*;
+import com.mybatis.sp.plus.conditions.EmptyCondition;
 import com.mybatis.sp.plus.exception.SelfCheckException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -60,7 +62,15 @@ public class On extends Action {
 
     @Override
     public void selfCheck() throws SelfCheckException {
-        if (conditions.size()==0){
+        //先将EmptyCondition去掉;
+        Iterator<Condition> iterator = conditions.iterator();
+        while (iterator.hasNext()) {
+            Condition condition = iterator.next();
+            if (condition instanceof EmptyCondition) {
+                iterator.remove();
+            }
+        }
+        if (conditions.size() == 0) {
             throw new SelfCheckException("conditions can not be empty in action On");
         }
     }

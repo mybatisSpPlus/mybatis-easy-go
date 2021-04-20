@@ -211,12 +211,14 @@ public class StepGenerator {
     }
 
     public void WhereToStep(Where where) throws Exception {
-        steps.add(new Step("WHERE"));
-        for (Condition condition : where.getConditions()) {
-            conditionToStep(condition);
-            steps.add(new Step("AND"));
+        if (where.getConditions().size() > 0) {
+            steps.add(new Step("WHERE"));
+            for (Condition condition : where.getConditions()) {
+                conditionToStep(condition);
+                steps.add(new Step("AND"));
+            }
+            steps.removeLast();
         }
-        steps.removeLast();
     }
 
     public void SetToStep(Set set) throws Exception {

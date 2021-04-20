@@ -6,10 +6,12 @@ import com.mybatis.sp.plus.annotation._Limit;
 import com.mybatis.sp.plus.annotation._OrderBy;
 import com.mybatis.sp.plus.annotation._Union;
 import com.mybatis.sp.plus.annotation._UnionAll;
+import com.mybatis.sp.plus.conditions.EmptyCondition;
 import com.mybatis.sp.plus.exception.SelfCheckException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -55,7 +57,15 @@ public class Having extends Action {
 
     @Override
     public void selfCheck() throws SelfCheckException {
-        if (conditions.size()==0){
+        //先将EmptyCondition去掉;
+        Iterator<Condition> iterator = conditions.iterator();
+        while (iterator.hasNext()) {
+            Condition condition = iterator.next();
+            if (condition instanceof EmptyCondition) {
+                iterator.remove();
+            }
+        }
+        if (conditions.size() == 0) {
             throw new SelfCheckException("conditions can not be empty in action Having");
         }
     }
