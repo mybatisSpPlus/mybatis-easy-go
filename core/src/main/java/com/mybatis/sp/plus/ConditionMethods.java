@@ -4,20 +4,22 @@ import com.mybatis.sp.plus.conditions.*;
 import com.mybatis.sp.plus.meta.Field;
 
 /**
+ * condition的快捷方法
+ *
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/4/12 22:44
  */
 public class ConditionMethods {
-    /**
-     * condition的快捷方法
-     * @param conditions
-     * @return
-     */
-    public static And and(Condition... conditions){
+
+    public static EmptyCondition emptyCondition() {
+        return new EmptyCondition();
+    }
+
+    public static And and(Condition... conditions) {
         return new And(conditions);
     }
 
-    public static Or or(Condition... conditions){
+    public static Or or(Condition... conditions) {
         return new Or(conditions);
     }
 
