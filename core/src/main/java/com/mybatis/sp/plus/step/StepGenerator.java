@@ -552,6 +552,9 @@ public class StepGenerator {
 
     public void CountToStep(Count count) throws Exception {
         steps.add(new Step("COUNT("));
+        if (count.isDistinct()) {
+            steps.add(new Step("DISTINCT"));
+        }
         fieldToStep(count.getField());
         steps.add(new Step(")"));
     }
