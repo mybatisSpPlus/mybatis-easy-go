@@ -13,10 +13,6 @@ public class FunctionMethods {
         return new Case();
     }
 
-    public static Case caze(Condition when, Object thenValue, Object elseValue) {
-        return new Case(when, thenValue, elseValue);
-    }
-
     public static Count count(Field field) {
         return new Count(field);
     }

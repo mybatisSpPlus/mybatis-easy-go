@@ -533,10 +533,13 @@ public class StepGenerator {
     }
 
     public void CaseToStep(Case caze) throws Exception {
-        steps.add(new Step("CASE WHEN"));
-        conditionToStep(caze.getWhen());
-        steps.add(new Step("THEN"));
-        valueToStep(caze.getThenValue());
+        steps.add(new Step("CASE"));
+        for (int i = 0; i < caze.getWhen().size(); i++) {
+            steps.add(new Step("WHEN"));
+            conditionToStep(caze.getWhen().get(i));
+            steps.add(new Step("THEN"));
+            valueToStep(caze.getThenValue().get(i));
+        }
         steps.add(new Step("ELSE"));
         valueToStep(caze.getElseValue());
         steps.add(new Step("END"));

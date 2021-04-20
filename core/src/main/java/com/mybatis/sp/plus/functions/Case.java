@@ -4,54 +4,33 @@ import com.mybatis.sp.plus.Condition;
 import com.mybatis.sp.plus.Function;
 import com.mybatis.sp.plus.exception.SelfCheckException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/4/19 17:37
  */
 public class Case extends Function {
-    Condition when;
-    Object thenValue;
+    List<Condition> when = new ArrayList<>();
+    List<Object> thenValue = new ArrayList<>();
     Object elseValue;
 
     public Case() {
     }
 
-    public Case(Condition when, Object thenValue, Object elseValue) {
-        this.when = when;
-        this.thenValue = thenValue;
-        this.elseValue = elseValue;
-    }
-
     public Case when(Condition when) {
-        this.when = when;
+        this.when.add(when);
         return this;
     }
 
     public Case then(Object thenValue) {
-        this.thenValue = thenValue;
+        this.thenValue.add(thenValue);
         return this;
     }
 
     public Case els(Object elseValue) {
         this.elseValue = elseValue;
-        return this;
-    }
-
-    public Condition getWhen() {
-        return when;
-    }
-
-    public Case setWhen(Condition when) {
-        this.when = when;
-        return this;
-    }
-
-    public Object getThenValue() {
-        return thenValue;
-    }
-
-    public Case setThenValue(Object thenValue) {
-        this.thenValue = thenValue;
         return this;
     }
 
@@ -64,10 +43,29 @@ public class Case extends Function {
         return this;
     }
 
+    public List<Condition> getWhen() {
+        return when;
+    }
+
+    public void setWhen(List<Condition> when) {
+        this.when = when;
+    }
+
+    public List<Object> getThenValue() {
+        return thenValue;
+    }
+
+    public void setThenValue(List<Object> thenValue) {
+        this.thenValue = thenValue;
+    }
+
     @Override
     public void selfCheck() throws SelfCheckException {
-        if (when == null || thenValue == null || elseValue == null) {
+        if (when.size() == 0 || thenValue.size() == 0 || elseValue == null) {
             throw new SelfCheckException("when,thenValue,elseValue can not be null in CaseWhen");
+        }
+        if (when.size() != thenValue.size()) {
+            throw new SelfCheckException("when,thenValue must be same size in CaseWhen");
         }
     }
 }
