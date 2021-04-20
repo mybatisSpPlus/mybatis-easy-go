@@ -140,11 +140,15 @@ public class Field extends Meta {
         return new In(this, values);
     }
 
+    public In in(Table table) {
+        return new In(this, table);
+    }
+
     public IsNull isNull() {
         return new IsNull(this);
     }
 
-    public IsNotNull isNotNull(){
+    public IsNotNull isNotNull() {
         return new IsNotNull(this);
     }
 

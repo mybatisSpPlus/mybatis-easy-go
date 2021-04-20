@@ -2,6 +2,7 @@ package com.mybatis.sp.plus;
 
 import com.mybatis.sp.plus.conditions.*;
 import com.mybatis.sp.plus.meta.Field;
+import com.mybatis.sp.plus.meta.Table;
 
 /**
  * condition的快捷方法
@@ -70,15 +71,19 @@ public class ConditionMethods {
         return new In(field, values);
     }
 
+    public static In in(Field field, Table table) {
+        return new In(field, table);
+    }
+
     public static IsNull isNull(Field field) {
         return new IsNull(field);
     }
 
-    public static IsNotNull isNotNull(Field field){
+    public static IsNotNull isNotNull(Field field) {
         return new IsNotNull(field);
     }
 
-    public static Not not(Condition condition){
+    public static Not not(Condition condition) {
         return new Not(condition);
     }
 
