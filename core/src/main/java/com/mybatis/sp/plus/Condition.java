@@ -2,20 +2,20 @@ package com.mybatis.sp.plus;
 
 import com.mybatis.sp.plus.conditions.And;
 import com.mybatis.sp.plus.conditions.Or;
-import com.mybatis.sp.plus.exception.SelfCheckException;
+import com.mybatis.sp.plus.meta.Field;
 
 /**
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/4/8 10:40
  */
-public abstract class Condition {
+public abstract class Condition extends Field {
 
-    public And and(Condition condition){
-        if (this instanceof And){
+    public And and(Condition condition) {
+        if (this instanceof And) {
             ((And) this).addAnd(condition);
             return (And) this;
-        }else {
-            And and=new And();
+        } else {
+            And and = new And();
             and.addAnd(condition);
             and.addAnd(this);
             return and;
@@ -32,7 +32,5 @@ public abstract class Condition {
             return or;
         }
     }
-
-    public abstract void selfCheck() throws SelfCheckException;
 
 }

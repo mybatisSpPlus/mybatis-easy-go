@@ -734,6 +734,8 @@ public class StepGenerator {
             steps.add(new Step("*"));
         } else if (field instanceof Function) {
             functionToStep((Function) field);
+        } else if (field instanceof Condition) {
+            conditionToStep((Condition) field);
         } else {
             if (StringUtils.isNotBlank(field.getSpecialPrefix())) {
                 steps.add(new Step(field.getSpecialPrefix()));
