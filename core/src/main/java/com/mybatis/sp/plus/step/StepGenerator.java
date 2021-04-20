@@ -367,6 +367,8 @@ public class StepGenerator {
     public void valueToStep(Object value) throws Exception {
         if (value instanceof Function) {
             functionToStep((Function) value);
+        } else if (value instanceof Condition) {
+            conditionToStep((Condition) value);
         } else if (value instanceof Field) {
             fieldToStep((Field) value);
         } else if (value instanceof Table) {
