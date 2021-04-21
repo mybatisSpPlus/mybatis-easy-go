@@ -145,6 +145,11 @@ public class StepGenerator {
         tableToStep(truncate.getTable());
     }
 
+    public void CrossJoinToStep(CrossJoin crossJoin) throws Exception {
+        steps.add(new Step("CROSS JOIN"));
+        tableToStep(crossJoin.getTable());
+    }
+
     public void FullJoinToStep(FullJoin fullJoin) throws Exception {
         steps.add(new Step("FULL JOIN"));
         tableToStep(fullJoin.getTable());
@@ -278,6 +283,9 @@ public class StepGenerator {
                 break;
             case "From":
                 FromToStep((From) action);
+                break;
+            case "CrossJoin":
+                CrossJoinToStep((CrossJoin) action);
                 break;
             case "FullJoin":
                 FullJoinToStep((FullJoin) action);
