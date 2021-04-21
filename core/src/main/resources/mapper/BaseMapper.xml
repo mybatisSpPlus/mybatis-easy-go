@@ -3,7 +3,7 @@
 <mapper namespace="com.mybatis.sp.plus.spring.BaseMapper">
 
     <sql id="steps">
-        <foreach collection="steps" item="step">
+        <foreach collection="collection" item="step">
             <choose>
                 <when test="step.stepName!=null">
                     ${step.stepName}
@@ -17,6 +17,9 @@
 
     <!--查询模板-->
     <select id="executeQuery" resultType="map">
+        <include refid="steps"></include>
+    </select>
+    <select id="executeFetchQuery" resultType="map" resultSetType="FORWARD_ONLY" fetchSize="10000">
         <include refid="steps"></include>
     </select>
     <!--插入模板-->

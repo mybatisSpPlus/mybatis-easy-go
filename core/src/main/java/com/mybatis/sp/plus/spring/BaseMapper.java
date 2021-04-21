@@ -16,11 +16,13 @@ public interface BaseMapper {
 
     List<Map<String, Object>> executeQuery(@Param("steps") List<Step> steps);
 
+    List<Map<String, Object>> executeFetchQuery(@Param("steps") List<Step> steps);
+
     int executeUpdate(@Param("steps") List<Step> steps);
 
     int executeInsert(@Param("steps") List<Step> steps);
 
     int executeDelete(@Param("steps") List<Step> steps);
 
-    void execute(@Param("steps")List<Step> steps);
+    void execute(@Param("steps") List<Step> steps);
 }
