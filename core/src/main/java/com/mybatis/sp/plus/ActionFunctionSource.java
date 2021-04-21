@@ -76,6 +76,7 @@ public class ActionFunctionSource{
         union.setBuilders(action.getBuilders());
         return union;
     }
+
     @_UnionAll_Source(requiredClass = {UnionAll.class})
     public static UnionAll unionAll(Action action) {
         UnionAll unionAll = new UnionAll();
@@ -83,22 +84,41 @@ public class ActionFunctionSource{
         unionAll.setBuilders(action.getBuilders());
         return unionAll;
     }
-    @_LeftJoin_Source(requiredClass = {LeftJoin.class,Table.class})
-    public static LeftJoin leftJoin(Action action,Table table) {
+
+    @_CrossJoin_Source(requiredClass = {CrossJoin.class, Table.class})
+    public static CrossJoin crossJoin(Action action, Table table) {
+        CrossJoin crossJoin = new CrossJoin(table);
+        action.getBuilders().getActionTree().add(crossJoin);
+        crossJoin.setBuilders(action.getBuilders());
+        return crossJoin;
+    }
+
+    @_CrossJoin_Source(requiredClass = {CrossJoin.class})
+    public static CrossJoin crossJoin(Action action, String tableName) {
+        CrossJoin crossJoin = new CrossJoin(tableNameToTable(tableName));
+        action.getBuilders().getActionTree().add(crossJoin);
+        crossJoin.setBuilders(action.getBuilders());
+        return crossJoin;
+    }
+
+    @_LeftJoin_Source(requiredClass = {LeftJoin.class, Table.class})
+    public static LeftJoin leftJoin(Action action, Table table) {
         LeftJoin leftJoin = new LeftJoin(table);
         action.getBuilders().getActionTree().add(leftJoin);
         leftJoin.setBuilders(action.getBuilders());
         return leftJoin;
     }
+
     @_LeftJoin_Source(requiredClass = {LeftJoin.class})
-    public static LeftJoin leftJoin(Action action,String tableName) {
+    public static LeftJoin leftJoin(Action action, String tableName) {
         LeftJoin leftJoin = new LeftJoin(tableNameToTable(tableName));
         action.getBuilders().getActionTree().add(leftJoin);
         leftJoin.setBuilders(action.getBuilders());
         return leftJoin;
     }
-    @_InnerJoin_Source(requiredClass={InnerJoin.class,Table.class})
-    public static InnerJoin innerJoin(Action action,Table table) {
+
+    @_InnerJoin_Source(requiredClass = {InnerJoin.class, Table.class})
+    public static InnerJoin innerJoin(Action action, Table table) {
         InnerJoin innerJoin = new InnerJoin(table);
         action.getBuilders().getActionTree().add(innerJoin);
         innerJoin.setBuilders(action.getBuilders());
