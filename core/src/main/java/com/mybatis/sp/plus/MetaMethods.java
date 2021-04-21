@@ -38,24 +38,24 @@ public class MetaMethods {
         return new Field(tableName,name);
     }
 
-    public static Field field(String tableName, String name, Alias alias){
-        return new Field(tableName,name,alias);
+    public static Field field(String tableName, String name, Alias alias) {
+        return new Field(tableName, name, alias);
     }
 
-    public static ConstantField constantField(Object constant){
+    public static ConstantField constantField(Object constant) {
         return new ConstantField(constant);
     }
 
-    public static StarField starField(){
-        return new StarField();
+    public static AllField allField() {
+        return new AllField();
     }
 
-    public static Alias alias(String name){
+    public static Alias alias(String name) {
         return new Alias(name);
     }
 
-    public static Order order(Field field){
-        return new Order(field,false);
+    public static Order order(Field field) {
+        return new Order(field, false);
     }
 
     public static Order order(String fieldName){

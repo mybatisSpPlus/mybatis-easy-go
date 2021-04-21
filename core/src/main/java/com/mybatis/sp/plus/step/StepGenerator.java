@@ -745,7 +745,7 @@ public class StepGenerator {
         field.selfCheck();
         if (field instanceof ConstantField) {
             steps.add(new Step().setStepValue(((ConstantField) field).getConstant()));
-        } else if (field instanceof StarField) {
+        } else if (field instanceof AllField) {
             steps.add(new Step("*"));
         } else if (field instanceof Function) {
             functionToStep((Function) field);
