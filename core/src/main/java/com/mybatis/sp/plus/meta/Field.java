@@ -96,6 +96,7 @@ public class Field extends Meta {
     public Between between(Object startValue, Object endValue) {
         return new Between(this,startValue,endValue);
     }
+
     public Eq eq(Object value){
         return new Eq(this,value);
     }

@@ -48,10 +48,5 @@ public class Concat  extends Function {
         if (objs.size()==0){
             throw new SelfCheckException("objs can not be null in function Count");
         }
-        for (Field obj : objs) {
-            if (obj instanceof Function){
-                throw new SelfCheckException("function using in function is not supported ");
-            }
-        }
     }
 }

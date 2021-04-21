@@ -26,22 +26,31 @@ public class FunctionMethods {
     }
 
     public static Substr substr(Field field, int start) {
-       return new Substr(field,start);
+        return new Substr(field, start);
     }
 
     public static Substr substr(Field field, int start, int length) {
-        return new Substr(field,start,length);
+        return new Substr(field, start, length);
     }
 
-    public static Instr instr(Field field, Object target){
-        return new Instr(field,target);
+    public static Convert convert(Field field, String targetCharset) {
+        return new Convert(field, targetCharset);
+    }
+
+    public static Convert convert(Field field, String targetCharset, String sourceCharset) {
+        return new Convert(field, targetCharset, sourceCharset);
+    }
+
+    public static Instr instr(Field field, Object target) {
+        return new Instr(field, target);
     }
 
     public static Instr instr(Field field, Object target, int start, int times) {
-       return new Instr(field,target,start,times);
+        return new Instr(field, target, start, times);
     }
-    public static Replace replace(Field field,Object oldStr,Object newStr){
-        return new Replace(field,oldStr,newStr);
+
+    public static Replace replace(Field field, Object oldStr, Object newStr) {
+        return new Replace(field, oldStr, newStr);
     }
 
     public static Lcase lcase(Field field){

@@ -46,8 +46,5 @@ public class Format  extends Function {
         if (field==null|| StringUtils.isBlank(format)){
             throw new SelfCheckException("field、format can not be null in function Format");
         }
-        if (field instanceof Function){
-            throw new SelfCheckException("function using in function is not supported");
-        }
     }
 }

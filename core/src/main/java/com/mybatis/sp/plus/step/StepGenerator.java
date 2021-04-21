@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 基础的step生成器，是基于mysql的
+ *
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/4/15 8:59
  */
@@ -557,6 +559,14 @@ public class StepGenerator {
         steps.add(new Step(")"));
     }
 
+    public void ConvertToStep(Convert convert) throws Exception {
+        steps.add(new Step("CONVERT("));
+        fieldToStep(convert.getField());
+        steps.add(new Step("USING"));
+        steps.add(new Step().setStepValue(convert.getTargetCharset()));
+        steps.add(new Step(")"));
+    }
+
     public void CountToStep(Count count) throws Exception {
         steps.add(new Step("COUNT("));
         if (count.isDistinct()) {
@@ -660,6 +670,9 @@ public class StepGenerator {
                 break;
             case "Concat":
                 ConcatToStep((Concat) function);
+                break;
+            case "Convert":
+                ConvertToStep((Convert) function);
                 break;
             case "Count":
                 CountToStep((Count) function);

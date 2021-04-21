@@ -3,9 +3,11 @@ package com.mybatis.sp.plus.step;
 import com.mybatis.sp.plus.Action;
 import com.mybatis.sp.plus.actions.Limit;
 import com.mybatis.sp.plus.functions.Concat;
+import com.mybatis.sp.plus.functions.Convert;
 import com.mybatis.sp.plus.functions.Instr;
 import com.mybatis.sp.plus.meta.Alias;
 import com.mybatis.sp.plus.meta.Field;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -109,6 +111,18 @@ public class OracleLikeStepGenerator extends StepGenerator{
             steps.add(new Step("||"));
         }
         steps.removeLast();
+    }
+
+    public void ConvertToStep(Convert convert) throws Exception {
+        steps.add(new Step("CONVERT("));
+        fieldToStep(convert.getField());
+        steps.add(new Step(","));
+        steps.add(new Step().setStepValue(convert.getTargetCharset()));
+        if (StringUtils.isNotBlank(convert.getSourceCharset())) {
+            steps.add(new Step(","));
+            steps.add(new Step().setStepValue(convert.getSourceCharset()));
+        }
+        steps.add(new Step(")"));
     }
 
     public void InstrToStep(Instr instr) throws Exception {
