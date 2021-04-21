@@ -39,8 +39,13 @@ public class Order  extends Meta {
         return this;
     }
 
+    public Order desc() {
+        this.desc = true;
+        return this;
+    }
+
     public void selfCheck() throws SelfCheckException {
-        if (field==null){
+        if (field == null) {
             throw new SelfCheckException("field can not be null in order");
         }
     }

@@ -2,9 +2,7 @@ package com.mybatis.sp.plus.step;
 
 import com.mybatis.sp.plus.Action;
 import com.mybatis.sp.plus.actions.Limit;
-import com.mybatis.sp.plus.functions.Concat;
-import com.mybatis.sp.plus.functions.Convert;
-import com.mybatis.sp.plus.functions.Instr;
+import com.mybatis.sp.plus.functions.*;
 import com.mybatis.sp.plus.meta.Alias;
 import com.mybatis.sp.plus.meta.Field;
 import org.apache.commons.lang3.StringUtils;
@@ -135,6 +133,14 @@ public class OracleLikeStepGenerator extends StepGenerator{
         steps.add(new Step(","));
         steps.add(new Step().setStepValue(instr.getTimes()));
         steps.add(new Step(")"));
+    }
+
+    public void LeftToStep(Left left) throws Exception {
+        super.SubstrToStep(new Substr(left.getField(), 0, left.getLength()));
+    }
+
+    public void RightToStep(Right right) throws Exception {
+        super.SubstrToStep(new Substr(right.getField(), -right.getLength(), right.getLength()));
     }
 
     @Override

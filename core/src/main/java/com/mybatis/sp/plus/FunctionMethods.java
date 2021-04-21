@@ -49,15 +49,23 @@ public class FunctionMethods {
         return new Instr(field, target, start, times);
     }
 
+    public static Right right(Field field, int length) {
+        return new Right(field, length);
+    }
+
+    public static Left left(Field field, int length) {
+        return new Left(field, length);
+    }
+
     public static Replace replace(Field field, Object oldStr, Object newStr) {
         return new Replace(field, oldStr, newStr);
     }
 
-    public static Lcase lcase(Field field){
+    public static Lcase lcase(Field field) {
         return new Lcase(field);
     }
 
-    public static Ucase ucase(Field field){
+    public static Ucase ucase(Field field) {
         return new Ucase(field);
     }
 

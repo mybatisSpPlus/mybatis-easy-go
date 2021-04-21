@@ -589,6 +589,22 @@ public class StepGenerator {
         steps.add(new Step(")"));
     }
 
+    public void LeftToStep(Left left) throws Exception {
+        steps.add(new Step("LEFT("));
+        fieldToStep(left.getField());
+        steps.add(new Step(","));
+        steps.add(new Step().setStepValue(left.getLength()));
+        steps.add(new Step(")"));
+    }
+
+    public void RightToStep(Right right) throws Exception {
+        steps.add(new Step("RIGHT("));
+        fieldToStep(right.getField());
+        steps.add(new Step(","));
+        steps.add(new Step().setStepValue(right.getLength()));
+        steps.add(new Step(")"));
+    }
+
     public void MaxToStep(Max max) throws Exception {
         steps.add(new Step("MAX("));
         fieldToStep(max.getField());
@@ -675,6 +691,12 @@ public class StepGenerator {
                 break;
             case "Len":
                 LenToStep((Len) function);
+                break;
+            case "Left":
+                LeftToStep((Left) function);
+                break;
+            case "Right":
+                RightToStep((Right) function);
                 break;
             case "Max":
                 MaxToStep((Max) function);
