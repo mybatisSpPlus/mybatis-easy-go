@@ -46,6 +46,10 @@ public class MetaMethods {
         return new ConstantField(constant);
     }
 
+    public static NullValue nullValue() {
+        return new NullValue();
+    }
+
     public static AllField allField() {
         return new AllField();
     }

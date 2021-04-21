@@ -714,6 +714,8 @@ public class StepGenerator {
             fieldToStep((Field) value);
         } else if (value instanceof Table) {
             tableToStep((Table) value);
+        } else if (value instanceof NullValue) {
+            steps.add(new Step("NULL"));
         } else {
             steps.add(new Step().setStepValue(value));
         }
