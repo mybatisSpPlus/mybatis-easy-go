@@ -12,6 +12,7 @@ import com.mybatis.sp.plus.meta.Table;
 @_Where
 @_Union
 @_UnionAll
+@_CrossJoin
 @_LeftJoin
 @_RightJoin
 @_InnerJoin

@@ -10,6 +10,7 @@ import com.mybatis.sp.plus.meta.Table;
  * @date 2021/4/8 10:28
  */
 @_Set
+@_CrossJoin
 @_LeftJoin
 @_RightJoin
 @_InnerJoin

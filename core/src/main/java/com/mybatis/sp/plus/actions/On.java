@@ -19,6 +19,7 @@ import java.util.List;
 @_Where
 @_Union
 @_UnionAll
+@_CrossJoin
 @_LeftJoin
 @_RightJoin
 @_InnerJoin
