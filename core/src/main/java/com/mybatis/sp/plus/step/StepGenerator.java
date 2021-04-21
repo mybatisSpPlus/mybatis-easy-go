@@ -3,7 +3,6 @@ package com.mybatis.sp.plus.step;
 import com.mybatis.sp.plus.Action;
 import com.mybatis.sp.plus.Condition;
 import com.mybatis.sp.plus.Function;
-import com.mybatis.sp.plus.Meta;
 import com.mybatis.sp.plus.actions.*;
 import com.mybatis.sp.plus.conditions.*;
 import com.mybatis.sp.plus.functions.*;
@@ -366,19 +365,7 @@ public class StepGenerator {
         }
     }
 
-    public void valueToStep(Object value) throws Exception {
-        if (value instanceof Function) {
-            functionToStep((Function) value);
-        } else if (value instanceof Condition) {
-            conditionToStep((Condition) value);
-        } else if (value instanceof Field) {
-            fieldToStep((Field) value);
-        } else if (value instanceof Table) {
-            tableToStep((Table) value);
-        } else {
-            steps.add(new Step().setStepValue(value));
-        }
-    }
+
 
     public void EqToStep(Eq eq) throws Exception {
         fieldToStep(eq.getField());
@@ -718,26 +705,17 @@ public class StepGenerator {
         }
     }
 
-    public void metaToStep(Meta meta) throws Exception {
-        String name = meta.getClass().getSimpleName();
-        switch (name) {
-            case "Table":
-                tableToStep((Table) meta);
-                break;
-            case "Field":
-                fieldToStep((Field) meta);
-                break;
-            case "ConstantField":
-                fieldToStep((ConstantField) meta);
-                break;
-            case "Order":
-                orderToStep((Order) meta);
-                break;
-            case "Alias":
-                aliasToStep((Alias) meta);
-                break;
-            default:
-                throw new Exception("meta :" + name + " not supported");
+    public void valueToStep(Object value) throws Exception {
+        if (value instanceof Function) {
+            functionToStep((Function) value);
+        } else if (value instanceof Condition) {
+            conditionToStep((Condition) value);
+        } else if (value instanceof Field) {
+            fieldToStep((Field) value);
+        } else if (value instanceof Table) {
+            tableToStep((Table) value);
+        } else {
+            steps.add(new Step().setStepValue(value));
         }
     }
 
