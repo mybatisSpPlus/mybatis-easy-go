@@ -760,6 +760,9 @@ public class StepGenerator {
                 steps.add(new Step("."));
             }
             steps.add(new Step(dialect + field.getName() + dialect));
+            if (StringUtils.isNotBlank(field.getSpecialPostfix())) {
+                steps.add(new Step(field.getSpecialPostfix()));
+            }
         }
         if (field.getAlias() != null) {
             aliasToStep(field.getAlias());

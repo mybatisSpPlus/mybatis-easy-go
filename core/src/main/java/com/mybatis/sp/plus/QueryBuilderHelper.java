@@ -213,7 +213,8 @@ public class QueryBuilderHelper {
 
     /**
      * 将字段名转为字段对象，支持的格式
-     * [spPrefix @] [tableName.]field [as] [alias]
+     * [spPrefix@] [tableName.]fieldName [as] [alias] [@spPostfix]
+     * 最后生成的sql中后缀会在别名之前，使用时请注意
      *
      * @param fieldName
      * @return
@@ -225,6 +226,9 @@ public class QueryBuilderHelper {
             String[] strs = fieldName.split("@");
             field.setSpecialPrefix(strs[0].trim());
             fieldName = strs[1].trim();
+            if (strs.length == 3) {
+                field.setSpecialPostfix(strs[2].trim());
+            }
         }
         //对点拆分,判断是否有表名
         if (fieldName.contains(".")) {

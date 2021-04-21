@@ -13,9 +13,13 @@ import java.util.Objects;
  */
 public class Field extends Meta {
     /**
-     * 比如mysql的BINARY
+     * 比如mysql的BINARY，前缀，后缀会原样体现在sql中
      */
     private String specialPrefix;
+    /**
+     * 特殊后缀，与前缀一起可以组成部分暂时不持支的函数等
+     */
+    private String specialPostfix;
 
     private String tableName;
 
@@ -71,6 +75,25 @@ public class Field extends Meta {
 
     public Field setSpecialPrefix(String specialPrefix) {
         this.specialPrefix = specialPrefix;
+        return this;
+    }
+
+    public Field prefix(String specialPrefix) {
+        this.specialPrefix = specialPrefix;
+        return this;
+    }
+
+    public String getSpecialPostfix() {
+        return specialPostfix;
+    }
+
+    public Field setSpecialPostfix(String specialPostfix) {
+        this.specialPostfix = specialPostfix;
+        return this;
+    }
+
+    public Field postfix(String specialPostfix) {
+        this.specialPostfix = specialPostfix;
         return this;
     }
 
