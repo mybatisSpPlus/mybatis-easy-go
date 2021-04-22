@@ -24,12 +24,6 @@ public class In extends Condition {
 
     public In() {
     }
-
-    public In(Field field, Collection<Object> values) {
-        this.field = field;
-        this.values=new ArrayList<>(values);
-    }
-
     public In(Field field, Table table) {
         this.field = field;
         this.table = table;
@@ -37,7 +31,11 @@ public class In extends Condition {
 
     public In(Field field, Object... values) {
         this.field = field;
-        this.values=new ArrayList<>(Arrays.asList(values));
+        if (values.length == 1 && values[0] instanceof Collection) {
+            this.values.addAll((Collection<?>) values[0]);
+        } else {
+            this.values = new ArrayList<>(Arrays.asList(values));
+        }
     }
 
     public Field getField() {

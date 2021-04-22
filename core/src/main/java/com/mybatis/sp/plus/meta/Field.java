@@ -5,7 +5,6 @@ import com.mybatis.sp.plus.conditions.*;
 import com.mybatis.sp.plus.exception.SelfCheckException;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -162,10 +161,6 @@ public class Field extends Meta {
     }
 
     public In in(Object... values) {
-        return new In(this, values);
-    }
-
-    public In in(Collection<Object> values) {
         return new In(this, values);
     }
 
