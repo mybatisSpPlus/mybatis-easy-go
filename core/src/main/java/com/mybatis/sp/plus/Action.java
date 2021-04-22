@@ -99,7 +99,7 @@ public abstract class Action {
         return new Result(map);
     }
 
-    public void executeFetchSelect(ResultHandler handler) throws Exception {
+    public void executeFetchSelect(ResultHandler<Map<String, Object>> handler) throws Exception {
         getSessionTemplate().select("com.mybatis.sp.plus.spring.BaseMapper.executeFetchQuery", getStepGenerator().toStep(printSql, setParameter), handler);
     }
 
