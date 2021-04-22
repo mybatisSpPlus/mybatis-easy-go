@@ -238,8 +238,8 @@ public class QueryBuilderHelper {
         }
         //对表名判断是否有别名
         if (fieldName.toLowerCase().contains(" as ")) {
-            String[] strs = getNameAndAlias(field.getName());
-            field.setName(strs[0]);
+            String[] strs = getNameAndAlias(fieldName);
+            fieldName = strs[0];
             field.setAlias(new Alias(strs[1]));
         } else {
             String[] strs = fieldName.split("\\s+");
