@@ -26,17 +26,19 @@ public class QueryBuilderHelper {
     public static <T> T convert(Class<T> clazz, Map<String, Object> properties) throws Exception {
         T result=null;
         if (clazz != null) {
-                if (Date.class.isAssignableFrom(clazz)) {
-                    Object value=getSingleValue(properties);
-                    if (value==null){
-                        return null;
-                    }
-                    if (value instanceof Long || value instanceof Integer || value.getClass() == long.class || value.getClass() == int.class) {
-                        result= (T) new Date((Long) value);
-                    } else {
-                        result= (T) value;
-                    }
-                } else if (Boolean.class.isAssignableFrom(clazz) || clazz == boolean.class) {
+            if (Map.class.isAssignableFrom(clazz)) {
+                return (T) properties;
+            } else if (Date.class.isAssignableFrom(clazz)) {
+                Object value = getSingleValue(properties);
+                if (value == null) {
+                    return null;
+                }
+                if (value instanceof Long || value instanceof Integer || value.getClass() == long.class || value.getClass() == int.class) {
+                    result = (T) new Date((Long) value);
+                } else {
+                    result = (T) value;
+                }
+            } else if (Boolean.class.isAssignableFrom(clazz) || clazz == boolean.class) {
                     Object value=getSingleValue(properties);
                     if (value==null){
                         return null;
