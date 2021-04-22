@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.mybatis.sp.plus.QueryBuilderHelper.arrays;
+
 /**
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/4/8 10:48
@@ -30,7 +32,7 @@ public class Orders extends Action {
     }
 
     public Orders(Order... orders) {
-        this.orders = Arrays.asList(orders);
+        this.orders = arrays(orders);
     }
 
     public List<Order> getOrders() {
@@ -43,7 +45,7 @@ public class Orders extends Action {
 
     public void setOrders(Order... orders) {
         if (this.orders==null){
-            this.orders = Arrays.asList(orders);
+            this.orders = arrays(orders);
         }else {
             this.orders.addAll(Arrays.asList(orders));
         }

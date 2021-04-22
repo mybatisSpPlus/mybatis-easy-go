@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.mybatis.sp.plus.QueryBuilderHelper.arrays;
+
 /**
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/4/8 10:58
@@ -39,7 +41,7 @@ public class On extends Action {
     }
 
     public On(Condition... conditions) {
-        this.conditions = Arrays.asList(conditions);
+        this.conditions = arrays(conditions);
     }
 
     public List<Condition> getConditions() {
@@ -53,7 +55,7 @@ public class On extends Action {
 
     public On addConditions(Condition... conditions) {
         if (this.conditions==null) {
-            this.conditions = Arrays.asList(conditions);
+            this.conditions = arrays(conditions);
         }else {
             this.conditions.addAll(Arrays.asList(conditions));
         }

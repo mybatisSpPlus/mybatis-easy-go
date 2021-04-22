@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.mybatis.sp.plus.QueryBuilderHelper.arrays;
+
 /**
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/4/12 16:59
@@ -30,7 +32,7 @@ public class GroupBy extends Action {
     }
 
     public GroupBy(Field... fields) {
-        this.fields = Arrays.asList(fields);
+        this.fields = arrays(fields);
     }
 
     public List<Field> getFields() {
@@ -44,7 +46,7 @@ public class GroupBy extends Action {
 
     public GroupBy setFields(Field... fields) {
         if (this.fields==null) {
-            this.fields = Arrays.asList(fields);
+            this.fields = arrays(fields);
         }else {
             this.fields.addAll(Arrays.asList(fields));
         }

@@ -13,5 +13,16 @@
         <module>core</module>
     </modules>
 
-
+    <distributionManagement>
+        <snapshotRepository>
+            <id>cdsfdev-snapshots</id>
+            <name>snapshots</name>
+            <url>http://10.0.5.78/repository/cdsfdev-snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>cdsfdev-release</id>
+            <name>release</name>
+            <url>http://10.0.5.78/repository/cdsfdev/</url>
+        </repository>
+    </distributionManagement>
 </project>

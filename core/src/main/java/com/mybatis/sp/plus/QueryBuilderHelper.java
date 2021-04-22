@@ -282,10 +282,14 @@ public class QueryBuilderHelper {
         return table;
     }
 
-    public static String[] getNameAndAlias(String s){
-        String[] strs=s.toLowerCase().split(" as ");
-        String name=s.substring(0,strs[0].length()).trim();
-        String alias=s.substring(strs[0].length()+4).trim();
-        return new String[]{name,alias};
+    public static String[] getNameAndAlias(String s) {
+        String[] strs = s.toLowerCase().split(" as ");
+        String name = s.substring(0, strs[0].length()).trim();
+        String alias = s.substring(strs[0].length() + 4).trim();
+        return new String[]{name, alias};
+    }
+
+    public static <T> ArrayList<T> arrays(T... ts) {
+        return new ArrayList<>(Arrays.asList(ts));
     }
 }

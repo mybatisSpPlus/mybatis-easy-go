@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.mybatis.sp.plus.QueryBuilderHelper.arrays;
+
 /**
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/4/12 21:40
@@ -24,7 +26,7 @@ public class Concat  extends Function {
     }
 
     public Concat(Field... objs) {
-        this.objs = Arrays.asList(objs);
+        this.objs = arrays(objs);
     }
 
     public List<Field> getObjs() {
@@ -37,7 +39,7 @@ public class Concat  extends Function {
 
     public void addObjs(Field... objs) {
         if (this.objs==null) {
-            this.objs = Arrays.asList(objs);
+            this.objs = arrays(objs);
         }else {
             this.objs.addAll(Arrays.asList(objs));
         }

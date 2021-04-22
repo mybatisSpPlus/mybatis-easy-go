@@ -3,6 +3,20 @@
 <mapper namespace="com.mybatis.sp.plus.spring.BaseMapper">
 
     <sql id="steps">
+        <foreach collection="steps" item="step">
+            <choose>
+                <when test="step.stepName!=null">
+                    ${step.stepName}
+                </when>
+                <otherwise>
+                    #{step.stepValue}
+                </otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="stepsForFetch">
+        <!--fetch调用的方法无法指定参数名-->
         <foreach collection="collection" item="step">
             <choose>
                 <when test="step.stepName!=null">
@@ -20,7 +34,7 @@
         <include refid="steps"></include>
     </select>
     <select id="executeFetchQuery" resultType="map" resultSetType="FORWARD_ONLY" fetchSize="10000">
-        <include refid="steps"></include>
+        <include refid="stepsForFetch"></include>
     </select>
     <!--插入模板-->
     <insert id="executeInsert">
