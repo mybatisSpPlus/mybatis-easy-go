@@ -29,7 +29,7 @@ import java.util.function.Function;
  */
 public abstract class Action {
 
-    public static HashMap<String,Class> dbTypeToStepGenerator=new HashMap<>();
+    public static HashMap<String, Class> dbTypeToStepGenerator = new HashMap<>();
 
     QueryBuilders builders;
 
@@ -39,7 +39,15 @@ public abstract class Action {
 
     private boolean setParameter;
 
-
+    /**
+     * 通过构造函数的方法创建时，设置默认的builder
+     */
+    public Action() {
+        if (builders == null) {
+            builders = new QueryBuilders();
+            builders.addActionToTree(this);
+        }
+    }
 
     public QueryBuilders getBuilders() {
         return builders;
