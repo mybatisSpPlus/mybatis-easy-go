@@ -455,8 +455,9 @@ public class StepGenerator {
         steps.add(new Step().setStepValue("%" + endWith.getValue()));
     }
 
-    public void NotToStep() {
+    public void NotToStep(Not condition) throws Exception {
         steps.add(new Step("NOT"));
+        conditionToStep(condition.getNotCondition());
     }
 
     public void RegxToStep(Regx regx) throws Exception {
@@ -515,7 +516,7 @@ public class StepGenerator {
                 EndWithToStep((EndWith) condition);
                 break;
             case "Not":
-                NotToStep();
+                NotToStep((Not) condition);
                 break;
             case "Regx":
                 RegxToStep((Regx) condition);
