@@ -128,11 +128,13 @@ public class StepGenerator {
 
     public void DeleteToStep(Delete delete) throws Exception {
         steps.add(new Step("DELETE"));
-        for (Table table : delete.getTables()) {
-            tableToStep(table);
-            steps.add(new Step(","));
+        if (delete.getTables().size() > 0) {
+            for (Table table : delete.getTables()) {
+                tableToStep(table);
+                steps.add(new Step(","));
+            }
+            steps.removeLast();
         }
-        steps.removeLast();
     }
 
     public void FromToStep(From from) throws Exception {
