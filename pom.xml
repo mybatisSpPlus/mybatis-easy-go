@@ -9,8 +9,8 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>mybatis-sp-plus-processors</module>
-        <module>mybatis-sp-plus-core</module>
+        <module>processors</module>
+        <module>core</module>
     </modules>
 
     <distributionManagement>
