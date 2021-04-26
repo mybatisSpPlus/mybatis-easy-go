@@ -1,7 +1,7 @@
 package com.github.mybatis.sp.plus.actions;
 
+import com.github.mybatis.sp.plus.annotation.*;
 import com.github.mybatis.sp.plus.meta.Table;
-import com.mybatis.sp.plus.annotation.*;
 
 /**
  * @author zhouyu74748585@hotmail.com

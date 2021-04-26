@@ -1,8 +1,8 @@
 package com.github.mybatis.sp.plus.actions;
 
 import com.github.mybatis.sp.plus.Action;
+import com.github.mybatis.sp.plus.annotation._Select;
 import com.github.mybatis.sp.plus.exception.SelfCheckException;
-import com.mybatis.sp.plus.annotation._Select;
 
 /**
  * @author zhouyu74748585@hotmail.com

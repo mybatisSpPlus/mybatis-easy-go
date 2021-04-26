@@ -2,10 +2,10 @@ package com.github.mybatis.sp.plus.actions;
 
 import com.github.mybatis.sp.plus.Action;
 import com.github.mybatis.sp.plus.QueryBuilderHelper;
+import com.github.mybatis.sp.plus.annotation._Select;
 import com.github.mybatis.sp.plus.exception.SelfCheckException;
 import com.github.mybatis.sp.plus.meta.Field;
 import com.github.mybatis.sp.plus.meta.Table;
-import com.mybatis.sp.plus.annotation._Select;
 
 import java.util.ArrayList;
 import java.util.Arrays;

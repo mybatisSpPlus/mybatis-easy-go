@@ -1,10 +1,10 @@
 package com.github.mybatis.sp.plus.actions;
 
 import com.github.mybatis.sp.plus.Action;
+import com.github.mybatis.sp.plus.annotation._On;
 import com.github.mybatis.sp.plus.exception.SelfCheckException;
 import com.github.mybatis.sp.plus.meta.Alias;
 import com.github.mybatis.sp.plus.meta.Table;
-import com.mybatis.sp.plus.annotation._On;
 
 /**
  * @author zhouyu74748585@hotmail.com

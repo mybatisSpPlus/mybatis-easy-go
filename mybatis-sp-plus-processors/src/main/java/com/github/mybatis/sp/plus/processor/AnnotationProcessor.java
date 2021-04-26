@@ -17,10 +17,7 @@ import com.sun.tools.javac.util.Names;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.*;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic;
 import java.lang.annotation.Annotation;
@@ -33,7 +30,7 @@ import java.util.*;
  * @author zhouyu74748585@hotmail.com
  * @date 2021/4/16 21:04
  */
-@SupportedAnnotationTypes("com.mybatis.sp.plus.annotation.*")
+@SupportedAnnotationTypes("com.github.mybatis.sp.plus.annotation.*")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class AnnotationProcessor extends AbstractProcessor {
 
@@ -88,15 +85,15 @@ public class AnnotationProcessor extends AbstractProcessor {
             java.util.List<? extends Element> methods=element.getEnclosedElements();
             for (Element method : methods) {
                 for (AnnotationMirror am : method.getAnnotationMirrors()) {
-                    if (am.toString().startsWith("@com.mybatis.sp.plus.functionAnnotation")) {
+                    if (am.toString().startsWith("@com.github.mybatis.sp.plus.functionAnnotation")) {
                         try {
-                            Annotation annotation=method.getAnnotation((Class)Class.forName(am.getAnnotationType().toString()));
+                            Annotation annotation = method.getAnnotation((Class) Class.forName(am.getAnnotationType().toString()));
                             InvocationHandler invo = Proxy.getInvocationHandler(annotation); //获取被代理的对象
                             Map map = (Map) getFieldValue(invo, "memberValues");
-                            String importString= map.get("requiredClass").toString();
-                            JCTree jct=trees.getTree(method);
+                            String importString = map.get("requiredClass").toString();
+                            JCTree jct = trees.getTree(method);
                             if (methodMap.containsKey(am.getAnnotationType().toString())) {
-                                methodMap.put(am.getAnnotationType().toString(),methodMap.get(am.getAnnotationType().toString()).append(jct));
+                                methodMap.put(am.getAnnotationType().toString(), methodMap.get(am.getAnnotationType().toString()).append(jct));
                             } else {
                                 methodMap.put(am.getAnnotationType().toString(), List.of(jct));
                             }
@@ -110,18 +107,23 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
         //正式处理添加注解的类
         for (TypeElement annotation : annotations) {
-            if (!annotation.toString().equals("FunctionBag")){
+            if (!annotation.toString().equals("com.github.mybatis.sp.plus.annotation.FunctionBag")) {
                 Set<? extends Element> elements1 = roundEnv.getElementsAnnotatedWith(annotation);
-                AnnotationValue source= ElementFilter.methodsIn(annotation.getEnclosedElements()).get(0).getDefaultValue();
-                String sourceName=source.toString().replace(".class","");
-                List<JCTree> methods=methodMap.get(sourceName);
-                if (methods!=null&&methods.length()>0) {
+                java.util.List<ExecutableElement> list = ElementFilter.methodsIn(annotation.getEnclosedElements());
+                if (list.size() == 0) {
+                    messager.printMessage(Diagnostic.Kind.WARNING, annotation.toString() + " not used");
+                    continue;
+                }
+                AnnotationValue source = ElementFilter.methodsIn(annotation.getEnclosedElements()).get(0).getDefaultValue();
+                String sourceName = source.toString().replace(".class", "");
+                List<JCTree> methods = methodMap.get(sourceName);
+                if (methods != null && methods.length() > 0) {
                     elements1.forEach(element -> {
                         JCTree jcTree = trees.getTree(element);
                         jcTree.accept(new TreeTranslator() {
                             @Override
                             public void visitClassDef(JCTree.JCClassDecl jcClassDecl) {
-                                HashSet<String> classHashSet=new HashSet<>();
+                                HashSet<String> classHashSet = new HashSet<>();
                                 for (JCTree method : methods) {
                                     String importStr=importMap.get(method.toString());
                                     if (importStr != null && importStr.trim().length() > 0) {
