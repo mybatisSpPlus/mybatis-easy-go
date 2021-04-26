@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>processors</artifactId>
+    <artifactId>mybatis-sp-plus-processors</artifactId>
 
     <dependencies>
         <dependency>
