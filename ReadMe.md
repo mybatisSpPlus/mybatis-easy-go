@@ -8,8 +8,8 @@
 增加扫描
 ``` java
   @SpringBootApplication
-  @ComponentScan("com.mybatis.sp.plus.spring")
-  @MapperScan("com.mybatis.sp.plus.spring")
+  @ComponentScan("com.github.mybatis.sp.plus.spring")
+  @MapperScan("com.github.mybatis.sp.plus.spring")
   public class SpingBootAppBizApplication{
     public static void main(String[] args) {
         SpringApplication.run(SpingBootAppBizApplication.class, args);
@@ -18,10 +18,10 @@
 ```
 使用时引入下面依赖
 ``` java
-import static ActionMethods.*;
-import static ConditionMethods.*;
-import static FunctionMethods.*;
-import static MetaMethods.*;
+import static com.github.mybatis.sp.plus.ActionMethods.*;
+import static com.github.mybatis.sp.plus.ConditionMethods.*;
+import static com.github.mybatis.sp.plus.FunctionMethods.*;
+import static com.github.mybatis.sp.plus.MetaMethods.*;
 ```
 
 ### 开始使用
