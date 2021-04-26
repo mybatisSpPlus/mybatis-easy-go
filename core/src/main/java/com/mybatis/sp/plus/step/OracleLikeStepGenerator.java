@@ -14,7 +14,8 @@ import java.util.ListIterator;
 
 /**
  * 给语法与oracle相似的数据库的通用的生成器
- * @author zhouyu4034@sefonsoft.com
+ *
+ * @author zhouyu74748585@hotmail.com
  * @date 2021/4/15 19:42
  */
 public class OracleLikeStepGenerator extends StepGenerator{

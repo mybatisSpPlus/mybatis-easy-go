@@ -15,7 +15,7 @@ import java.util.List;
 import static com.mybatis.sp.plus.QueryBuilderHelper.tableNameToTable;
 
 /**
- * @author zhouyu4034@sefonsoft.com
+ * @author zhouyu74748585@hotmail.com
  * @date 2021/4/8 10:28
  */
 @_Select

@@ -7,7 +7,7 @@ import com.mybatis.sp.plus.meta.Table;
 /**
  * condition的快捷方法
  *
- * @author zhouyu4034@sefonsoft.com
+ * @author zhouyu74748585@hotmail.com
  * @date 2021/4/12 22:44
  */
 public class ConditionMethods {

@@ -30,7 +30,7 @@ import java.lang.reflect.Proxy;
 import java.util.*;
 
 /**
- * @author zhouyu4034@sefonsoft.com
+ * @author zhouyu74748585@hotmail.com
  * @date 2021/4/16 21:04
  */
 @SupportedAnnotationTypes("com.mybatis.sp.plus.annotation.*")

@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * 基础的step生成器，是基于mysql的
  *
- * @author zhouyu4034@sefonsoft.com
+ * @author zhouyu74748585@hotmail.com
  * @date 2021/4/15 8:59
  */
 public class StepGenerator {

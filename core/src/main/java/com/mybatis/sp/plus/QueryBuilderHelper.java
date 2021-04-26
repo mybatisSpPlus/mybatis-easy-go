@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 /**
- * @author zhouyu4034@sefonsoft.com
+ * @author zhouyu74748585@hotmail.com
  * @date 2021/4/13 14:23
  */
 public class QueryBuilderHelper {
