@@ -68,7 +68,7 @@ insertInto("tableA").select(allField()).from("tableB").executeInsert();
 ``` java
 // 更新数据
 // sql: update table1 set field1=1,field2=2
-// update("table1").set().setFieldValue(field("field1"),1).setFieldValue(field("field2"),2).executeUpdate();
+pdate("table1").set().setFieldValue(field("field1"),1).setFieldValue(field("field2"),2).executeUpdate();
 
 // 联表更新
 // sql: update table1 t1 left join table2 t2  on t1.field1=t2.field1 set t1.field2=t2.field2
