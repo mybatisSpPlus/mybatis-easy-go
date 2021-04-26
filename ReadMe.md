@@ -18,10 +18,10 @@
 ```
 使用时引入下面依赖
 ``` java
-import static com.mybatis.sp.plus.ActionMethods.*;
-import static com.mybatis.sp.plus.ConditionMethods.*;
-import static com.mybatis.sp.plus.FunctionMethods.*;
-import static com.mybatis.sp.plus.MetaMethods.*;
+import static ActionMethods.*;
+import static ConditionMethods.*;
+import static FunctionMethods.*;
+import static MetaMethods.*;
 ```
 
 ### 开始使用
