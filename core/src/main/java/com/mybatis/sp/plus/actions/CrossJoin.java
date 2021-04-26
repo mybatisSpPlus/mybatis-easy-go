@@ -1,7 +1,6 @@
 package com.mybatis.sp.plus.actions;
 
 import com.mybatis.sp.plus.annotation.*;
-import com.mybatis.sp.plus.exception.SelfCheckException;
 import com.mybatis.sp.plus.meta.Table;
 
 /**
@@ -24,10 +23,6 @@ public class CrossJoin extends Join {
 
     public CrossJoin(Table table) {
         super(table);
-    }
-
-    @Override
-    public void selfCheck() throws SelfCheckException {
     }
 
 }
