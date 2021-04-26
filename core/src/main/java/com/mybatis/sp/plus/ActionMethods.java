@@ -5,7 +5,6 @@ import com.mybatis.sp.plus.meta.Field;
 import com.mybatis.sp.plus.meta.Order;
 import com.mybatis.sp.plus.meta.Table;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.mybatis.sp.plus.QueryBuilderHelper.fieldNameToField;
@@ -28,10 +27,7 @@ public class ActionMethods {
     }
 
     public static Select select(String... fieldNames) {
-        List<Field> fields=new ArrayList<>();
-        for (String fieldName : fieldNames) {
-            fields.add(fieldNameToField(fieldName));
-        }
+        List<Field> fields = fieldNameToField(fieldNames);
         return new QueryBuilders().select(fields);
     }
 
@@ -59,6 +55,14 @@ public class ActionMethods {
         return new QueryBuilders().delete(tables);
     }
 
+    public static Delete delete(String... tableNames) {
+        Table[] tables = new Table[tableNames.length];
+        for (int i = 0; i < tableNames.length; i++) {
+            tables[i] = tableNameToTable(tableNames[i]);
+        }
+        return new QueryBuilders().delete(tables);
+    }
+
     public static Truncate truncate(Table table) {
         return new QueryBuilders().truncate(table);
     }
@@ -67,7 +71,7 @@ public class ActionMethods {
         return new QueryBuilders().truncate(tableNameToTable(tableName));
     }
 
-    public static Order Order(){
+    public static Order Order() {
         return new Order();
     }
 
