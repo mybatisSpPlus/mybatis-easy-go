@@ -57,7 +57,7 @@ List<String> result=select("name").from("table1").where(field("id").in(select("i
 ``` java
 // 插入数据1
 // sql: insert into tableA(f1,f2) value(1,2),(3,4)	
- insertInto("tableA").fields("f1","f2").values(Arrays.asList(1,2),Arrays.asList(3,4)).executeInsert();
+insertInto("tableA").fields("f1","f2").values(Arrays.asList(1,2),Arrays.asList(3,4)).executeInsert();
  
 // 插入数据2
 // sql: insert into tableA select * from tableB
@@ -72,18 +72,18 @@ insertInto("tableA").select(allField()).from("tableB").executeInsert();
 
 // 联表更新
 // sql: update table1 t1 left join table2 t2  on t1.field1=t2.field1 set t1.field2=t2.field2
-//update("table1 t1")leftJoin("table2 t2").on(field("t1.field1").on("t2.field1")).set().setFieldValue(field("t1.field2"),field("t2.field2")).executeUpdate();
+update("table1 t1")leftJoin("table2 t2").on(field("t1.field1").on("t2.field1")).set().setFieldValue(field("t1.field2"),field("t2.field2")).executeUpdate();
 ```
 
 #### 删除
 ``` java
  // 删除数据
  // sql: delete from table1 where id>1
- // delete().from("table1").where(field(id).gt(1)).executeDelete();;
+ delete().from("table1").where(field(id).gt(1)).executeDelete();;
  
  // 联表删除
  // sql: delete t1,t2 from table1 t1 left join table2 t2 on t1.id=t2.id where t1.id>20
- // delete("t1","t2").from("table1 t1").leftJoin("table2 t2").on(field("t1.id").eq(field("t2.id"))).where(field("t1.id").gt(20)).executeDelete();
+ delete("t1","t2").from("table1 t1").leftJoin("table2 t2").on(field("t1.id").eq(field("t2.id"))).where(field("t1.id").gt(20)).executeDelete();
 ```
 
 ### 部分使用说明
