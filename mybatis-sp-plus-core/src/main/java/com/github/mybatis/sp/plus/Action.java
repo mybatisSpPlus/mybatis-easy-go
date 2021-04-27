@@ -108,7 +108,7 @@ public abstract class Action {
     }
 
     public void executeFetchSelect(ResultHandler<Map<String, Object>> handler) throws Exception {
-        getSessionTemplate().select("BaseMapper.executeFetchQuery", getStepGenerator().toStep(printSql, setParameter), handler);
+        getSessionTemplate().select("com.github.mybatis.sp.plus.spring.BaseMapper.executeFetchQuery", getStepGenerator().toStep(printSql, setParameter), handler);
     }
 
     public <T> T executeOneSelect(Class<T> tClass) throws Exception {

@@ -2,6 +2,7 @@ package com.github.mybatis.sp.plus.functions;
 
 import com.github.mybatis.sp.plus.Function;
 import com.github.mybatis.sp.plus.exception.SelfCheckException;
+import com.github.mybatis.sp.plus.meta.Alias;
 import com.github.mybatis.sp.plus.meta.Field;
 
 /**
@@ -15,15 +16,18 @@ public class Count  extends Function {
     boolean distinct=false;
 
     public Count() {
+        super.setAlias(new Alias("countNum" + System.currentTimeMillis()));
     }
 
     public Count(Field field) {
         this.field = field;
+        super.setAlias(new Alias("countNum" + System.currentTimeMillis()));
     }
 
     public Count(Field field, boolean distinct) {
         this.field = field;
         this.distinct = distinct;
+        super.setAlias(new Alias("countNum" + System.currentTimeMillis()));
     }
 
     public Field getField() {
