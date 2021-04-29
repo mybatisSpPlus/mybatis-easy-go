@@ -682,9 +682,66 @@ public class StepGenerator {
         steps.add(new Step(")"));
     }
 
+    public void AddToStep(Add add) throws Exception {
+        valueToStep(add.getValueA());
+        steps.add(new Step("+"));
+        valueToStep(add.getValueB());
+    }
+
+    public void SubtractToStep(Subtract subtract) throws Exception {
+        valueToStep(subtract.getValueA());
+        steps.add(new Step("-"));
+        valueToStep(subtract.getValueB());
+    }
+
+    public void MultiplyToStep(Multiply multiply) throws Exception {
+        valueToStep(multiply.getValueA());
+        steps.add(new Step("*"));
+        valueToStep(multiply.getValueB());
+    }
+
+    public void DivideToStep(Divide divide) throws Exception {
+        valueToStep(divide.getValueA());
+        steps.add(new Step("/"));
+        valueToStep(divide.getValueB());
+    }
+
+    public void SurplusToStep(Surplus surplus) throws Exception {
+        valueToStep(surplus.getValueA());
+        steps.add(new Step("%"));
+        valueToStep(surplus.getValueB());
+    }
+
+    public void CustomFunctionToStep(CustomFunction customFunction) throws Exception {
+        steps.add(new Step(customFunction.getFunctionName() + "("));
+        if (customFunction.getParameters().size() > 0) {
+            for (Object parameter : customFunction.getParameters()) {
+                valueToStep(parameter);
+                steps.add(new Step(","));
+            }
+            steps.removeLast();
+        }
+        steps.add(new Step(")"));
+    }
+
     public void functionToStep(Function function) throws Exception {
         String name = function.getClass().getSimpleName();
         switch (name) {
+            case "Add":
+                AddToStep((Add) function);
+                break;
+            case "Subtract":
+                SubtractToStep((Subtract) function);
+                break;
+            case "Multiply":
+                MultiplyToStep((Multiply) function);
+                break;
+            case "Divide":
+                DivideToStep((Divide) function);
+                break;
+            case "Surplus":
+                SurplusToStep((Surplus) function);
+                break;
             case "Avg":
                 AvgToStep((Avg) function);
                 break;
@@ -744,6 +801,9 @@ public class StepGenerator {
                 break;
             case "Sum":
                 SumToStep((Sum) function);
+                break;
+            case "CustomFunction":
+                CustomFunctionToStep((CustomFunction) function);
                 break;
             default:
                 throw new Exception("function :" + name + " not supported");

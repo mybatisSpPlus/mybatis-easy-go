@@ -93,11 +93,39 @@ public class FunctionMethods {
         return new Sum(field);
     }
 
-    public static Round round(Field field, int decimals){
-        return new Round(field,decimals);
+    public static Round round(Field field, int decimals) {
+        return new Round(field, decimals);
     }
 
-    public static Now now(){
+    public static Now now() {
         return new Now();
+    }
+
+    public static Add add(Object a, Object b) {
+        return new Add(a, b);
+    }
+
+    public static Divide divide(Object a, Object b) {
+        return new Divide(a, b);
+    }
+
+    public static Multiply multiply(Object a, Object b) {
+        return new Multiply(a, b);
+    }
+
+    public static Subtract subtract(Object a, Object b) {
+        return new Subtract(a, b);
+    }
+
+    public static Surplus surplus(Object a, Object b) {
+        return new Surplus(a, b);
+    }
+
+    public static CustomFunction customFunction(String functionName) {
+        return new CustomFunction(functionName);
+    }
+
+    public static CustomFunction customFunction(String functionName, Object... parameters) {
+        return new CustomFunction(functionName, parameters);
     }
 }

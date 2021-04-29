@@ -3,6 +3,7 @@ package com.github.mybatis.sp.plus.meta;
 import com.github.mybatis.sp.plus.Meta;
 import com.github.mybatis.sp.plus.conditions.*;
 import com.github.mybatis.sp.plus.exception.SelfCheckException;
+import com.github.mybatis.sp.plus.functions.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
@@ -174,6 +175,26 @@ public class Field extends Meta {
 
     public IsNotNull isNotNull() {
         return new IsNotNull(this);
+    }
+
+    public Add add(Object b) {
+        return new Add(this, b);
+    }
+
+    public Divide divide(Object b) {
+        return new Divide(this, b);
+    }
+
+    public Multiply multiply(Object b) {
+        return new Multiply(this, b);
+    }
+
+    public Subtract subtract(Object b) {
+        return new Subtract(this, b);
+    }
+
+    public Surplus surplus(Object b) {
+        return new Surplus(this, b);
     }
 
     public void selfCheck() throws SelfCheckException {
