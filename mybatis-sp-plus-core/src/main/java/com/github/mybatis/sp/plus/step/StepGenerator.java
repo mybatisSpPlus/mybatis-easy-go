@@ -557,6 +557,16 @@ public class StepGenerator {
         steps.add(new Step(")"));
     }
 
+    public void GroupConcatToStep(GroupConcat groupConcat) throws Exception {
+        steps.add(new Step("GROUP_CONCAT("));
+        for (Field obj : groupConcat.getObjs()) {
+            fieldToStep(obj);
+            steps.add(new Step(","));
+        }
+        steps.removeLast();
+        steps.add(new Step(")"));
+    }
+
     public void ConvertToStep(Convert convert) throws Exception {
         steps.add(new Step("CONVERT("));
         fieldToStep(convert.getField());

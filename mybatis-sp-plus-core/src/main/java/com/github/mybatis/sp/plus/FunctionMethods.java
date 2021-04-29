@@ -21,6 +21,10 @@ public class FunctionMethods {
         return new Concat(objs);
     }
 
+    public static GroupConcat groupConcat(Field... objs) {
+        return new GroupConcat(objs);
+    }
+
     public static Format format(Field field, String format) {
         return new Format(field, format);
     }
