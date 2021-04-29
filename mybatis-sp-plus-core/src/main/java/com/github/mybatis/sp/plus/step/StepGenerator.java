@@ -695,6 +695,9 @@ public class StepGenerator {
             case "Concat":
                 ConcatToStep((Concat) function);
                 break;
+            case "GroupConcat":
+                GroupConcatToStep((GroupConcat) function);
+                break;
             case "Convert":
                 ConvertToStep((Convert) function);
                 break;

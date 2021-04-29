@@ -48,7 +48,7 @@ public class GroupConcat extends Function {
     @Override
     public void selfCheck() throws SelfCheckException {
         if (objs.size() == 0) {
-            throw new SelfCheckException("objs can not be null in function Count");
+            throw new SelfCheckException("objs can not be null in function GroupConcat");
         }
     }
 }
