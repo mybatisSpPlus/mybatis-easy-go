@@ -658,10 +658,9 @@ public class StepGenerator {
         steps.add(new Step("SUBSTR("));
         fieldToStep(substr.getField());
         steps.add(new Step(","));
-        steps.add(new Step().setStepValue(substr.getStart()));
-        if (substr.getLength() > 0) {
-            steps.add(new Step().setStepValue(substr.getLength()));
-        }
+        valueToStep(substr.getStart());
+        steps.add(new Step(","));
+        valueToStep(substr.getLength());
         steps.add(new Step(")"));
     }
 
@@ -752,11 +751,7 @@ public class StepGenerator {
     }
 
     public void valueToStep(Object value) throws Exception {
-        if (value instanceof Function) {
-            functionToStep((Function) value);
-        } else if (value instanceof Condition) {
-            conditionToStep((Condition) value);
-        } else if (value instanceof Field) {
+        if (value instanceof Field) {
             fieldToStep((Field) value);
         } else if (value instanceof Table) {
             tableToStep((Table) value);
@@ -769,6 +764,9 @@ public class StepGenerator {
 
     public void fieldToStep(Field field) throws Exception {
         field.selfCheck();
+        if (StringUtils.isNotBlank(field.getSpecialPrefix())) {
+            steps.add(new Step(field.getSpecialPrefix()));
+        }
         if (field instanceof ConstantField) {
             steps.add(new Step().setStepValue(((ConstantField) field).getConstant()));
         } else if (field instanceof AllField) {
@@ -778,17 +776,14 @@ public class StepGenerator {
         } else if (field instanceof Condition) {
             conditionToStep((Condition) field);
         } else {
-            if (StringUtils.isNotBlank(field.getSpecialPrefix())) {
-                steps.add(new Step(field.getSpecialPrefix()));
-            }
             if (StringUtils.isNotBlank(field.getTableName())) {
                 steps.add(new Step(dialect + field.getTableName() + dialect));
                 steps.add(new Step("."));
             }
             steps.add(new Step(dialect + field.getName() + dialect));
-            if (StringUtils.isNotBlank(field.getSpecialPostfix())) {
-                steps.add(new Step(field.getSpecialPostfix()));
-            }
+        }
+        if (StringUtils.isNotBlank(field.getSpecialPostfix())) {
+            steps.add(new Step(field.getSpecialPostfix()));
         }
         if (field.getAlias() != null) {
             aliasToStep(field.getAlias());

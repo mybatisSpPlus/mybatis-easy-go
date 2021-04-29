@@ -12,19 +12,19 @@ public class Substr extends Function {
 
     Field field;
 
-    int start;
+    Object start;
 
-    int length;
+    Object length;
 
     public Substr() {
     }
 
-    public Substr(Field field, int start) {
+    public Substr(Field field, Object start) {
         this.field = field;
         this.start = start;
     }
 
-    public Substr(Field field, int start, int length) {
+    public Substr(Field field, Object start, Object length) {
         this.field = field;
         this.start = start;
         this.length = length;
@@ -39,7 +39,7 @@ public class Substr extends Function {
         return this;
     }
 
-    public int getStart() {
+    public Object getStart() {
         return start;
     }
 
@@ -48,7 +48,7 @@ public class Substr extends Function {
         return this;
     }
 
-    public int getLength() {
+    public Object getLength() {
         return length;
     }
 

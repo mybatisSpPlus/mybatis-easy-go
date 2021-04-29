@@ -29,11 +29,11 @@ public class FunctionMethods {
         return new Format(field, format);
     }
 
-    public static Substr substr(Field field, int start) {
+    public static Substr substr(Field field, Object start) {
         return new Substr(field, start);
     }
 
-    public static Substr substr(Field field, int start, int length) {
+    public static Substr substr(Field field, Object start, Object length) {
         return new Substr(field, start, length);
     }
 
@@ -49,7 +49,7 @@ public class FunctionMethods {
         return new Instr(field, target);
     }
 
-    public static Instr instr(Field field, Object target, int start, int times) {
+    public static Instr instr(Field field, Object target, Object start, Object times) {
         return new Instr(field, target, start, times);
     }
 

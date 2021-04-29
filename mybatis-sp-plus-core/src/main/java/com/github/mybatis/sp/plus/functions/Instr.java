@@ -14,9 +14,9 @@ public class Instr extends Function {
 
     Object target;
 
-    int start;
+    Object start;
 
-    int times;
+    Object times;
 
 
     public Instr(Field field, Object target) {
@@ -24,7 +24,7 @@ public class Instr extends Function {
         this.target = target;
     }
 
-    public Instr(Field field, Object target, int start, int times) {
+    public Instr(Field field, Object target, Object start, Object times) {
         this.field = field;
         this.target = target;
         this.start = start;
@@ -49,20 +49,20 @@ public class Instr extends Function {
         return this;
     }
 
-    public int getStart() {
+    public Object getStart() {
         return start;
     }
 
-    public Instr setStart(int start) {
+    public Instr setStart(Object start) {
         this.start = start;
         return this;
     }
 
-    public int getTimes() {
+    public Object getTimes() {
         return times;
     }
 
-    public Instr setTimes(int times) {
+    public Instr setTimes(Object times) {
         this.times = times;
         return this;
     }
