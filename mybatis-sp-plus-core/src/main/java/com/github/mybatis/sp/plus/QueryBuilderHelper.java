@@ -149,7 +149,7 @@ public class QueryBuilderHelper {
                     String valueTmp = value.toString();
                     declaredField.set(entity, valueTmp);
                 } else {
-                    throw new Exception("unsupported type:"+fieldType);
+                    throw new Exception("unsupported type: " + fieldType);
                 }
             }
         }
