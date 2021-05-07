@@ -840,7 +840,12 @@ public class StepGenerator {
                 steps.add(new Step(dialect + field.getTableName() + dialect));
                 steps.add(new Step("."));
             }
-            steps.add(new Step(dialect + field.getName() + dialect));
+            if (field.getName().equals("*")) {
+                steps.add(new Step("*"));
+            } else {
+                steps.add(new Step(dialect + field.getName() + dialect));
+            }
+
         }
         if (StringUtils.isNotBlank(field.getSpecialPostfix())) {
             steps.add(new Step(field.getSpecialPostfix()));
