@@ -132,12 +132,12 @@ public class QueryBuilderHelper {
                         declaredField.set(entity, formatBooleanString(value.toString()));
                     }
                 } else if (Integer.class.isAssignableFrom(fieldType) || fieldType == int.class) {
-                    declaredField.set(entity, Integer.parseInt(value.toString()));
+                    declaredField.set(entity, Double.valueOf(value.toString()).intValue());
                 } else if (Long.class.isAssignableFrom(fieldType) || fieldType == long.class) {
                     if (value instanceof Date) {
                         declaredField.set(entity, ((Date) value).getTime());
                     } else {
-                        declaredField.set(entity, Long.parseLong(value.toString()));
+                        declaredField.set(entity, Double.valueOf(value.toString()).longValue());
                     }
                 } else if (Float.class.isAssignableFrom(fieldType) || fieldType == float.class) {
                     declaredField.set(entity, new Float(value.toString()));
