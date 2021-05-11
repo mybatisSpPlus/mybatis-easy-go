@@ -205,7 +205,6 @@ public class StepGenerator {
         steps.add(new Step("LIMIT"));
         steps.add(new Step().setStepValue(limit.getLimit()));
         if (limit.getOffset()>0){
-            steps.add(new Step(","));
             steps.add(new Step("OFFSET"));
             steps.add(new Step().setStepValue(limit.getOffset()));
         }
