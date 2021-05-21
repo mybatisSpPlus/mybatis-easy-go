@@ -2,6 +2,7 @@ package com.github.mybatis.sp.plus.step;
 
 import com.github.mybatis.sp.plus.Action;
 import com.github.mybatis.sp.plus.actions.Limit;
+import com.github.mybatis.sp.plus.conditions.Regx;
 import com.github.mybatis.sp.plus.functions.*;
 import com.github.mybatis.sp.plus.meta.Alias;
 import com.github.mybatis.sp.plus.meta.Field;
@@ -102,6 +103,14 @@ public class OracleLikeStepGenerator extends StepGenerator{
         pageTableSteps.add(new Step("<="));
         pageTableSteps.add(new Step().setStepValue(limit));
         return pageTableSteps;
+    }
+
+    public void RegxToStep(Regx regx) throws Exception {
+        steps.add(new Step("REGEXP_LIKE("));
+        fieldToStep(regx.getField());
+        steps.add(new Step(","));
+        steps.add(new Step().setStepValue(regx.getValue().toString()));
+        steps.add(new Step(")"));
     }
 
     public void ConcatToStep(Concat concat) throws Exception {
