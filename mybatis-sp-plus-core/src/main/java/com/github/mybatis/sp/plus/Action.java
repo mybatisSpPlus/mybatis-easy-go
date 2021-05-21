@@ -1,9 +1,7 @@
 package com.github.mybatis.sp.plus;
 
-import com.github.mybatis.sp.plus.actions.Delete;
-import com.github.mybatis.sp.plus.actions.InsertInto;
-import com.github.mybatis.sp.plus.actions.Select;
-import com.github.mybatis.sp.plus.actions.Update;
+import com.github.mybatis.sp.plus.actions.*;
+import com.github.mybatis.sp.plus.exception.PageException;
 import com.github.mybatis.sp.plus.exception.SelfCheckException;
 import com.github.mybatis.sp.plus.meta.Alias;
 import com.github.mybatis.sp.plus.meta.Result;
@@ -12,8 +10,6 @@ import com.github.mybatis.sp.plus.spring.BaseMapper;
 import com.github.mybatis.sp.plus.spring.BeanHelper;
 import com.github.mybatis.sp.plus.step.Step;
 import com.github.mybatis.sp.plus.step.StepGenerator;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.session.ResultHandler;
 import org.mybatis.spring.SqlSessionTemplate;
 
@@ -23,6 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import static com.github.mybatis.sp.plus.ActionMethods.select;
+import static com.github.mybatis.sp.plus.FunctionMethods.count;
+import static com.github.mybatis.sp.plus.MetaMethods.allField;
+import static com.github.mybatis.sp.plus.MetaMethods.constantField;
 
 /**
  * @author zhouyu74748585@hotmail.com
@@ -152,41 +153,102 @@ public abstract class Action {
     public <T> List<T> executeListSelect(String typeName, BiFunction<String,List<Map<String,Object>>,List<T>> function) throws Exception {
         List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
         cleanNull(map);
-        return  new Result(map).convertToList(typeName,function);
+        return new Result(map).convertToList(typeName, function);
     }
 
-    public <T> List<T> executeListSelect(Function<List<Map<String,Object>>,List<T>> function) throws Exception {
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
-        cleanNull(map);
-        return  new Result(map).convertToList(function);
-    }
-
-    public <T> Page<T> executePageSelect(int pageNum, int pageSize, Class<T> tClass) throws Exception{
-        PageHelper.startPage(pageNum,pageSize);
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
-        cleanNull(map);
-        return  new Result(map).convertToPage(tClass);
-    }
-
-    public <T> Page<T> executePageSelect(int pageNum, int pageSize, Class<T> tClass, BiFunction<Class<T>,List<Map<String,Object>>,Page<T>> function) throws Exception{
-        PageHelper.startPage(pageNum,pageSize);
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
-        cleanNull(map);
-        return  new Result(map).convertToPage(tClass,function);
-    }
-
-    public <T> Page<T> executePageSelect(int pageNum, int pageSize, String typeName, BiFunction<String,List<Map<String,Object>>,Page<T>> function) throws Exception{
-        PageHelper.startPage(pageNum,pageSize);
-        List<Map<String,Object>> map=getMapper().executeQuery(getStepGenerator().toStep(printSql,setParameter));
-        cleanNull(map);
-        return new Result(map).convertToPage(typeName, function);
-    }
-
-    public <T> Page<T> executePageSelect(int pageNum, int pageSize, Function<List<Map<String, Object>>, Page<T>> function) throws Exception {
-        PageHelper.startPage(pageNum, pageSize);
+    public <T> List<T> executeListSelect(Function<List<Map<String, Object>>, List<T>> function) throws Exception {
         List<Map<String, Object>> map = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
         cleanNull(map);
-        return new Result(map).convertToPage(function);
+        return new Result(map).convertToList(function);
+    }
+
+    public <T> Page<T> executePageSelect(int pageNum, int pageSize, Class<T> tClass) throws Exception {
+        long total = getCount();
+        Page page = new Page().setTotal(total);
+        if (total > 0) {
+            List<Map<String, Object>> map = getPageData(pageNum, pageSize);
+            return new Result(map).convertToPage(pageNum, pageSize, total, tClass);
+        } else {
+            return new Page().setTotal(total);
+        }
+    }
+
+
+    public <T> Page<T> executePageSelect(int pageNum, int pageSize, Class<T> tClass, BiFunction<Class<T>, List<Map<String, Object>>, List<T>> function) throws Exception {
+        long total = getCount();
+        if (total > 0) {
+            List<Map<String, Object>> map = getPageData(pageNum, pageSize);
+            return new Result(map).convertToPage(pageNum, pageSize, total, tClass, function);
+        } else {
+            return new Page().setTotal(total);
+        }
+    }
+
+    public <T> Page<T> executePageSelect(int pageNum, int pageSize, String typeName, BiFunction<String, List<Map<String, Object>>, List<T>> function) throws Exception {
+        long total = getCount();
+        if (total > 0) {
+            List<Map<String, Object>> map = getPageData(pageNum, pageSize);
+            return new Result(map).convertToPage(pageNum, pageSize, total, typeName, function);
+        } else {
+            return new Page().setTotal(total);
+        }
+    }
+
+    public <T> Page<T> executePageSelect(int pageNum, int pageSize, Function<List<Map<String, Object>>, List<T>> function) throws Exception {
+        long total = getCount();
+        if (total > 0) {
+            List<Map<String, Object>> map = getPageData(pageNum, pageSize);
+            return new Result(map).convertToPage(pageNum, pageSize, total, function);
+        } else {
+            return new Page().setTotal(total);
+        }
+    }
+
+    public long getCount() throws Exception {
+        //如果包含union 则不能直接替换前面的select,需要整体作为子查询
+        if (hasUnion()) {
+            From count = ActionFunctionSource.from(select(count(constantField(1)).as("countNum")), this.asTable("PAGE_TEMP"));
+            List<Map<String, Object>> countMap = getMapper().executeQuery(count.getStepGenerator().toStep(printSql, setParameter));
+            long total = Long.parseLong(countMap.get(0).get("countNum").toString());
+            return total;
+        } else {
+            if (!(builders.getActionTree().get(0) instanceof Select)) {
+                throw new PageException("page query must start with select");
+            }
+            Action select = builders.getActionTree().get(0);
+            builders.getActionTree().set(0, select(count(constantField(1)).as("countNum")));
+            List<Map<String, Object>> countMap = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
+            builders.getActionTree().set(0, select);
+            long total = Long.parseLong(countMap.get(0).get("countNum").toString());
+            return total;
+        }
+    }
+
+    public List<Map<String, Object>> getPageData(int pageNum, int pageSize) throws Exception {
+        //如果包含union 则不能直接在后面添加limit,需要整体作为子查询
+        if (hasUnion()) {
+            Limit data = ActionFunctionSource.limit(ActionFunctionSource.from(select(allField()), this.asTable("PAGE_TEMP")), pageSize, (pageNum - 1) * pageSize);
+            List<Map<String, Object>> map = getMapper().executeQuery(data.getStepGenerator().toStep(printSql, setParameter));
+            cleanNull(map);
+            return map;
+        } else {
+            if (this instanceof Limit) {
+                throw new PageException("limit is not allowed when page query");
+            }
+            Limit data = ActionFunctionSource.limit(this, pageSize, (pageNum - 1) * pageSize);
+            List<Map<String, Object>> map = getMapper().executeQuery(data.getStepGenerator().toStep(printSql, setParameter));
+            cleanNull(map);
+            return map;
+        }
+    }
+
+    private boolean hasUnion() {
+        for (Action action : builders.getActionTree()) {
+            if (action instanceof Union || action instanceof UnionAll) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

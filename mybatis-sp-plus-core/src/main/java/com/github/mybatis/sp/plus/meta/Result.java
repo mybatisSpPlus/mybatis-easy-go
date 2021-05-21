@@ -1,7 +1,7 @@
 package com.github.mybatis.sp.plus.meta;
 
+import com.github.mybatis.sp.plus.Page;
 import com.github.mybatis.sp.plus.QueryBuilderHelper;
-import com.github.pagehelper.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,39 +59,47 @@ public class Result {
         }
         return new ArrayList<>();
     }
-    public <T> List<T> convertToList(Class<T> tClass, BiFunction<Class<T>,List<Map<String,Object>>,List<T>> function) {
-        return function.apply(tClass,resultList);
+
+    public <T> List<T> convertToList(Class<T> tClass, BiFunction<Class<T>, List<Map<String, Object>>, List<T>> function) {
+        return function.apply(tClass, resultList);
     }
-    public <T> List<T> convertToList(String typeName, BiFunction<String,List<Map<String,Object>>,List<T>> function) {
-        return function.apply(typeName,resultList);
+
+    public <T> List<T> convertToList(String typeName, BiFunction<String, List<Map<String, Object>>, List<T>> function) {
+        return function.apply(typeName, resultList);
     }
-    public <T> List<T> convertToList(Function<List<Map<String,Object>>,List<T>> function) {
+
+    public <T> List<T> convertToList(Function<List<Map<String, Object>>, List<T>> function) {
         return function.apply(resultList);
     }
 
-    public <T> Page<T> convertToPage(Class<T> tClass) throws Exception {
-        if (resultList.size()>0){
-            List<T> result= QueryBuilderHelper.convert(tClass,resultList);
-            if (resultList instanceof Page){
-                Page<T> page=new Page<T>().setPages(((Page<Map<String, Object>>) resultList).getPages())
-                        .setPageNum(((Page<Map<String, Object>>) resultList).getPageNum())
-                        .setPageSize(((Page<Map<String, Object>>) resultList).getPageSize());
-                page.addAll(result);
-                page.setTotal(((Page<Map<String, Object>>) resultList).getTotal());
-                return page;
-            }
-        }
-        return new Page<>(0,0);
+    private <T> Page<T> listToPage(int pageNum, int pageSize, long total, List<T> result) {
+        int pages = Long.valueOf(total / pageSize + (total % pageSize == 0 ? 0 : 1)).intValue();
+        Page<T> page = new Page<T>().setPages(pages)
+                .setPageNum(pageNum)
+                .setPageSize(pageSize)
+                .setTotal(total);
+        page.addAll(result);
+        return page;
     }
 
-    public <T> Page<T> convertToPage(Class<T> tClass, BiFunction<Class<T>,List<Map<String,Object>>,Page<T>> function) {
-        return function.apply(tClass,resultList);
+    public <T> Page<T> convertToPage(int pageNum, int pageSize, long total, Class<T> tClass) throws Exception {
+        List<T> result = QueryBuilderHelper.convert(tClass, resultList);
+        return listToPage(pageNum, pageSize, total, result);
     }
-    public <T> Page<T> convertToPage(String typeName, BiFunction<String,List<Map<String,Object>>,Page<T>> function) {
-        return function.apply(typeName,resultList);
+
+    public <T> Page<T> convertToPage(int pageNum, int pageSize, long total, Class<T> tClass, BiFunction<Class<T>, List<Map<String, Object>>, List<T>> function) {
+        List<T> result = function.apply(tClass, resultList);
+        return listToPage(pageNum, pageSize, total, result);
     }
-    public <T> Page<T> convertToPage(Function<List<Map<String,Object>>,Page<T>> function) {
-        return function.apply(resultList);
+
+    public <T> Page<T> convertToPage(int pageNum, int pageSize, long total, String typeName, BiFunction<String, List<Map<String, Object>>, List<T>> function) {
+        List<T> result = function.apply(typeName, resultList);
+        return listToPage(pageNum, pageSize, total, result);
+    }
+
+    public <T> Page<T> convertToPage(int pageNum, int pageSize, long total, Function<List<Map<String, Object>>, List<T>> function) {
+        List<T> result = function.apply(resultList);
+        return listToPage(pageNum, pageSize, total, result);
     }
 
     public <T> T convertToUnionOne(Function<List<Map<String, Object>>, T> function) {

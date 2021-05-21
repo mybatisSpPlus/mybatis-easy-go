@@ -80,7 +80,7 @@ public class OracleLikeStepGenerator extends StepGenerator{
         pageTableSteps.add(new Step(")"));
         pageTableSteps.add(new Step("WHERE"));
         pageTableSteps.add(new Step(dialect + "RN_TMP" + dialect));
-        pageTableSteps.add(new Step(">="));
+        pageTableSteps.add(new Step(">"));
         pageTableSteps.add(new Step().setStepValue(offset));
         return pageTableSteps;
     }

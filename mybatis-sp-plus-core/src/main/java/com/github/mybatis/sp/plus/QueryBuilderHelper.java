@@ -91,7 +91,7 @@ public class QueryBuilderHelper {
 
     public static Object getSingleValue(Map<String, Object> properties) throws Exception {
         //去掉分页插件返回的值
-        properties.remove("PAGEHELPER_ROW_ID");
+        properties.remove("RN_TMP");
         if (properties.size()>1){
             throw new Exception("except one column but two found");
         }else if(properties.size()==0){

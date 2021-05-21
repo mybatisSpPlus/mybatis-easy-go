@@ -464,7 +464,7 @@ public class StepGenerator {
     public void RegxToStep(Regx regx) throws Exception {
         fieldToStep(regx.getField());
         steps.add(new Step("REGEXP"));
-        steps.add(new Step().setStepValue(regx.getValue()));
+        steps.add(new Step().setStepValue(regx.getValue().toString()));
     }
 
     public void conditionToStep(Condition condition) throws Exception {
