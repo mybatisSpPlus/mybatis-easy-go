@@ -10,7 +10,7 @@ public class Page<E> extends ArrayList<E> {
     /**
      * 页码，从1开始
      */
-    private int pageNum;
+    private int pageIndex;
     /**
      * 页面大小
      */
@@ -22,19 +22,19 @@ public class Page<E> extends ArrayList<E> {
     /**
      * 总页数
      */
-    private int pages;
+    private int pagesCount;
 
     public Page() {
         super();
     }
 
 
-    public int getPageNum() {
-        return pageNum;
+    public int getPageIndex() {
+        return pageIndex;
     }
 
-    public Page<E> setPageNum(int pageNum) {
-        this.pageNum = pageNum;
+    public Page<E> setPageIndex(int pageIndex) {
+        this.pageIndex = pageIndex;
         return this;
     }
 
@@ -56,12 +56,12 @@ public class Page<E> extends ArrayList<E> {
         return this;
     }
 
-    public int getPages() {
-        return pages;
+    public int getPagesCount() {
+        return pagesCount;
     }
 
-    public Page<E> setPages(int pages) {
-        this.pages = pages;
+    public Page<E> setPagesCount(int pagesCount) {
+        this.pagesCount = pagesCount;
         return this;
     }
 }

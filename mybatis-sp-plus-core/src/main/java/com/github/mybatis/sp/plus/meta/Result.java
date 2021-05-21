@@ -74,8 +74,8 @@ public class Result {
 
     private <T> Page<T> listToPage(int pageNum, int pageSize, long total, List<T> result) {
         int pages = Long.valueOf(total / pageSize + (total % pageSize == 0 ? 0 : 1)).intValue();
-        Page<T> page = new Page<T>().setPages(pages)
-                .setPageNum(pageNum)
+        Page<T> page = new Page<T>().setPagesCount(pages)
+                .setPageIndex(pageNum)
                 .setPageSize(pageSize)
                 .setTotal(total);
         page.addAll(result);
