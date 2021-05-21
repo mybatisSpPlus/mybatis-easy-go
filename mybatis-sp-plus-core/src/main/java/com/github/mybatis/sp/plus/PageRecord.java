@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/5/20 20:22
  */
-public class Page<E> extends ArrayList<E> {
+public class PageRecord<E> extends ArrayList<E> {
     /**
      * 页码，从1开始
      */
@@ -22,9 +22,9 @@ public class Page<E> extends ArrayList<E> {
     /**
      * 总页数
      */
-    private int pagesCount;
+    private int pageCount;
 
-    public Page() {
+    public PageRecord() {
         super();
     }
 
@@ -33,7 +33,7 @@ public class Page<E> extends ArrayList<E> {
         return pageIndex;
     }
 
-    public Page<E> setPageIndex(int pageIndex) {
+    public PageRecord<E> setPageIndex(int pageIndex) {
         this.pageIndex = pageIndex;
         return this;
     }
@@ -42,7 +42,7 @@ public class Page<E> extends ArrayList<E> {
         return pageSize;
     }
 
-    public Page<E> setPageSize(int pageSize) {
+    public PageRecord<E> setPageSize(int pageSize) {
         this.pageSize = pageSize;
         return this;
     }
@@ -51,17 +51,17 @@ public class Page<E> extends ArrayList<E> {
         return total;
     }
 
-    public Page<E> setTotal(long total) {
+    public PageRecord<E> setTotal(long total) {
         this.total = total;
         return this;
     }
 
-    public int getPagesCount() {
-        return pagesCount;
+    public int getPageCount() {
+        return pageCount;
     }
 
-    public Page<E> setPagesCount(int pagesCount) {
-        this.pagesCount = pagesCount;
+    public PageRecord<E> setPageCount(int pageCount) {
+        this.pageCount = pageCount;
         return this;
     }
 }

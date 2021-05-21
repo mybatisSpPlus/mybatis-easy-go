@@ -162,45 +162,45 @@ public abstract class Action {
         return new Result(map).convertToList(function);
     }
 
-    public <T> Page<T> executePageSelect(int pageNum, int pageSize, Class<T> tClass) throws Exception {
+    public <T> PageRecord<T> executePageSelect(int pageIndex, int pageSize, Class<T> tClass) throws Exception {
         long total = getCount();
-        Page page = new Page().setTotal(total);
+        PageRecord pageRecord = new PageRecord().setTotal(total);
         if (total > 0) {
-            List<Map<String, Object>> map = getPageData(pageNum, pageSize);
-            return new Result(map).convertToPage(pageNum, pageSize, total, tClass);
+            List<Map<String, Object>> map = getPageData(pageIndex, pageSize);
+            return new Result(map).convertToPage(pageIndex, pageSize, total, tClass);
         } else {
-            return new Page().setTotal(total);
+            return new PageRecord().setTotal(total);
         }
     }
 
 
-    public <T> Page<T> executePageSelect(int pageNum, int pageSize, Class<T> tClass, BiFunction<Class<T>, List<Map<String, Object>>, List<T>> function) throws Exception {
+    public <T> PageRecord<T> executePageSelect(int pageIndex, int pageSize, Class<T> tClass, BiFunction<Class<T>, List<Map<String, Object>>, List<T>> function) throws Exception {
         long total = getCount();
         if (total > 0) {
-            List<Map<String, Object>> map = getPageData(pageNum, pageSize);
-            return new Result(map).convertToPage(pageNum, pageSize, total, tClass, function);
+            List<Map<String, Object>> map = getPageData(pageIndex, pageSize);
+            return new Result(map).convertToPage(pageIndex, pageSize, total, tClass, function);
         } else {
-            return new Page().setTotal(total);
+            return new PageRecord().setTotal(total);
         }
     }
 
-    public <T> Page<T> executePageSelect(int pageNum, int pageSize, String typeName, BiFunction<String, List<Map<String, Object>>, List<T>> function) throws Exception {
+    public <T> PageRecord<T> executePageSelect(int pageIndex, int pageSize, String typeName, BiFunction<String, List<Map<String, Object>>, List<T>> function) throws Exception {
         long total = getCount();
         if (total > 0) {
-            List<Map<String, Object>> map = getPageData(pageNum, pageSize);
-            return new Result(map).convertToPage(pageNum, pageSize, total, typeName, function);
+            List<Map<String, Object>> map = getPageData(pageIndex, pageSize);
+            return new Result(map).convertToPage(pageIndex, pageSize, total, typeName, function);
         } else {
-            return new Page().setTotal(total);
+            return new PageRecord().setTotal(total);
         }
     }
 
-    public <T> Page<T> executePageSelect(int pageNum, int pageSize, Function<List<Map<String, Object>>, List<T>> function) throws Exception {
+    public <T> PageRecord<T> executePageSelect(int pageIndex, int pageSize, Function<List<Map<String, Object>>, List<T>> function) throws Exception {
         long total = getCount();
         if (total > 0) {
-            List<Map<String, Object>> map = getPageData(pageNum, pageSize);
-            return new Result(map).convertToPage(pageNum, pageSize, total, function);
+            List<Map<String, Object>> map = getPageData(pageIndex, pageSize);
+            return new Result(map).convertToPage(pageIndex, pageSize, total, function);
         } else {
-            return new Page().setTotal(total);
+            return new PageRecord().setTotal(total);
         }
     }
 
@@ -224,10 +224,10 @@ public abstract class Action {
         }
     }
 
-    public List<Map<String, Object>> getPageData(int pageNum, int pageSize) throws Exception {
+    public List<Map<String, Object>> getPageData(int pageIndex, int pageSize) throws Exception {
         //如果包含union 则不能直接在后面添加limit,需要整体作为子查询
         if (hasUnion()) {
-            Limit data = ActionFunctionSource.limit(ActionFunctionSource.from(select(allField()), this.asTable("PAGE_TEMP")), pageSize, (pageNum - 1) * pageSize);
+            Limit data = ActionFunctionSource.limit(ActionFunctionSource.from(select(allField()), this.asTable("PAGE_TEMP")), pageSize, (pageIndex - 1) * pageSize);
             List<Map<String, Object>> map = getMapper().executeQuery(data.getStepGenerator().toStep(printSql, setParameter));
             cleanNull(map);
             return map;
@@ -235,7 +235,7 @@ public abstract class Action {
             if (this instanceof Limit) {
                 throw new PageException("limit is not allowed when page query");
             }
-            Limit data = ActionFunctionSource.limit(this, pageSize, (pageNum - 1) * pageSize);
+            Limit data = ActionFunctionSource.limit(this, pageSize, (pageIndex - 1) * pageSize);
             List<Map<String, Object>> map = getMapper().executeQuery(data.getStepGenerator().toStep(printSql, setParameter));
             cleanNull(map);
             return map;

@@ -1,6 +1,6 @@
 package com.github.mybatis.sp.plus.meta;
 
-import com.github.mybatis.sp.plus.Page;
+import com.github.mybatis.sp.plus.PageRecord;
 import com.github.mybatis.sp.plus.QueryBuilderHelper;
 
 import java.util.ArrayList;
@@ -72,34 +72,34 @@ public class Result {
         return function.apply(resultList);
     }
 
-    private <T> Page<T> listToPage(int pageNum, int pageSize, long total, List<T> result) {
+    private <T> PageRecord<T> listToPage(int pageIndex, int pageSize, long total, List<T> result) {
         int pages = Long.valueOf(total / pageSize + (total % pageSize == 0 ? 0 : 1)).intValue();
-        Page<T> page = new Page<T>().setPagesCount(pages)
-                .setPageIndex(pageNum)
+        PageRecord<T> pageRecord = new PageRecord<T>().setPageCount(pages)
+                .setPageIndex(pageIndex)
                 .setPageSize(pageSize)
                 .setTotal(total);
-        page.addAll(result);
-        return page;
+        pageRecord.addAll(result);
+        return pageRecord;
     }
 
-    public <T> Page<T> convertToPage(int pageNum, int pageSize, long total, Class<T> tClass) throws Exception {
+    public <T> PageRecord<T> convertToPage(int pageIndex, int pageSize, long total, Class<T> tClass) throws Exception {
         List<T> result = QueryBuilderHelper.convert(tClass, resultList);
-        return listToPage(pageNum, pageSize, total, result);
+        return listToPage(pageIndex, pageSize, total, result);
     }
 
-    public <T> Page<T> convertToPage(int pageNum, int pageSize, long total, Class<T> tClass, BiFunction<Class<T>, List<Map<String, Object>>, List<T>> function) {
+    public <T> PageRecord<T> convertToPage(int pageIndex, int pageSize, long total, Class<T> tClass, BiFunction<Class<T>, List<Map<String, Object>>, List<T>> function) {
         List<T> result = function.apply(tClass, resultList);
-        return listToPage(pageNum, pageSize, total, result);
+        return listToPage(pageIndex, pageSize, total, result);
     }
 
-    public <T> Page<T> convertToPage(int pageNum, int pageSize, long total, String typeName, BiFunction<String, List<Map<String, Object>>, List<T>> function) {
+    public <T> PageRecord<T> convertToPage(int pageIndex, int pageSize, long total, String typeName, BiFunction<String, List<Map<String, Object>>, List<T>> function) {
         List<T> result = function.apply(typeName, resultList);
-        return listToPage(pageNum, pageSize, total, result);
+        return listToPage(pageIndex, pageSize, total, result);
     }
 
-    public <T> Page<T> convertToPage(int pageNum, int pageSize, long total, Function<List<Map<String, Object>>, List<T>> function) {
+    public <T> PageRecord<T> convertToPage(int pageIndex, int pageSize, long total, Function<List<Map<String, Object>>, List<T>> function) {
         List<T> result = function.apply(resultList);
-        return listToPage(pageNum, pageSize, total, result);
+        return listToPage(pageIndex, pageSize, total, result);
     }
 
     public <T> T convertToUnionOne(Function<List<Map<String, Object>>, T> function) {
