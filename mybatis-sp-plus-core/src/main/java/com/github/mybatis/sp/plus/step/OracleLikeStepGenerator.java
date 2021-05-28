@@ -105,6 +105,18 @@ public class OracleLikeStepGenerator extends StepGenerator{
         return pageTableSteps;
     }
 
+    public void IfNullToStep(IfNull ifNull) throws Exception {
+        steps.add(new Step("NVL("));
+        fieldToStep(ifNull.getField());
+        steps.add(new Step(","));
+        valueToStep(ifNull.getDefaultValue());
+        steps.add(new Step(")"));
+    }
+
+    public void NowToStep() throws Exception {
+        steps.add(new Step("SYSDATE"));
+    }
+
     public void LenToStep(Len len) throws Exception {
         steps.add(new Step("LENGTH("));
         fieldToStep(len.getField());

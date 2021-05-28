@@ -267,38 +267,17 @@ public class StepGenerator {
         action.selfCheck();
         String name = action.getClass().getSimpleName();
         switch (name) {
-            case "InsertInto":
-                InsertIntoToStep((InsertInto) action);
-                break;
-            case "Update":
-                UpdateToStep((Update) action);
-                break;
-            case "Select":
-                SelectToStep((Select) action);
+            case "CrossJoin":
+                CrossJoinToStep((CrossJoin) action);
                 break;
             case "Delete":
                 DeleteToStep((Delete) action);
                 break;
-            case "Truncate":
-                TruncateToStep((Truncate) action);
-                break;
             case "From":
                 FromToStep((From) action);
                 break;
-            case "CrossJoin":
-                CrossJoinToStep((CrossJoin) action);
-                break;
             case "FullJoin":
                 FullJoinToStep((FullJoin) action);
-                break;
-            case "InnerJoin":
-                InnerJoinToStep((InnerJoin) action);
-                break;
-            case "LeftJoin":
-                LeftJoinToStep((LeftJoin) action);
-                break;
-            case "RightJoin":
-                RightJoinToStep((RightJoin) action);
                 break;
             case "GroupBy":
                 GroupByToStep((GroupBy) action);
@@ -306,20 +285,41 @@ public class StepGenerator {
             case "Having":
                 HavingToStep((Having) action);
                 break;
-            case "Orders":
-                OrdersToStep((Orders) action);
+            case "InsertInto":
+                InsertIntoToStep((InsertInto) action);
+                break;
+            case "InnerJoin":
+                InnerJoinToStep((InnerJoin) action);
+                break;
+            case "LeftJoin":
+                LeftJoinToStep((LeftJoin) action);
                 break;
             case "Limit":
                 LimitToStep((Limit) action);
                 break;
+            case "Orders":
+                OrdersToStep((Orders) action);
+                break;
             case "On":
                 OnToStep((On) action);
                 break;
-            case "Where":
-                WhereToStep((Where) action);
+            case "RightJoin":
+                RightJoinToStep((RightJoin) action);
                 break;
             case "Set":
                 SetToStep((Set) action);
+                break;
+            case "SubActionBegin":
+                SubActionBeginToStep();
+                break;
+            case "SubActionEnd":
+                SubActionEndToStep();
+                break;
+            case "Select":
+                SelectToStep((Select) action);
+                break;
+            case "Truncate":
+                TruncateToStep((Truncate) action);
                 break;
             case "Union":
                 UnionToStep();
@@ -327,11 +327,11 @@ public class StepGenerator {
             case "UnionAll":
                 UnionAllToStep();
                 break;
-            case "SubActionBegin":
-                SubActionBeginToStep();
+            case "Update":
+                UpdateToStep((Update) action);
                 break;
-            case "SubActionEnd":
-                SubActionEndToStep();
+            case "Where":
+                WhereToStep((Where) action);
                 break;
             default:
                 throw new Exception("action :" + name + " not supported");
@@ -373,8 +373,6 @@ public class StepGenerator {
             steps.add(new Step().setStepValue(between.getEndValue()));
         }
     }
-
-
 
     public void EqToStep(Eq eq) throws Exception {
         fieldToStep(eq.getField());
@@ -474,29 +472,20 @@ public class StepGenerator {
             case "And":
                 AndToStep((And) condition);
                 break;
-            case "Or":
-                OrToStep((Or) condition);
-                break;
             case "Between":
                 BetweenToStep((Between) condition);
                 break;
             case "Eq":
                 EqToStep((Eq) condition);
                 break;
-            case "Neq":
-                NeqToStep((Neq) condition);
+            case "EndWith":
+                EndWithToStep((EndWith) condition);
                 break;
             case "Gt":
                 GtToStep((Gt) condition);
                 break;
             case "Gte":
                 GteToStep((Gte) condition);
-                break;
-            case "Lt":
-                LtToStep((Lt) condition);
-                break;
-            case "Lte":
-                LteToStep((Lte) condition);
                 break;
             case "In":
                 InToStep((In) condition);
@@ -510,17 +499,26 @@ public class StepGenerator {
             case "Like":
                 LikeToStep((Like) condition);
                 break;
-            case "StartWith":
-                StartWithToStep((StartWith) condition);
+            case "Lt":
+                LtToStep((Lt) condition);
                 break;
-            case "EndWith":
-                EndWithToStep((EndWith) condition);
+            case "Lte":
+                LteToStep((Lte) condition);
+                break;
+            case "Neq":
+                NeqToStep((Neq) condition);
                 break;
             case "Not":
                 NotToStep((Not) condition);
                 break;
+            case "Or":
+                OrToStep((Or) condition);
+                break;
             case "Regx":
                 RegxToStep((Regx) condition);
+                break;
+            case "StartWith":
+                StartWithToStep((StartWith) condition);
                 break;
             default:
                 throw new Exception("condition :" + name + " not supported");
@@ -677,6 +675,15 @@ public class StepGenerator {
         steps.add(new Step(")"));
     }
 
+    public void IfNullToStep(IfNull ifNull) throws Exception {
+        steps.add(new Step("IFNULL("));
+        fieldToStep(ifNull.getField());
+        steps.add(new Step(","));
+        valueToStep(ifNull.getDefaultValue());
+        steps.add(new Step(")"));
+    }
+
+
     public void ReplaceToStep(Replace replace) throws Exception {
         steps.add(new Step("REPLACE("));
         fieldToStep(replace.getField());
@@ -735,18 +742,6 @@ public class StepGenerator {
             case "Add":
                 AddToStep((Add) function);
                 break;
-            case "Subtract":
-                SubtractToStep((Subtract) function);
-                break;
-            case "Multiply":
-                MultiplyToStep((Multiply) function);
-                break;
-            case "Divide":
-                DivideToStep((Divide) function);
-                break;
-            case "Surplus":
-                SurplusToStep((Surplus) function);
-                break;
             case "Avg":
                 AvgToStep((Avg) function);
                 break;
@@ -756,23 +751,32 @@ public class StepGenerator {
             case "Concat":
                 ConcatToStep((Concat) function);
                 break;
-            case "GroupConcat":
-                GroupConcatToStep((GroupConcat) function);
-                break;
             case "Convert":
                 ConvertToStep((Convert) function);
                 break;
             case "Count":
                 CountToStep((Count) function);
                 break;
+            case "CustomFunction":
+                CustomFunctionToStep((CustomFunction) function);
+                break;
+            case "Divide":
+                DivideToStep((Divide) function);
+                break;
             case "Format":
                 FormatToStep((Format) function);
                 break;
+            case "GroupConcat":
+                GroupConcatToStep((GroupConcat) function);
+                break;
+            case "Instr":
+                InstrToStep((Instr) function);
+                break;
+            case "IfNull":
+                IfNullToStep((IfNull) function);
+                break;
             case "Lcase":
                 LcaseToStep((Lcase) function);
-                break;
-            case "Ucase":
-                UcaseToStep((Ucase) function);
                 break;
             case "Len":
                 LenToStep((Len) function);
@@ -783,35 +787,41 @@ public class StepGenerator {
             case "Left":
                 LeftToStep((Left) function);
                 break;
-            case "Right":
-                RightToStep((Right) function);
-                break;
             case "Max":
                 MaxToStep((Max) function);
                 break;
             case "Min":
                 MinToStep((Min) function);
                 break;
-            case "Substr":
-                SubstrToStep((Substr) function);
-                break;
-            case "Instr":
-                InstrToStep((Instr) function);
-                break;
-            case "Replace":
-                ReplaceToStep((Replace) function);
+            case "Multiply":
+                MultiplyToStep((Multiply) function);
                 break;
             case "Now":
                 NowToStep();
                 break;
+            case "Right":
+                RightToStep((Right) function);
+                break;
+            case "Replace":
+                ReplaceToStep((Replace) function);
+                break;
             case "Round":
                 RoundToStep((Round) function);
+                break;
+            case "Substr":
+                SubstrToStep((Substr) function);
                 break;
             case "Sum":
                 SumToStep((Sum) function);
                 break;
-            case "CustomFunction":
-                CustomFunctionToStep((CustomFunction) function);
+            case "Subtract":
+                SubtractToStep((Subtract) function);
+                break;
+            case "Surplus":
+                SurplusToStep((Surplus) function);
+                break;
+            case "Ucase":
+                UcaseToStep((Ucase) function);
                 break;
             default:
                 throw new Exception("function :" + name + " not supported");
