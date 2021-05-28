@@ -604,8 +604,14 @@ public class StepGenerator {
     }
 
     public void LenToStep(Len len) throws Exception {
-        steps.add(new Step("LENGTH("));
+        steps.add(new Step("CHAR_LENGTH("));
         fieldToStep(len.getField());
+        steps.add(new Step(")"));
+    }
+
+    public void LenBToStep(LenB lenb) throws Exception {
+        steps.add(new Step("LENGTH("));
+        fieldToStep(lenb.getField());
         steps.add(new Step(")"));
     }
 
@@ -770,6 +776,9 @@ public class StepGenerator {
                 break;
             case "Len":
                 LenToStep((Len) function);
+                break;
+            case "LenB":
+                LenBToStep((LenB) function);
                 break;
             case "Left":
                 LeftToStep((Left) function);

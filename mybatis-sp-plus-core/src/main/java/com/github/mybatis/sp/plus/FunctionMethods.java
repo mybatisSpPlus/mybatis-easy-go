@@ -73,19 +73,35 @@ public class FunctionMethods {
         return new Ucase(field);
     }
 
-    public static Len len(Field field){
+    /**
+     * 计算字符串长度
+     *
+     * @param field
+     * @return
+     */
+    public static Len len(Field field) {
         return new Len(field);
     }
 
-    public static Avg avg(Field field){
+    /**
+     * 计算字节长度长度
+     *
+     * @param field
+     * @return
+     */
+    public static LenB lenB(Field field) {
+        return new LenB(field);
+    }
+
+    public static Avg avg(Field field) {
         return new Avg(field);
     }
 
-    public static Max max(Field field){
+    public static Max max(Field field) {
         return new Max(field);
     }
 
-    public static Min min(Field field){
+    public static Min min(Field field) {
         return new Min(field);
     }
 

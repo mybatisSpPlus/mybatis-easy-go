@@ -105,6 +105,18 @@ public class OracleLikeStepGenerator extends StepGenerator{
         return pageTableSteps;
     }
 
+    public void LenToStep(Len len) throws Exception {
+        steps.add(new Step("LENGTH("));
+        fieldToStep(len.getField());
+        steps.add(new Step(")"));
+    }
+
+    public void LenBToStep(LenB lenb) throws Exception {
+        steps.add(new Step("LENGTHB("));
+        fieldToStep(lenb.getField());
+        steps.add(new Step(")"));
+    }
+
     public void RegxToStep(Regx regx) throws Exception {
         steps.add(new Step("REGEXP_LIKE("));
         fieldToStep(regx.getField());
