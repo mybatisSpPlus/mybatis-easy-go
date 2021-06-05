@@ -58,7 +58,8 @@ public class Orders extends Action {
     public void selfCheck() throws SelfCheckException {
         Iterator<Order> iterator = orders.iterator();
         while (iterator.hasNext()) {
-            if (iterator instanceof EmptyOrder) {
+            Order order = iterator.next();
+            if (order instanceof EmptyOrder) {
                 iterator.remove();
             }
         }
