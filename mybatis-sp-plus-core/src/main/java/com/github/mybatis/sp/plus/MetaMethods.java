@@ -60,15 +60,20 @@ public class MetaMethods {
     }
 
     public static Order order(String fieldName){
-        return new Order(QueryBuilderHelper.fieldNameToField(fieldName),false);
+        return new Order(QueryBuilderHelper.fieldNameToField(fieldName), false);
     }
 
-    public static Order order(Field field,boolean Desc){
-        return new Order(field,Desc);
+    public static Order order(Field field, boolean Desc) {
+        return new Order(field, Desc);
     }
 
-    public static Order order(String fieldName,boolean Desc){
-        return new Order(QueryBuilderHelper.fieldNameToField(fieldName),Desc);
+    public static Order order(String fieldName, boolean Desc) {
+        return new Order(QueryBuilderHelper.fieldNameToField(fieldName), Desc);
     }
+
+    public static EmptyOrder emptyOrder() {
+        return new EmptyOrder();
+    }
+
 
 }
