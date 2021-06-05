@@ -5,6 +5,7 @@ import com.github.mybatis.sp.plus.exception.SelfCheckException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -42,11 +43,13 @@ public class Or extends Condition {
 
     @Override
     public void selfCheck() throws SelfCheckException {
-        if (orCondition.size()==0){
-            throw new SelfCheckException("conditions can not be null in condition Or");
-        }
-        for (Condition condition : orCondition) {
-            condition.selfCheck();
+        //此处不再进行check，而是将EmptyCondition去掉，如果最终or中没有条件，在构建step时直接跳过
+        Iterator<Condition> iterator = orCondition.iterator();
+        while (iterator.hasNext()) {
+            Condition condition = iterator.next();
+            if (condition instanceof EmptyCondition) {
+                iterator.remove();
+            }
         }
     }
 }

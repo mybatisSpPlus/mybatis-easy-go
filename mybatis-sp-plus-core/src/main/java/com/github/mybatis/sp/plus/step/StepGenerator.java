@@ -222,9 +222,12 @@ public class StepGenerator {
     public void WhereToStep(Where where) throws Exception {
         if (where.getConditions().size() > 0) {
             steps.add(new Step("WHERE"));
+            int stepLength = steps.size();
             for (Condition condition : where.getConditions()) {
                 conditionToStep(condition);
-                steps.add(new Step("AND"));
+                if (stepLength < steps.size()) {
+                    steps.add(new Step("AND"));
+                }
             }
             steps.removeLast();
         }
@@ -339,23 +342,37 @@ public class StepGenerator {
     }
 
     public void AndToStep(And and) throws Exception {
-        steps.add(new Step("("));
-        for (Condition cond : and.getAndCondition()) {
-            conditionToStep(cond);
-            steps.add(new Step("AND"));
+        if (and.getAndCondition().size() > 0) {
+            steps.add(new Step("("));
+            int stepLength = steps.size();
+            for (Condition cond : and.getAndCondition()) {
+                conditionToStep(cond);
+                if (stepLength < steps.size()) {
+                    steps.add(new Step("AND"));
+                }
+            }
+            steps.removeLast();
+            if (stepLength < steps.size()) {
+                steps.add(new Step(")"));
+            }
         }
-        steps.removeLast();
-        steps.add(new Step(")"));
     }
 
     public void OrToStep(Or or) throws Exception {
-        steps.add(new Step("("));
-        for (Condition cond : or.getOrCondition()) {
-            conditionToStep(cond);
-            steps.add(new Step("OR"));
+        if (or.getOrCondition().size() > 0) {
+            steps.add(new Step("("));
+            int stepLength = steps.size();
+            for (Condition cond : or.getOrCondition()) {
+                conditionToStep(cond);
+                if (stepLength < steps.size()) {
+                    steps.add(new Step("OR"));
+                }
+            }
+            steps.removeLast();
+            if (stepLength < steps.size()) {
+                steps.add(new Step(")"));
+            }
         }
-        steps.removeLast();
-        steps.add(new Step(")"));
     }
 
     public void BetweenToStep(Between between) throws Exception {
