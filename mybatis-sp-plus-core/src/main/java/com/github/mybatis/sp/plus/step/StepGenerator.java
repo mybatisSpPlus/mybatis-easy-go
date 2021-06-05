@@ -193,12 +193,14 @@ public class StepGenerator {
     }
 
     public void OrdersToStep(Orders orders) throws Exception {
-        steps.add(new Step("ORDER BY"));
-        for (Order order : orders.getOrders()) {
-            orderToStep(order);
-            steps.add(new Step(","));
+        if (orders.getOrders().size() > 0) {
+            steps.add(new Step("ORDER BY"));
+            for (Order order : orders.getOrders()) {
+                orderToStep(order);
+                steps.add(new Step(","));
+            }
+            steps.removeLast();
         }
-        steps.removeLast();
     }
 
     public void LimitToStep(Limit limit){

@@ -5,10 +5,12 @@ import com.github.mybatis.sp.plus.annotation._Limit;
 import com.github.mybatis.sp.plus.annotation._Union;
 import com.github.mybatis.sp.plus.annotation._UnionAll;
 import com.github.mybatis.sp.plus.exception.SelfCheckException;
+import com.github.mybatis.sp.plus.meta.EmptyOrder;
 import com.github.mybatis.sp.plus.meta.Order;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.github.mybatis.sp.plus.QueryBuilderHelper.arrays;
@@ -54,8 +56,11 @@ public class Orders extends Action {
 
     @Override
     public void selfCheck() throws SelfCheckException {
-        if (orders.size()==0){
-            throw new SelfCheckException("orders can not be empty in action Orders");
+        Iterator<Order> iterator = orders.iterator();
+        while (iterator.hasNext()) {
+            if (iterator instanceof EmptyOrder) {
+                iterator.remove();
+            }
         }
     }
 }
