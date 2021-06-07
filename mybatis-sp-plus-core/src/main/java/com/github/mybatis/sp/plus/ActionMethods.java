@@ -84,23 +84,27 @@ public class ActionMethods {
     }
 
     public static Order Order(Field field){
-        return new Order(field,false);
+        return new Order(field, false);
     }
 
-    public static Order Order(Field field, boolean desc){
-        return new Order(field,desc);
+    public static Order Order(Field field, boolean desc) {
+        return new Order(field, desc);
     }
 
-    public static Limit limit(){
+    public static Limit limit() {
         return new Limit();
     }
 
-    public static Limit limit(int limit){
+    public static NoLimit noLimit() {
+        return new NoLimit();
+    }
+
+    public static Limit limit(int limit) {
         return new Limit(limit);
     }
 
-    public static Limit limit(int limit, int offset){
-        return new Limit(limit,offset);
+    public static Limit limit(int limit, int offset) {
+        return new Limit(limit, offset);
     }
 
 }
