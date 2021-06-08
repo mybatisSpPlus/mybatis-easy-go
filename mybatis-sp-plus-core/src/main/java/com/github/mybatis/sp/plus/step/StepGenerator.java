@@ -204,9 +204,12 @@ public class StepGenerator {
     }
 
     public void LimitToStep(Limit limit){
+        if (limit instanceof NoLimit) {
+            return;
+        }
         steps.add(new Step("LIMIT"));
         steps.add(new Step().setStepValue(limit.getLimit()));
-        if (limit.getOffset()>0){
+        if (limit.getOffset() > 0) {
             steps.add(new Step("OFFSET"));
             steps.add(new Step().setStepValue(limit.getOffset()));
         }
@@ -300,6 +303,7 @@ public class StepGenerator {
                 LeftJoinToStep((LeftJoin) action);
                 break;
             case "Limit":
+            case "NoLimit":
                 LimitToStep((Limit) action);
                 break;
             case "Orders":
