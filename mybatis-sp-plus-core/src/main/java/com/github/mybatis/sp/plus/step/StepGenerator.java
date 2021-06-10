@@ -904,6 +904,9 @@ public class StepGenerator {
 
     public void tableToStep(Table table) throws Exception {
         table.selfCheck();
+        if (StringUtils.isNotBlank(table.getSpecialPrefix())) {
+            steps.add(new Step(table.getSpecialPrefix()));
+        }
         if (StringUtils.isNotBlank(table.getName())) {
             if (StringUtils.isNotBlank(table.getSchema())) {
                 steps.add(new Step(dialect + table.getSchema() + dialect));
@@ -916,6 +919,9 @@ public class StepGenerator {
                 actionToStep(action);
             }
             steps.add(new Step(")"));
+        }
+        if (StringUtils.isNotBlank(table.getSpecialPostfix())) {
+            steps.add(new Step(table.getSpecialPostfix()));
         }
         if (table.getAlias() != null) {
             aliasToStep(table.getAlias());

@@ -12,9 +12,17 @@ import java.util.List;
  * @author zhouyu74748585@hotmail.com
  * @date 2021/4/8 10:44
  */
-public class Table  extends Meta {
+public class Table extends Meta {
 
-    List<Action> actions=new ArrayList<>();
+    List<Action> actions = new ArrayList<>();
+    /**
+     * 比如mysql的BINARY，前缀，后缀会原样体现在sql中
+     */
+    private String specialPrefix;
+    /**
+     * 特殊后缀，与前缀一起可以组成部分暂时不持支的函数等
+     */
+    private String specialPostfix;
 
     private String schema;
 
@@ -22,7 +30,7 @@ public class Table  extends Meta {
 
     private Alias alias;
 
-    public Table(){
+    public Table() {
 
     }
 
@@ -90,8 +98,36 @@ public class Table  extends Meta {
         return this;
     }
 
+    public String getSpecialPrefix() {
+        return specialPrefix;
+    }
+
+    public Table setSpecialPrefix(String specialPrefix) {
+        this.specialPrefix = specialPrefix;
+        return this;
+    }
+
+    public Table prefix(String specialPrefix) {
+        this.specialPrefix = specialPrefix;
+        return this;
+    }
+
+    public String getSpecialPostfix() {
+        return specialPostfix;
+    }
+
+    public Table setSpecialPostfix(String specialPostfix) {
+        this.specialPostfix = specialPostfix;
+        return this;
+    }
+
+    public Table postfix(String specialPostfix) {
+        this.specialPostfix = specialPostfix;
+        return this;
+    }
+
     public void selfCheck() throws SelfCheckException {
-        if (StringUtils.isBlank(name)&&actions.size()==0){
+        if (StringUtils.isBlank(name) && actions.size() == 0) {
             throw new SelfCheckException("table name can not be null where it‘s not a sub query");
         }
     }

@@ -263,15 +263,24 @@ public class QueryBuilderHelper {
     }
 
     public static Table tableNameToTable(String tableName){
-        Table table=new Table();
-        if (tableName.contains(".")){
-            String[] strs=tableName.split("\\.");
+        Table table = new Table();
+        //判断是否有特殊前缀
+        if (tableName.contains("@")) {
+            String[] strs = tableName.split("@");
+            table.setSpecialPrefix(strs[0].trim());
+            tableName = strs[1].trim();
+            if (strs.length == 3) {
+                table.setSpecialPostfix(strs[2].trim());
+            }
+        }
+        if (tableName.contains(".")) {
+            String[] strs = tableName.split("\\.");
             table.setSchema(strs[0].trim()).setName(strs[1].trim());
-        }else {
+        } else {
             table.setName(tableName.trim());
         }
-        if (table.getName().toLowerCase().contains(" as ")){
-            String[] strs=getNameAndAlias(table.getName());
+        if (table.getName().toLowerCase().contains(" as ")) {
+            String[] strs = getNameAndAlias(table.getName());
             table.setName(strs[0]);
             table.setAlias(new Alias(strs[1]));
         }else {
