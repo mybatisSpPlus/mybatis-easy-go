@@ -1,7 +1,6 @@
 package com.github.mybatis.sp.plus;
 
 import com.github.mybatis.sp.plus.actions.*;
-import com.github.mybatis.sp.plus.exception.PageException;
 import com.github.mybatis.sp.plus.exception.SelfCheckException;
 import com.github.mybatis.sp.plus.meta.Alias;
 import com.github.mybatis.sp.plus.meta.Result;
@@ -205,41 +204,17 @@ public abstract class Action {
     }
 
     public long getCount() throws Exception {
-        //如果包含union 则不能直接替换前面的select,需要整体作为子查询
-        if (hasUnion()) {
-            From count = ActionFunctionSource.from(select(count(constantField(1)).as("countNum")), this.asTable("PAGE_TEMP"));
-            List<Map<String, Object>> countMap = getMapper().executeQuery(count.getStepGenerator().toStep(printSql, setParameter));
-            long total = Long.parseLong(countMap.get(0).get("countNum").toString());
-            return total;
-        } else {
-            if (!(builders.getActionTree().get(0) instanceof Select)) {
-                throw new PageException("page query must start with select");
-            }
-            Action select = builders.getActionTree().get(0);
-            builders.getActionTree().set(0, select(count(constantField(1)).as("countNum")));
-            List<Map<String, Object>> countMap = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
-            builders.getActionTree().set(0, select);
-            long total = Long.parseLong(countMap.get(0).get("countNum").toString());
-            return total;
-        }
+        From count = ActionFunctionSource.from(select(count(constantField(1)).as("countNum")), this.asTable("PAGE_TEMP"));
+        List<Map<String, Object>> countMap = getMapper().executeQuery(count.getStepGenerator().toStep(printSql, setParameter));
+        long total = Long.parseLong(countMap.get(0).get("countNum").toString());
+        return total;
     }
 
     public List<Map<String, Object>> getPageData(int pageIndex, int pageSize) throws Exception {
-        //如果包含union 则不能直接在后面添加limit,需要整体作为子查询
-        if (hasUnion()) {
-            Limit data = ActionFunctionSource.limit(ActionFunctionSource.from(select(allField()), this.asTable("PAGE_TEMP")), pageSize, (pageIndex - 1) * pageSize);
-            List<Map<String, Object>> map = getMapper().executeQuery(data.getStepGenerator().toStep(printSql, setParameter));
-            cleanNull(map);
-            return map;
-        } else {
-            if (this instanceof Limit) {
-                throw new PageException("limit is not allowed when page query");
-            }
-            Limit data = ActionFunctionSource.limit(this, pageSize, (pageIndex - 1) * pageSize);
-            List<Map<String, Object>> map = getMapper().executeQuery(data.getStepGenerator().toStep(printSql, setParameter));
-            cleanNull(map);
-            return map;
-        }
+        Limit data = ActionFunctionSource.limit(ActionFunctionSource.from(select(allField()), this.asTable("PAGE_TEMP")), pageSize, (pageIndex - 1) * pageSize);
+        List<Map<String, Object>> map = getMapper().executeQuery(data.getStepGenerator().toStep(printSql, setParameter));
+        cleanNull(map);
+        return map;
     }
 
     private boolean hasUnion() {
