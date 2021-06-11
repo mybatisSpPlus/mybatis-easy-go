@@ -23,9 +23,11 @@ public class InsertInto extends Action {
 
     Table table;
 
-    List<Field> fields=new ArrayList<>();
+    boolean ignore;
 
-    List<List<Object>> values=new ArrayList<>();
+    List<Field> fields = new ArrayList<>();
+
+    List<List<Object>> values = new ArrayList<>();
 
     public InsertInto(Table table) {
         this.table = table;
@@ -82,9 +84,18 @@ public class InsertInto extends Action {
         this.fields = fields;
     }
 
+    public boolean isIgnore() {
+        return ignore;
+    }
+
+    public InsertInto ignore(boolean ignore) {
+        this.ignore = ignore;
+        return this;
+    }
+
     @Override
     public void selfCheck() throws SelfCheckException {
-        if(table==null){
+        if (table == null) {
             throw new SelfCheckException("table can not be null in action InsertInto");
         }
     }
