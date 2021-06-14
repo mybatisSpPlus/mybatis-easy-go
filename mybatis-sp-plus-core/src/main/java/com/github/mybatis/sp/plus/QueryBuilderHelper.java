@@ -1,5 +1,6 @@
 package com.github.mybatis.sp.plus;
 
+import com.github.mybatis.sp.plus.mappingAnnotation.FIELD;
 import com.github.mybatis.sp.plus.meta.Alias;
 import com.github.mybatis.sp.plus.meta.ConstantField;
 import com.github.mybatis.sp.plus.meta.Table;
@@ -17,6 +18,8 @@ import java.util.*;
 public class QueryBuilderHelper {
 
     /**
+     * 将返回的数据转化为目标类型
+     *
      * @param clazz      目标类型，可以是父类
      * @param properties
      * @param <T>
@@ -114,11 +117,25 @@ public class QueryBuilderHelper {
         setProperties(entity.getClass(), entity, properties);
     }
 
+    /**
+     * 如果类型的字段上有FIELD注解，则以注解为准
+     *
+     * @param clazz
+     * @param entity
+     * @param map
+     * @throws Exception
+     */
     private static void setProperties(Class<?> clazz, Object entity, Map<String, Object> map) throws Exception {
         for (Field declaredField : clazz.getDeclaredFields()) {
             declaredField.setAccessible(true);
-            String fieldName = declaredField.getName();
             Class<?> fieldType = declaredField.getType();
+            String fieldName;
+            FIELD fa = declaredField.getAnnotation(FIELD.class);
+            if (fa == null) {
+                fieldName = declaredField.getName();
+            } else {
+                fieldName = fa.FieldName();
+            }
             Object value = map.get(fieldName);
             if (value != null) {
                 if (Date.class.isAssignableFrom(fieldType)) {
@@ -128,7 +145,7 @@ public class QueryBuilderHelper {
                         declaredField.set(entity, value);
                     }
                 } else if (Boolean.class.isAssignableFrom(fieldType) || fieldType == boolean.class) {
-                    if (value!=null && StringUtils.isNotBlank(value.toString())) {
+                    if (value != null && StringUtils.isNotBlank(value.toString())) {
                         declaredField.set(entity, formatBooleanString(value.toString()));
                     }
                 } else if (Integer.class.isAssignableFrom(fieldType) || fieldType == int.class) {
