@@ -17,5 +17,5 @@ public @interface FIELD {
      *
      * @return
      */
-    String FieldName();
+    String fieldName();
 }

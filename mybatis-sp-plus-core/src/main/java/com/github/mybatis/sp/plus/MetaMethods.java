@@ -1,6 +1,9 @@
 package com.github.mybatis.sp.plus;
 
+import com.github.mybatis.sp.plus.exception.NoAnnotationException;
 import com.github.mybatis.sp.plus.meta.*;
+
+import static com.github.mybatis.sp.plus.QueryBuilderHelper.tableNameToTable;
 
 /**
  * @author zhouyu74748585@hotmail.com
@@ -11,27 +14,35 @@ public class MetaMethods {
      * meta快捷方法
      * @return
      */
-    public static Table table(){
+    public static Table table() {
         return new Table();
     }
 
-    public static Table table(String name){
-        return QueryBuilderHelper.tableNameToTable(name);
+    public static Table table(String name) {
+        return tableNameToTable(name);
     }
 
-    public static Table table(String name, Alias alias){
-        return QueryBuilderHelper.tableNameToTable(name).setAlias(alias);
+    public static Table table(Class clazz) throws NoAnnotationException {
+        return tableNameToTable(QueryBuilderHelper.getTable(clazz));
     }
 
-    public static Field field(String name){
+    public static Table table(String name, Alias alias) {
+        return tableNameToTable(name).setAlias(alias);
+    }
+
+    public static Table table(Class clazz, Alias alias) throws NoAnnotationException {
+        return tableNameToTable(QueryBuilderHelper.getTable(clazz)).setAlias(alias);
+    }
+
+    public static Field field(String name) {
         return QueryBuilderHelper.fieldNameToField(name);
     }
 
-    public static Field field(String name, Alias alias){
+    public static Field field(String name, Alias alias) {
         return QueryBuilderHelper.fieldNameToField(name).setAlias(alias);
     }
 
-    public static Field field(String tableName, String name){
+    public static Field field(String tableName, String name) {
         return new Field(tableName,name);
     }
 

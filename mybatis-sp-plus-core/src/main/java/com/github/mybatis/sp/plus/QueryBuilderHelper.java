@@ -1,6 +1,9 @@
 package com.github.mybatis.sp.plus;
 
+import com.github.mybatis.sp.plus.exception.NoAnnotationException;
 import com.github.mybatis.sp.plus.mappingAnnotation.FIELD;
+import com.github.mybatis.sp.plus.mappingAnnotation.ID;
+import com.github.mybatis.sp.plus.mappingAnnotation.TABLE;
 import com.github.mybatis.sp.plus.meta.Alias;
 import com.github.mybatis.sp.plus.meta.ConstantField;
 import com.github.mybatis.sp.plus.meta.Table;
@@ -134,7 +137,7 @@ public class QueryBuilderHelper {
             if (fa == null) {
                 fieldName = declaredField.getName();
             } else {
-                fieldName = fa.FieldName();
+                fieldName = fa.fieldName();
             }
             Object value = map.get(fieldName);
             if (value != null) {
@@ -229,6 +232,75 @@ public class QueryBuilderHelper {
     public static boolean isConstantField(Object obj) {
         return obj instanceof ConstantField;
     }
+
+    public static String getTable(Class<?> tClass) throws NoAnnotationException {
+        TABLE ta = tClass.getAnnotation(TABLE.class);
+        if (ta != null) {
+            if (StringUtils.isNotBlank(ta.schema())) {
+                return ta.schema() + "." + ta.tableName();
+            } else {
+                return ta.tableName();
+            }
+        } else {
+            throw new NoAnnotationException("there is no TABLE annotation in Class " + tClass.getSimpleName());
+        }
+    }
+
+    public static String getIdField(Class<?> tClass) throws NoAnnotationException {
+        for (java.lang.reflect.Field declaredField : tClass.getDeclaredFields()) {
+            ID ia = declaredField.getAnnotation(ID.class);
+            if (ia != null) {
+                FIELD fa = declaredField.getAnnotation(FIELD.class);
+                if (fa != null) {
+                    return fa.fieldName();
+                } else {
+                    return declaredField.getName();
+                }
+            }
+        }
+        throw new NoAnnotationException("there is no ID annotation in Class " + tClass.getSimpleName());
+    }
+
+    public static List<java.lang.reflect.Field> getFields(Class<?> tClass) throws Exception {
+        List<java.lang.reflect.Field> result = new ArrayList<>();
+        for (java.lang.reflect.Field declaredField : tClass.getDeclaredFields()) {
+            FIELD fa = declaredField.getAnnotation(FIELD.class);
+            if (fa != null) {
+                declaredField.setAccessible(true);
+                result.add(declaredField);
+            }
+        }
+        if (result.size() == 0) {
+            throw new NoAnnotationException("there is no FIELD annotation in Class " + tClass.getSimpleName());
+        } else {
+            return result;
+        }
+    }
+
+    public static List<Object> getValues(List<java.lang.reflect.Field> fields, Object object) throws Exception {
+        List<Object> result = new ArrayList<>();
+        for (java.lang.reflect.Field field : fields) {
+            field.setAccessible(true);
+            result.add(field.get(object));
+        }
+        return result;
+    }
+
+    public static Map<String, Object> getFieldAndValue(Object object, boolean includeNullValue) throws Exception {
+        HashMap<String, Object> hm = new HashMap<>();
+        for (java.lang.reflect.Field declaredField : object.getClass().getDeclaredFields()) {
+            FIELD fa = declaredField.getAnnotation(FIELD.class);
+            if (fa != null) {
+                declaredField.setAccessible(true);
+                Object value = declaredField.get(object);
+                if (value != null || includeNullValue) {
+                    hm.put(fa.fieldName(), value);
+                }
+            }
+        }
+        return hm;
+    }
+
 
     /**
      * 将字段名转为字段对象，支持的格式
