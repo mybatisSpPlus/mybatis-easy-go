@@ -15,6 +15,8 @@ import static com.github.mybatis.sp.plus.QueryBuilderHelper.tableNameToTable;
  * @date 2021/4/12 22:44
  */
 public class ActionMethods {
+
+
     /*
     action 的快捷生成方法
      */

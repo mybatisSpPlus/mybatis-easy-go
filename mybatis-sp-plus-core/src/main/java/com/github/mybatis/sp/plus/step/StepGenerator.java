@@ -184,9 +184,12 @@ public class StepGenerator {
     public void HavingToStep(Having having) throws Exception {
         if (having.getConditions().size() > 0) {
             steps.add(new Step("HAVING"));
+            int stepLength = steps.size();
             for (Condition condition : having.getConditions()) {
                 conditionToStep(condition);
-                steps.add(new Step("AND"));
+                if (stepLength < steps.size()) {
+                    steps.add(new Step("AND"));
+                }
             }
             steps.removeLast();
         }
@@ -217,11 +220,18 @@ public class StepGenerator {
 
     public void OnToStep(On on) throws Exception {
         steps.add(new Step("ON"));
+        int stepLength = steps.size();
         for (Condition condition : on.getConditions()) {
             conditionToStep(condition);
-            steps.add(new Step("AND"));
+            if (stepLength < steps.size()) {
+                steps.add(new Step("AND"));
+            }
         }
-        steps.removeLast();
+        if (stepLength < steps.size()) {
+            steps.removeLast();
+        } else {
+            throw new Exception("conditions can not be empty in action On");
+        }
     }
 
     public void WhereToStep(Where where) throws Exception {
@@ -351,8 +361,8 @@ public class StepGenerator {
         if (and.getAndCondition().size() > 0) {
             steps.add(new Step("("));
             int stepLength = steps.size();
-            for (Condition cond : and.getAndCondition()) {
-                conditionToStep(cond);
+            for (Condition condition : and.getAndCondition()) {
+                conditionToStep(condition);
                 if (stepLength < steps.size()) {
                     steps.add(new Step("AND"));
                 }
@@ -368,8 +378,8 @@ public class StepGenerator {
         if (or.getOrCondition().size() > 0) {
             steps.add(new Step("("));
             int stepLength = steps.size();
-            for (Condition cond : or.getOrCondition()) {
-                conditionToStep(cond);
+            for (Condition condition : or.getOrCondition()) {
+                conditionToStep(condition);
                 if (stepLength < steps.size()) {
                     steps.add(new Step("OR"));
                 }
