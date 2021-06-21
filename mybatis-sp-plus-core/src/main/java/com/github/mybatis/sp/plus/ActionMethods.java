@@ -265,7 +265,6 @@ public class ActionMethods {
 
     /**
      * 传入带有注解的类型和id进行删除
-     *
      * @param tClass 带有注解的类型
      * @param Id     id值
      * @param
@@ -281,7 +280,6 @@ public class ActionMethods {
 
     /**
      * 传入带有注解的类型和id进行删除
-     *
      * @param tClass    带有注解的类型
      * @param condition 过滤条件
      * @param
