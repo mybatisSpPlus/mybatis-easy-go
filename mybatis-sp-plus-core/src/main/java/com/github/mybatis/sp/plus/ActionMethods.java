@@ -210,11 +210,19 @@ public class ActionMethods {
      * @throws Exception
      */
     public static <T> List<T> selectList(Class<T> tClass) throws Exception {
-        return selectList(tClass, emptyCondition());
+        return selectList(tClass, emptyCondition(), null);
     }
 
     public static <T> List<T> selectList(Class<T> tClass, Order... orders) throws Exception {
-        return selectList(tClass, emptyCondition(), orders);
+        return selectList(tClass, emptyCondition(), null, orders);
+    }
+
+    public static <T> List<T> selectList(Class<T> tClass, int length) throws Exception {
+        return selectList(tClass, emptyCondition(), length);
+    }
+
+    public static <T> List<T> selectList(Class<T> tClass, int length, Order... orders) throws Exception {
+        return selectList(tClass, emptyCondition(), length, orders);
     }
 
     /**
@@ -226,22 +234,22 @@ public class ActionMethods {
      * @return
      * @throws Exception
      */
-    public static <T> List<T> selectList(Class<T> tClass, Condition condition, Order... orders) throws Exception {
+    public static <T> List<T> selectList(Class<T> tClass, Condition condition, Integer length, Order... orders) throws Exception {
         String tableName = getTable(tClass);
         Where where = where(from(select(allField()), tableName), condition != null ? condition : emptyCondition());
         if (orders != null && orders.length > 0) {
-            return orderBy(where, orders).executeListSelect(tClass);
+            return ActionFunctionSource.limit(orderBy(where, orders), length != null ? limit(length) : noLimit()).executeListSelect(tClass);
         } else {
-            return where.executeListSelect(tClass);
+            return ActionFunctionSource.limit(where, length != null ? limit(length) : noLimit()).executeListSelect(tClass);
         }
     }
 
     public static <T> PageRecord<T> selectPage(Class<T> tClass, int index, int size) throws Exception {
-        return selectPage(tClass, index, size, emptyCondition());
+        return selectPage(tClass, emptyCondition(), index, size);
     }
 
     public static <T> PageRecord<T> selectPage(Class<T> tClass, int index, int size, Order... orders) throws Exception {
-        return selectPage(tClass, index, size, emptyCondition(), orders);
+        return selectPage(tClass, emptyCondition(), index, size, orders);
     }
 
     /**
@@ -253,7 +261,7 @@ public class ActionMethods {
      * @return
      * @throws Exception
      */
-    public static <T> PageRecord<T> selectPage(Class<T> tClass, int index, int size, Condition condition, Order... orders) throws Exception {
+    public static <T> PageRecord<T> selectPage(Class<T> tClass, Condition condition, int index, int size, Order... orders) throws Exception {
         String tableName = getTable(tClass);
         Where where = where(from(select(allField()), tableName), condition != null ? condition : emptyCondition());
         if (orders != null && orders.length > 0) {
@@ -271,6 +279,7 @@ public class ActionMethods {
      * @return 删除的条数
      * @throws Exception
      */
+
     public static int deleteOne(Class<?> tClass, Object Id) throws Exception {
         String tableName = getTable(tClass);
         String idName = getIdField(tClass);
