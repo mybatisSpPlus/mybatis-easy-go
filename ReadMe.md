@@ -4,6 +4,15 @@
 ## 使用方式
 
 ### 使用前准备
+maven pom 中添加依赖
+``` xml
+<dependency>
+  <groupId>io.github.mybatisSpPlus</groupId>
+  <artifactId>mybatis-easy-go-core</artifactId>
+  <version>0.1</version>
+</dependency>
+```
+
 在spring boot程序中
 增加扫描
 
