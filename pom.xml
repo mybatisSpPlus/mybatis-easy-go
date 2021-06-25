@@ -10,10 +10,10 @@
         </license>
     </licenses>
     <scm>
-        <tag>mybatis-sp-plus-V0.1</tag>
-        <url>git@github.com:mybatisSpPlus/mybatis-sp-plus.git</url>
-        <connection>scm:git:git@github.com:mybatisSpPlus/mybatis-sp-plus.git</connection>
-        <developerConnection>scm:git:git@github.com:mybatisSpPlus/mybatis-sp-plus.git</developerConnection>
+        <tag>v0.1</tag>
+        <url>git@github.com:mybatisSpPlus/mybatis-easy-go.git</url>
+        <connection>scm:git:git@github.com:mybatisSpPlus/mybatis-easy-go.git</connection>
+        <developerConnection>scm:git:git@github.com:mybatisSpPlus/mybatis-easy-go.git</developerConnection>
     </scm>
     <developers>
         <developer>
@@ -21,16 +21,16 @@
             <email>zhouyu74748585@hotmail.com</email>
         </developer>
     </developers>
-    <name>mybatis-sp-plus</name>
+    <name>Mybatis Easy GO</name>
     <description>让开发者可以用接近书写sql的方式构建各种查询。并且方便的处理类型的转换，分页等工作。并且可以在切换源数据库后可以自动适配</description>
-    <url>https://github.com/mybatisSpPlus/mybatis-sp-plus</url>
+    <url>https://github.com/mybatisSpPlus/mybatis-easy-go</url>
     <groupId>io.github.mybatisSpPlus</groupId>
-    <artifactId>mybatis-sp-plus</artifactId>
+    <artifactId>mybatis-easy-go</artifactId>
     <packaging>pom</packaging>
     <version>0.1</version>
     <modules>
-        <module>mybatis-sp-plus-processors</module>
-        <module>mybatis-sp-plus-core</module>
+        <module>mybatis-easy-go-processors</module>
+        <module>mybatis-easy-go-core</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -125,21 +125,5 @@
                 </repository>
             </distributionManagement>
         </profile>
-        <profile>
-            <id>sefon</id>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>cdsfdev-snapshots</id>
-                    <name>snapshots</name>
-                    <url>http://10.0.5.78/repository/cdsfdev-snapshots/</url>
-                </snapshotRepository>
-                <repository>
-                    <id>cdsfdev-release</id>
-                    <name>release</name>
-                    <url>http://10.0.5.78/repository/cdsfdev/</url>
-                </repository>
-            </distributionManagement>
-        </profile>
     </profiles>
-
 </project>

@@ -1,6 +1,6 @@
-## Welcome to mybatis-sp-plus Pages
+## Welcome to Mybatis Easy Go Pages
 
-# mybatis-sp-plus
+# Mybatis Easy Go
 让开发者可以用接近书写sql的方式构建各种查询。并且方便的处理类型的转换，分页等工作。并且可以在切换源数据库后可以自动适配
 
 ## 使用方式
@@ -8,10 +8,11 @@
 ### 使用前准备
 在spring boot程序中
 增加扫描
+
 ``` java
   @SpringBootApplication
-  @ComponentScan("com.github.mybatis.sp.plus.spring")
-  @MapperScan("com.github.mybatis.sp.plus.spring")
+  @ComponentScan("com.github.mybatis.easy.go.spring")
+  @MapperScan("com.github.mybatis.easy.go.spring")
   public class SpingBootAppBizApplication{
     public static void main(String[] args) {
         SpringApplication.run(SpingBootAppBizApplication.class, args);
@@ -19,11 +20,12 @@
   }
 ```
 使用时引入下面依赖
+
 ``` java
-import static com.github.mybatis.sp.plus.ActionMethods.*;
-import static com.github.mybatis.sp.plus.ConditionMethods.*;
-import static com.github.mybatis.sp.plus.FunctionMethods.*;
-import static com.github.mybatis.sp.plus.MetaMethods.*;
+import static ActionMethods.*;
+import static ConditionMethods.*;
+import static FunctionMethods.*;
+import static MetaMethods.*;
 ```
 
 ### 开始使用
