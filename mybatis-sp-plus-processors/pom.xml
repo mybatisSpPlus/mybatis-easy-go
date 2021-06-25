@@ -4,7 +4,7 @@
     <parent>
         <artifactId>mybatis-sp-plus</artifactId>
         <groupId>io.github.mybatisSpPlus</groupId>
-        <version>v0.1</version>
+        <version>0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

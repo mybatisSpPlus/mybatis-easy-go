@@ -10,7 +10,7 @@
         </license>
     </licenses>
     <scm>
-        <tag>mybatis-sp-plus-1.0</tag>
+        <tag>mybatis-sp-plus-V0.1</tag>
         <url>git@github.com:mybatisSpPlus/mybatis-sp-plus.git</url>
         <connection>scm:git:git@github.com:mybatisSpPlus/mybatis-sp-plus.git</connection>
         <developerConnection>scm:git:git@github.com:mybatisSpPlus/mybatis-sp-plus.git</developerConnection>
@@ -19,14 +19,15 @@
         <developer>
             <name>Yu Zhou</name>
             <email>zhouyu74748585@hotmail.com</email>
-            <organization>sefonsoft</organization>
         </developer>
     </developers>
-
+    <name>mybatis-sp-plus</name>
+    <description>让开发者可以用接近书写sql的方式构建各种查询。并且方便的处理类型的转换，分页等工作。并且可以在切换源数据库后可以自动适配</description>
+    <url>https://github.com/mybatisSpPlus/mybatis-sp-plus</url>
     <groupId>io.github.mybatisSpPlus</groupId>
     <artifactId>mybatis-sp-plus</artifactId>
     <packaging>pom</packaging>
-    <version>v0.1</version>
+    <version>0.1</version>
     <modules>
         <module>mybatis-sp-plus-processors</module>
         <module>mybatis-sp-plus-core</module>
@@ -99,12 +100,9 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <version>1.5</version>
-                        <configuration>
-                            <skip>true</skip>
-                        </configuration>
                         <executions>
                             <execution>
-                                <id>sign-artifacts</id>
+                                <id>gpg</id>
                                 <phase>verify</phase>
                                 <goals>
                                     <goal>sign</goal>
