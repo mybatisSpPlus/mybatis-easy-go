@@ -14,7 +14,6 @@ import java.lang.annotation.Target;
 public @interface _FullJoin_Source {
     /**
      * 引入此方法需要添加的依赖对象的全路径，多个逗号分割
-     * @return
      */
     Class[] requiredClass();
 }
