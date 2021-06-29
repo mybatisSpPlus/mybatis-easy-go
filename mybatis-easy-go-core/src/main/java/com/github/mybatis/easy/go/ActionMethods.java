@@ -97,6 +97,10 @@ public class ActionMethods {
         return new Order(field, desc);
     }
 
+    public static Order Order(Field field, Order.ORDER desc) {
+        return new Order(field, desc);
+    }
+
     public static Limit limit() {
         return new Limit();
     }

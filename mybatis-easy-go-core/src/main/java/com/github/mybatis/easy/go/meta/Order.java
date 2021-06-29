@@ -21,6 +21,11 @@ public class Order extends Meta {
         this.desc = desc;
     }
 
+    public Order(Field field, ORDER desc) {
+        this.field = field;
+        this.desc = desc == ORDER.DESC;
+    }
+
     public Field getField() {
         return field;
     }
@@ -48,5 +53,9 @@ public class Order extends Meta {
         if (field == null) {
             throw new SelfCheckException("field can not be null in order");
         }
+    }
+
+    public enum ORDER {
+        ASC, DESC
     }
 }
