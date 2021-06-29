@@ -8,6 +8,8 @@ import com.github.mybatis.easy.go.conditions.*;
 import com.github.mybatis.easy.go.functions.*;
 import com.github.mybatis.easy.go.meta.*;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.Map;
  * @date 2021/4/15 8:59
  */
 public class StepGenerator {
+    Logger logger = LoggerFactory.getLogger(StepGenerator.class);
     String dialect = "";
     List<Action> actions;
     LinkedList<Step> steps = new LinkedList<>();
@@ -43,7 +46,7 @@ public class StepGenerator {
             actionToStep(action);
         }
         if (printSql) {
-            System.out.println(toSql(setParameter));
+            logger.info(toSql(setParameter));
         }
         return steps;
     }
