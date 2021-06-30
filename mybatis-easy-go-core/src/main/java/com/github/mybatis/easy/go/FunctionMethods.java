@@ -39,6 +39,17 @@ public class FunctionMethods {
     }
 
     /**
+     * 字段拼接方法
+     *
+     * @param separator 分隔符
+     * @param fields    需要拼接的字段
+     * @return
+     */
+    public static Concat concat(String separator, Field... fields) {
+        return new Concat(separator, fields);
+    }
+
+    /**
      * 分组拼接字符串
      *
      * @param fields 需要拼接的字段
@@ -46,6 +57,17 @@ public class FunctionMethods {
      */
     public static GroupConcat groupConcat(Field... fields) {
         return new GroupConcat(fields);
+    }
+
+    /**
+     * 分组拼接字符串
+     *
+     * @param separator 分隔符
+     * @param fields    需要拼接的字段
+     * @return
+     */
+    public static GroupConcat groupConcat(String separator, Field... fields) {
+        return new GroupConcat(separator, fields);
     }
 
     /**
@@ -314,8 +336,19 @@ public class FunctionMethods {
      * @param b 除数
      * @return
      */
-    public static Surplus surplus(Object a, Object b) {
-        return new Surplus(a, b);
+    public static Mod mod(Object a, Object b) {
+        return new Mod(a, b);
+    }
+
+    /**
+     * 求余/取模
+     *
+     * @param a 被除数
+     * @param b 除数
+     * @return
+     */
+    public static Mod surplus(Object a, Object b) {
+        return new Mod(a, b);
     }
 
     /**

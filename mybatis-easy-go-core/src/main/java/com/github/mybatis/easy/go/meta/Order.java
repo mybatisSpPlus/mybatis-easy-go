@@ -10,6 +10,7 @@ import com.github.mybatis.easy.go.exception.SelfCheckException;
 public class Order extends Meta {
 
     Field field;
+
     boolean desc;
 
 

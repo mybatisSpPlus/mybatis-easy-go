@@ -17,6 +17,8 @@ public class Concat extends Function {
 
     List<Field> objs = new ArrayList<>();
 
+    String separator;
+
     public Concat() {
     }
 
@@ -25,6 +27,11 @@ public class Concat extends Function {
     }
 
     public Concat(Field... objs) {
+        this.objs = QueryBuilderHelper.arrays(objs);
+    }
+
+    public Concat(String separator, Field... objs) {
+        this.separator = separator;
         this.objs = QueryBuilderHelper.arrays(objs);
     }
 
@@ -42,6 +49,15 @@ public class Concat extends Function {
         } else {
             this.objs.addAll(Arrays.asList(objs));
         }
+    }
+
+    public String getSeparator() {
+        return separator;
+    }
+
+    public Concat withSeparator(String separator) {
+        this.separator = separator;
+        return this;
     }
 
     @Override

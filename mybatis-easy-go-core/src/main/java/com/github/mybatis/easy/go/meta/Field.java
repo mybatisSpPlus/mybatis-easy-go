@@ -193,8 +193,8 @@ public class Field extends Meta {
         return new Subtract(this, b);
     }
 
-    public Surplus surplus(Object b) {
-        return new Surplus(this, b);
+    public Mod mod(Object b) {
+        return new Mod(this, b);
     }
 
     public void selfCheck() throws SelfCheckException {

@@ -1,6 +1,6 @@
 package com.github.mybatis.easy.go.processor;
 
-import com.github.mybatis.easy.go.annotation.FunctionBag;
+import com.github.mybatis.easy.go.actionAnnotation.FunctionBag;
 import com.sun.source.tree.Tree;
 import com.sun.source.util.TreePath;
 import com.sun.source.util.Trees;
@@ -30,7 +30,7 @@ import java.util.*;
  * @author zhouyu74748585@hotmail.com
  * @date 2021/4/16 21:04
  */
-@SupportedAnnotationTypes("com.github.mybatis.easy.go.annotation.*")
+@SupportedAnnotationTypes("com.github.mybatis.easy.go.actionAnnotation.*")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class AnnotationProcessor extends AbstractProcessor {
 

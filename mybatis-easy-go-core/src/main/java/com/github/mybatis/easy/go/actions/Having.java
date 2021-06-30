@@ -3,10 +3,10 @@ package com.github.mybatis.easy.go.actions;
 import com.github.mybatis.easy.go.Action;
 import com.github.mybatis.easy.go.Condition;
 import com.github.mybatis.easy.go.QueryBuilderHelper;
-import com.github.mybatis.easy.go.annotation._Limit;
-import com.github.mybatis.easy.go.annotation._OrderBy;
-import com.github.mybatis.easy.go.annotation._Union;
-import com.github.mybatis.easy.go.annotation._UnionAll;
+import com.github.mybatis.easy.go.actionAnnotation._Limit;
+import com.github.mybatis.easy.go.actionAnnotation._OrderBy;
+import com.github.mybatis.easy.go.actionAnnotation._Union;
+import com.github.mybatis.easy.go.actionAnnotation._UnionAll;
 import com.github.mybatis.easy.go.conditions.EmptyCondition;
 import com.github.mybatis.easy.go.exception.SelfCheckException;
 

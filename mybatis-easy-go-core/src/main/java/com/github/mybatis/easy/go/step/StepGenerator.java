@@ -7,6 +7,7 @@ import com.github.mybatis.easy.go.actions.*;
 import com.github.mybatis.easy.go.conditions.*;
 import com.github.mybatis.easy.go.functions.*;
 import com.github.mybatis.easy.go.meta.*;
+import com.github.mybatis.easy.go.supportAnnotation.UnSupportProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ public class StepGenerator {
     String dialect = "";
     List<Action> actions;
     LinkedList<Step> steps = new LinkedList<>();
+
 
     public StepGenerator(List<Action> actions, String dialect) {
         this.actions = actions;
@@ -286,6 +288,7 @@ public class StepGenerator {
 
     public void actionToStep(Action action) throws Exception {
         action.selfCheck();
+        checkUnSupport(action);
         String name = action.getClass().getSimpleName();
         switch (name) {
             case "CrossJoin":
@@ -503,6 +506,7 @@ public class StepGenerator {
 
     public void conditionToStep(Condition condition) throws Exception {
         condition.selfCheck();
+        checkUnSupport(condition);
         String name = condition.getClass().getSimpleName();
         switch (name) {
             case "And":
@@ -581,10 +585,20 @@ public class StepGenerator {
     }
 
     public void ConcatToStep(Concat concat) throws Exception {
-        steps.add(new Step("CONCAT("));
-        for (Field obj : concat.getObjs()) {
-            fieldToStep(obj);
+        if (concat.getSeparator() == null) {
+            steps.add(new Step("CONCAT("));
+            for (Field obj : concat.getObjs()) {
+                fieldToStep(obj);
+                steps.add(new Step(","));
+            }
+        } else {
+            steps.add(new Step("CONCAT_WS("));
+            steps.add(new Step().setStepValue(concat.getSeparator()));
             steps.add(new Step(","));
+            for (Field obj : concat.getObjs()) {
+                fieldToStep(obj);
+                steps.add(new Step(","));
+            }
         }
         steps.removeLast();
         steps.add(new Step(")"));
@@ -592,11 +606,26 @@ public class StepGenerator {
 
     public void GroupConcatToStep(GroupConcat groupConcat) throws Exception {
         steps.add(new Step("GROUP_CONCAT("));
+        if (groupConcat.isDistinct()) {
+            steps.add(new Step("DISTINCT"));
+        }
         for (Field obj : groupConcat.getObjs()) {
             fieldToStep(obj);
             steps.add(new Step(","));
         }
         steps.removeLast();
+        if (groupConcat.getOrders().size() > 0) {
+            steps.add(new Step("ORDER BY"));
+            for (Order order : groupConcat.getOrders()) {
+                orderToStep(order);
+                steps.add(new Step(","));
+            }
+            steps.removeLast();
+        }
+        if (groupConcat.getSeparator() != null) {
+            steps.add(new Step("SEPARATOR"));
+            steps.add(new Step().setStepValue(groupConcat.getSeparator()));
+        }
         steps.add(new Step(")"));
     }
 
@@ -754,10 +783,10 @@ public class StepGenerator {
         valueToStep(divide.getValueB());
     }
 
-    public void SurplusToStep(Surplus surplus) throws Exception {
-        valueToStep(surplus.getValueA());
+    public void ModToStep(Mod mod) throws Exception {
+        valueToStep(mod.getValueA());
         steps.add(new Step("%"));
-        valueToStep(surplus.getValueB());
+        valueToStep(mod.getValueB());
     }
 
     public void CustomFunctionToStep(CustomFunction customFunction) throws Exception {
@@ -829,6 +858,9 @@ public class StepGenerator {
             case "Min":
                 MinToStep((Min) function);
                 break;
+            case "Mod":
+                ModToStep((Mod) function);
+                break;
             case "Multiply":
                 MultiplyToStep((Multiply) function);
                 break;
@@ -853,9 +885,6 @@ public class StepGenerator {
             case "Subtract":
                 SubtractToStep((Subtract) function);
                 break;
-            case "Surplus":
-                SurplusToStep((Surplus) function);
-                break;
             case "Ucase":
                 UcaseToStep((Ucase) function);
                 break;
@@ -878,6 +907,7 @@ public class StepGenerator {
 
     public void fieldToStep(Field field) throws Exception {
         field.selfCheck();
+        checkUnSupport(field);
         if (StringUtils.isNotBlank(field.getSpecialPrefix())) {
             steps.add(new Step(field.getSpecialPrefix()));
         }
@@ -911,12 +941,14 @@ public class StepGenerator {
 
     public void aliasToStep(Alias alias) throws Exception {
         alias.selfCheck();
+        checkUnSupport(alias);
         steps.add(new Step("AS"));
         steps.add(new Step(dialect + alias.getName() + dialect));
     }
 
     public void tableToStep(Table table) throws Exception {
         table.selfCheck();
+        checkUnSupport(table);
         if (StringUtils.isNotBlank(table.getSpecialPrefix())) {
             steps.add(new Step(table.getSpecialPrefix()));
         }
@@ -943,9 +975,48 @@ public class StepGenerator {
 
     public void orderToStep(Order order) throws Exception {
         order.selfCheck();
+        checkUnSupport(order);
         fieldToStep(order.getField());
         if (order.isDesc()) {
             steps.add(new Step("DESC"));
+        }
+    }
+
+    private void checkUnSupport(Object obj) throws IllegalAccessException {
+        Class generatorClass = this.getClass();
+        checkUnSupport(generatorClass, obj.getClass(), obj);
+    }
+
+    private void checkUnSupport(Class generatorClass, Class objClazz, Object obj) throws IllegalAccessException {
+        String objName = obj.getClass().getSimpleName();
+        String dbName = generatorClass.getSimpleName().split("Step")[0];
+        for (java.lang.reflect.Field declaredField : objClazz.getDeclaredFields()) {
+            UnSupportProperty usp = declaredField.getAnnotation(UnSupportProperty.class);
+            if (usp == null) {
+                continue;
+            }
+            for (Class aClass : usp.unSupportGenerator()) {
+                if (aClass == generatorClass) {
+                    declaredField.setAccessible(true);
+                    Object objValue = declaredField.get(obj);
+                    if (objValue != null) {
+                        if (objValue instanceof List) {
+                            if (((List<?>) objValue).size() > 0) {
+                                logger.warn("Property[" + declaredField.getName() + "] is unsupported in " + objName + " with " + dbName + ". Please check the Query");
+                            }
+                        } else if (objValue.getClass() == boolean.class) {
+                            if ((boolean) objValue) {
+                                logger.warn("Property[" + declaredField.getName() + "] is unsupported in " + objName + " with " + dbName + ". Please check the Query");
+                            }
+                        } else {
+                            logger.warn("Property[" + declaredField.getName() + "] is unsupported in " + objName + " with " + dbName + ". Please check the Query");
+                        }
+                    }
+                }
+            }
+        }
+        if (objClazz.getSuperclass() != Object.class) {
+            checkUnSupport(generatorClass, objClazz.getSuperclass(), obj);
         }
     }
 }

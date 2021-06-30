@@ -1,6 +1,6 @@
-package com.github.mybatis.easy.go.annotation;
+package com.github.mybatis.easy.go.actionAnnotation;
 
-import com.github.mybatis.easy.go.functionAnnotation._Limit_Source;
+import com.github.mybatis.easy.go.functionAnnotation._InnerJoin_Source;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.SOURCE)
-public @interface _Limit {
-    Class source() default _Limit_Source.class;
+public @interface _InnerJoin {
+    Class source() default _InnerJoin_Source.class;
 }

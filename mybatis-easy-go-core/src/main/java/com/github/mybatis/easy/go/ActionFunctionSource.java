@@ -1,7 +1,7 @@
 package com.github.mybatis.easy.go;
 
+import com.github.mybatis.easy.go.actionAnnotation.FunctionBag;
 import com.github.mybatis.easy.go.actions.*;
-import com.github.mybatis.easy.go.annotation.FunctionBag;
 import com.github.mybatis.easy.go.functionAnnotation.*;
 import com.github.mybatis.easy.go.meta.Field;
 import com.github.mybatis.easy.go.meta.Order;

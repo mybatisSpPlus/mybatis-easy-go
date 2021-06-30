@@ -9,9 +9,14 @@ import com.github.mybatis.easy.go.spring.BaseMapper;
 import com.github.mybatis.easy.go.spring.BeanHelper;
 import com.github.mybatis.easy.go.step.Step;
 import com.github.mybatis.easy.go.step.StepGenerator;
+import com.github.mybatis.easy.go.supportAnnotation.DatabaseVersion;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.ResultHandler;
+import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.SqlSessionUtils;
 
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -32,7 +37,7 @@ public abstract class Action {
     /**
      * 数据库类型对应的步骤生成器
      */
-    public static HashMap<String, Class> dbTypeToStepGenerator = new HashMap<>();
+    public static HashMap<String, List<Class>> dbTypeToStepGenerator = new HashMap<>();
     /**
      * 查询构造器
      */
@@ -438,8 +443,49 @@ public abstract class Action {
     public StepGenerator getStepGenerator() throws Exception {
         if (stepGenerator == null) {
             SqlSessionTemplate sessionTemplate = BeanHelper.getBean(SqlSessionTemplate.class);
+            SqlSession sqlSession = SqlSessionUtils.getSqlSession(sessionTemplate.getSqlSessionFactory(),
+                    sessionTemplate.getExecutorType(), sessionTemplate.getPersistenceExceptionTranslator());
+            String dbVersion = "";
+            try (Connection connection = sqlSession.getConnection()) {
+                dbVersion = connection.getMetaData().getDatabaseProductVersion();
+            }
             if (dbTypeToStepGenerator.containsKey(sessionTemplate.getConfiguration().getDatabaseId())) {
-                stepGenerator = (StepGenerator) dbTypeToStepGenerator.get(sessionTemplate.getConfiguration().getDatabaseId()).getConstructor(List.class).newInstance(builders.getActionTree());
+                List<Class> generatorList = dbTypeToStepGenerator.get(sessionTemplate.getConfiguration().getDatabaseId());
+                if (generatorList.size() > 1) {
+                    Class fclass = null;
+                    for (Class aClass : generatorList) {
+                        DatabaseVersion dv = (DatabaseVersion) aClass.getAnnotation(DatabaseVersion.class);
+                        if (dv != null) {
+                            String max = dv.maxVersion();
+                            String min = dv.minVersion();
+                            if (StringUtils.isNotBlank(min) && StringUtils.isNotBlank(max)) {
+                                if (max.compareToIgnoreCase(dbVersion) > 0 && min.compareToIgnoreCase(dbVersion) < 0) {
+                                    fclass = aClass;
+                                    break;
+                                }
+                            } else if (StringUtils.isNotBlank(min)) {
+                                if (min.compareToIgnoreCase(dbVersion) < 0) {
+                                    fclass = aClass;
+                                    break;
+                                }
+                            } else if (StringUtils.isNotBlank(max)) {
+                                if (max.compareToIgnoreCase(dbVersion) > 0) {
+                                    fclass = aClass;
+                                    break;
+                                }
+                            }
+                        } else {
+                            continue;
+                        }
+                    }
+                    //没有合适版本的生成器，则选择第一个版本
+                    if (fclass == null) {
+                        fclass = generatorList.get(0);
+                    }
+                    stepGenerator = (StepGenerator) fclass.getConstructor(List.class).newInstance(builders.getActionTree());
+                } else {
+                    stepGenerator = (StepGenerator) generatorList.get(0).getConstructor(List.class).newInstance(builders.getActionTree());
+                }
             } else {
                 stepGenerator = new StepGenerator(builders.getActionTree(), "");
             }

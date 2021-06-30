@@ -1,6 +1,6 @@
-package com.github.mybatis.easy.go.annotation;
+package com.github.mybatis.easy.go.actionAnnotation;
 
-import com.github.mybatis.easy.go.functionAnnotation._Union_Source;
+import com.github.mybatis.easy.go.functionAnnotation._Having_Source;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.SOURCE)
-public @interface _Union {
-    Class source() default _Union_Source.class;
+public @interface _Having {
+    Class source() default _Having_Source.class;
 }

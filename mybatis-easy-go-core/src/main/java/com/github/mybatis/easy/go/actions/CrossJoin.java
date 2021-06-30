@@ -1,6 +1,6 @@
 package com.github.mybatis.easy.go.actions;
 
-import com.github.mybatis.easy.go.annotation.*;
+import com.github.mybatis.easy.go.actionAnnotation.*;
 import com.github.mybatis.easy.go.meta.Table;
 
 /**

@@ -3,6 +3,7 @@ package com.github.mybatis.easy.go.step;
 import com.github.mybatis.easy.go.Action;
 import com.github.mybatis.easy.go.actions.Limit;
 import com.github.mybatis.easy.go.conditions.Regx;
+import com.github.mybatis.easy.go.exception.SelfCheckException;
 import com.github.mybatis.easy.go.functions.*;
 import com.github.mybatis.easy.go.meta.Alias;
 import com.github.mybatis.easy.go.meta.Field;
@@ -141,18 +142,21 @@ public class OracleLikeStepGenerator extends StepGenerator {
         for (Field obj : concat.getObjs()) {
             fieldToStep(obj);
             steps.add(new Step("||"));
+            if (concat.getSeparator() != null) {
+                steps.add(new Step().setStepValue(concat.getSeparator()));
+            }
+            steps.add(new Step("||"));
         }
         steps.removeLast();
     }
 
     public void GroupConcatToStep(GroupConcat groupConcat) throws Exception {
+        if (groupConcat.getObjs().size() > 1) {
+            throw new SelfCheckException("can not group concat more than one field with Oracle's build-in function");
+        }
         steps.add(new Step("TO_CHAR("));
         steps.add(new Step("WM_CONCAT("));
-        for (Field obj : groupConcat.getObjs()) {
-            fieldToStep(obj);
-            steps.add(new Step(","));
-        }
-        steps.removeLast();
+        fieldToStep(groupConcat.getObjs().get(0));
         steps.add(new Step(")"));
         steps.add(new Step(")"));
     }

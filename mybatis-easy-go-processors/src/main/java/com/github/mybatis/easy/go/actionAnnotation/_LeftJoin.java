@@ -1,6 +1,6 @@
-package com.github.mybatis.easy.go.annotation;
+package com.github.mybatis.easy.go.actionAnnotation;
 
-import com.github.mybatis.easy.go.functionAnnotation._Set_Source;
+import com.github.mybatis.easy.go.functionAnnotation._LeftJoin_Source;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.SOURCE)
-public @interface _Set {
-    Class source() default _Set_Source.class;
+public @interface _LeftJoin {
+    Class source() default _LeftJoin_Source.class;
 }

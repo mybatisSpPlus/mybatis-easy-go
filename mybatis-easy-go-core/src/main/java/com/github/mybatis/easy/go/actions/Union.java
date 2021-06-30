@@ -1,7 +1,7 @@
 package com.github.mybatis.easy.go.actions;
 
 import com.github.mybatis.easy.go.Action;
-import com.github.mybatis.easy.go.annotation._Select;
+import com.github.mybatis.easy.go.actionAnnotation._Select;
 import com.github.mybatis.easy.go.exception.SelfCheckException;
 
 /**

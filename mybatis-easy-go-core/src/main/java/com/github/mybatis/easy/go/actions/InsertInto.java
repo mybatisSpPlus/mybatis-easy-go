@@ -2,10 +2,15 @@ package com.github.mybatis.easy.go.actions;
 
 import com.github.mybatis.easy.go.Action;
 import com.github.mybatis.easy.go.QueryBuilderHelper;
-import com.github.mybatis.easy.go.annotation._Select;
+import com.github.mybatis.easy.go.actionAnnotation._Select;
 import com.github.mybatis.easy.go.exception.SelfCheckException;
 import com.github.mybatis.easy.go.meta.Field;
 import com.github.mybatis.easy.go.meta.Table;
+import com.github.mybatis.easy.go.step.DmStepGenerator;
+import com.github.mybatis.easy.go.step.Oracle10GStepGenerator;
+import com.github.mybatis.easy.go.step.Oracle11GStepGenerator;
+import com.github.mybatis.easy.go.step.PgStepGenerator;
+import com.github.mybatis.easy.go.supportAnnotation.UnSupportProperty;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +25,10 @@ import java.util.List;
 public class InsertInto extends Action {
 
     Table table;
-
+    @UnSupportProperty(unSupportGenerator = {DmStepGenerator.class,
+            Oracle10GStepGenerator.class,
+            Oracle11GStepGenerator.class,
+            PgStepGenerator.class})
     boolean ignore;
 
     List<Field> fields = new ArrayList<>();

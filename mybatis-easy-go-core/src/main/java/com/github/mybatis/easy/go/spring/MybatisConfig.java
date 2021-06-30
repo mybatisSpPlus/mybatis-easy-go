@@ -1,10 +1,8 @@
 package com.github.mybatis.easy.go.spring;
 
 import com.github.mybatis.easy.go.Action;
-import com.github.mybatis.easy.go.step.DmStepGenerator;
-import com.github.mybatis.easy.go.step.MysqlStepGenerator;
-import com.github.mybatis.easy.go.step.OracleStepGenerator;
-import com.github.mybatis.easy.go.step.PgStepGenerator;
+import com.github.mybatis.easy.go.step.*;
+import com.google.common.collect.Lists;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
 import org.springframework.context.annotation.Bean;
@@ -40,10 +38,10 @@ public class MybatisConfig {
         properties.setProperty("Sybase", "sybase");
         properties.setProperty("Hana", "hana");
         databaseIdProvider.setProperties(properties);
-        Action.dbTypeToStepGenerator.put("mysql", MysqlStepGenerator.class);
-        Action.dbTypeToStepGenerator.put("postgresql", PgStepGenerator.class);
-        Action.dbTypeToStepGenerator.put("oracle", OracleStepGenerator.class);
-        Action.dbTypeToStepGenerator.put("dm", DmStepGenerator.class);
+        Action.dbTypeToStepGenerator.put("mysql", Lists.newArrayList(MysqlStepGenerator.class));
+        Action.dbTypeToStepGenerator.put("postgresql", Lists.newArrayList(PgStepGenerator.class));
+        Action.dbTypeToStepGenerator.put("oracle", Lists.newArrayList(Oracle10GStepGenerator.class, Oracle11GStepGenerator.class));
+        Action.dbTypeToStepGenerator.put("dm", Lists.newArrayList(DmStepGenerator.class));
 
         return databaseIdProvider;
     }
