@@ -1002,14 +1002,14 @@ public class StepGenerator {
                     if (objValue != null) {
                         if (objValue instanceof List) {
                             if (((List<?>) objValue).size() > 0) {
-                                logger.warn("Property[" + declaredField.getName() + "] is unsupported in " + objName + " with " + dbName + ". Please check the Query");
+                                logger.error("Property[" + declaredField.getName() + "] is unsupported in " + objName + " with " + dbName + ". Please check the Query");
                             }
                         } else if (objValue.getClass() == boolean.class) {
                             if ((boolean) objValue) {
-                                logger.warn("Property[" + declaredField.getName() + "] is unsupported in " + objName + " with " + dbName + ". Please check the Query");
+                                logger.error("Property[" + declaredField.getName() + "] is unsupported in " + objName + " with " + dbName + ". Please check the Query");
                             }
                         } else {
-                            logger.warn("Property[" + declaredField.getName() + "] is unsupported in " + objName + " with " + dbName + ". Please check the Query");
+                            logger.error("Property[" + declaredField.getName() + "] is unsupported in " + objName + " with " + dbName + ". Please check the Query");
                         }
                     }
                 }
