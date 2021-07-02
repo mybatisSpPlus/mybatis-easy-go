@@ -168,6 +168,14 @@ public class QueryBuilderHelper {
                 } else if (String.class.isAssignableFrom(fieldType)) {
                     String valueTmp = value.toString();
                     declaredField.set(entity, valueTmp);
+                } else if (fieldType.isEnum()) {
+                    //如果是枚举，根据值的字符串值查找具体的枚举
+                    String valueTmp = value.toString();
+                    for (Object enumConstant : fieldType.getEnumConstants()) {
+                        if (enumConstant.toString().equals(valueTmp)) {
+                            declaredField.set(entity, enumConstant);
+                        }
+                    }
                 } else {
                     throw new Exception("unsupported type: " + fieldType);
                 }
