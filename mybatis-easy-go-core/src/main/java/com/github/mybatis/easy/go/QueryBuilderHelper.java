@@ -267,6 +267,10 @@ public class QueryBuilderHelper {
         for (java.lang.reflect.Field declaredField : tClass.getDeclaredFields()) {
             FIELD fa = declaredField.getAnnotation(FIELD.class);
             if (fa != null) {
+                ID id = declaredField.getAnnotation(ID.class);
+                if (id != null && id.autoGenerate()) {
+                    continue;
+                }
                 declaredField.setAccessible(true);
                 result.add(declaredField);
             }
