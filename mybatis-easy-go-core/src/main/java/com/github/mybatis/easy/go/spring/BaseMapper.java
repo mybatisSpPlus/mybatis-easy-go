@@ -16,7 +16,7 @@ public interface BaseMapper {
 
     List<Map<String, Object>> executeQuery(@Param("steps") List<Step> steps);
 
-    List<Map<String, Object>> executeFetchQuery(List<Step> steps);
+    List<Map<String, Object>> executeFetchQuery(@Param("steps") List<Step> steps);
 
     int executeUpdate(@Param("steps") List<Step> steps);
 

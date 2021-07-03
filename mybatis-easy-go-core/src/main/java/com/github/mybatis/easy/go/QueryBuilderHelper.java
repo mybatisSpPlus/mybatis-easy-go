@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author zhouyu74748585@hotmail.com
@@ -270,16 +271,18 @@ public class QueryBuilderHelper {
         throw new NoAnnotationException("there is no ID annotation in Class " + tClass.getSimpleName());
     }
 
-    public static List<java.lang.reflect.Field> getFields(Class<?> tClass) throws Exception {
+    public static List<java.lang.reflect.Field> getFields(Class<?> tClass, AtomicBoolean autoGenerateId, List<java.lang.reflect.Field> idField) throws Exception {
         List<java.lang.reflect.Field> result = new ArrayList<>();
         for (java.lang.reflect.Field declaredField : tClass.getDeclaredFields()) {
             FIELD fa = declaredField.getAnnotation(FIELD.class);
             if (fa != null) {
+                declaredField.setAccessible(true);
                 ID id = declaredField.getAnnotation(ID.class);
                 if (id != null && id.autoGenerate()) {
+                    autoGenerateId.set(true);
+                    idField.add(declaredField);
                     continue;
                 }
-                declaredField.setAccessible(true);
                 result.add(declaredField);
             }
         }

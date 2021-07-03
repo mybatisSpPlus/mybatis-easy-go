@@ -5,8 +5,17 @@ import com.github.mybatis.easy.go.mappingAnnotation.FIELD;
 import com.github.mybatis.easy.go.meta.Field;
 import com.github.mybatis.easy.go.meta.Order;
 import com.github.mybatis.easy.go.meta.Table;
+import com.github.mybatis.easy.go.step.Step;
+import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.SqlSessionUtils;
 
-import java.util.*;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.github.mybatis.easy.go.ActionFunctionSource.*;
 import static com.github.mybatis.easy.go.ConditionMethods.emptyCondition;
@@ -134,17 +143,19 @@ public class ActionMethods {
     /**
      * 传入带有注解的类型和对象进行插入
      *
-     * @param items 需要插入的对象，对象需要是同一个类型
+     * @param items 需要插入的对象，对象需要是同一个类型,为了能够按照正确的顺序设置自增的id，所以不支持传入Set
      * @param <T>
      * @return 插入条数
      * @throws Exception
      */
-    public static <T> int insertInto(Collection<T> items) throws Exception {
+    public static <T> int insertInto(List<T> items) throws Exception {
         if (items == null || items.size() == 0) {
             return 0;
         }
         String tableName = getTable(items.iterator().next().getClass());
-        List<java.lang.reflect.Field> refFields = getFields(items.iterator().next().getClass());
+        AtomicBoolean autoGenerateId = new AtomicBoolean(false);
+        List<java.lang.reflect.Field> idFields = new ArrayList<>();
+        List<java.lang.reflect.Field> refFields = getFields(items.iterator().next().getClass(), autoGenerateId, idFields);
         String[] fieldNames = new String[refFields.size()];
         for (int i = 0; i < refFields.size(); i++) {
             java.lang.reflect.Field f = refFields.get(i);
@@ -157,7 +168,48 @@ public class ActionMethods {
         InsertInto insertInto = ActionMethods.insertInto(tableName)
                 .fields(fieldNames)
                 .values(values);
-        return insertInto.executeInsert();
+        if (autoGenerateId.get()) {
+            //为了设置数据库生成的id,不通过mybatis执行，
+            String sql = insertInto.getStepGenerator().toSql();
+            List<Object> params = new ArrayList<>();
+            for (Step step : insertInto.getStepGenerator().toStep()) {
+                if (step.getStepValue() != null) {
+                    params.add(step.getStepValue());
+                }
+            }
+            SqlSessionTemplate sessionTemplate = insertInto.getSessionTemplate();
+            SqlSession sqlSession = SqlSessionUtils.getSqlSession(sessionTemplate.getSqlSessionFactory(),
+                    sessionTemplate.getExecutorType(), sessionTemplate.getPersistenceExceptionTranslator());
+            try (Connection connection = sqlSession.getConnection();
+                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                for (int i = 0; i < params.size(); i++) {
+                    ps.setObject(i + 1, params.get(i));
+                }
+                int count = ps.executeUpdate();
+                ResultSet rs = ps.getGeneratedKeys();
+                final ResultSetMetaData rsmd = rs.getMetaData();
+                if (rsmd.getColumnCount() < 1) {
+                    // Error?
+                } else {
+                    java.lang.reflect.Field idField = idFields.get(0);
+                    for (T item : items) {
+                        if (rs.next()) {
+                            Object id = rs.getObject(1);
+                            if (idField.getType() == int.class || idField.getType().isAssignableFrom(Integer.class)) {
+                                idField.set(item, ((java.math.BigInteger) id).intValue());
+                            } else if (idField.getType() == long.class || idField.getType().isAssignableFrom(Long.class)) {
+                                idField.set(item, ((java.math.BigInteger) id).longValue());
+                            } else {
+                                idField.set(item, id);
+                            }
+                        }
+                    }
+                }
+                return count;
+            }
+        } else {
+            return insertInto.executeInsert();
+        }
     }
 
     public static <T> int update(T item) throws Exception {
