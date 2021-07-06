@@ -2,12 +2,12 @@ package com.github.mybatis.easy.go.actions;
 
 import com.github.mybatis.easy.go.Action;
 import com.github.mybatis.easy.go.QueryBuilderHelper;
-import com.github.mybatis.easy.go.actionAnnotation._Limit;
-import com.github.mybatis.easy.go.actionAnnotation._Union;
-import com.github.mybatis.easy.go.actionAnnotation._UnionAll;
 import com.github.mybatis.easy.go.exception.SelfCheckException;
 import com.github.mybatis.easy.go.meta.EmptyOrder;
 import com.github.mybatis.easy.go.meta.Order;
+import com.github.mybatis.easy.go.methodAnnotation._Limit;
+import com.github.mybatis.easy.go.methodAnnotation._Union;
+import com.github.mybatis.easy.go.methodAnnotation._UnionAll;
 
 import java.util.ArrayList;
 import java.util.Arrays;

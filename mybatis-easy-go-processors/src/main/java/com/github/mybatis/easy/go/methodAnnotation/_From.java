@@ -1,6 +1,4 @@
-package com.github.mybatis.easy.go.actionAnnotation;
-
-import com.github.mybatis.easy.go.functionAnnotation._From_Source;
+package com.github.mybatis.easy.go.methodAnnotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,6 +12,4 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.SOURCE)
 public @interface _From {
-
-    Class source() default _From_Source.class;
 }

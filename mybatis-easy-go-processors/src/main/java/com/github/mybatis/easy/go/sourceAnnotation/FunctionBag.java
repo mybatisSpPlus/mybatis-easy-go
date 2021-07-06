@@ -1,4 +1,4 @@
-package com.github.mybatis.easy.go.actionAnnotation;
+package com.github.mybatis.easy.go.sourceAnnotation;
 
 /**
  * @author zhouyu74748585@hotmail.com

@@ -2,10 +2,10 @@ package com.github.mybatis.easy.go.actions;
 
 import com.github.mybatis.easy.go.Action;
 import com.github.mybatis.easy.go.QueryBuilderHelper;
-import com.github.mybatis.easy.go.actionAnnotation._Select;
 import com.github.mybatis.easy.go.exception.SelfCheckException;
 import com.github.mybatis.easy.go.meta.Field;
 import com.github.mybatis.easy.go.meta.Table;
+import com.github.mybatis.easy.go.methodAnnotation._Select;
 import com.github.mybatis.easy.go.step.DmStepGenerator;
 import com.github.mybatis.easy.go.step.Oracle10GStepGenerator;
 import com.github.mybatis.easy.go.step.Oracle11GStepGenerator;

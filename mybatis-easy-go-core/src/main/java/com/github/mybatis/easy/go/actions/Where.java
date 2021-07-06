@@ -3,9 +3,9 @@ package com.github.mybatis.easy.go.actions;
 import com.github.mybatis.easy.go.Action;
 import com.github.mybatis.easy.go.Condition;
 import com.github.mybatis.easy.go.QueryBuilderHelper;
-import com.github.mybatis.easy.go.actionAnnotation.*;
 import com.github.mybatis.easy.go.conditions.EmptyCondition;
 import com.github.mybatis.easy.go.exception.SelfCheckException;
+import com.github.mybatis.easy.go.methodAnnotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

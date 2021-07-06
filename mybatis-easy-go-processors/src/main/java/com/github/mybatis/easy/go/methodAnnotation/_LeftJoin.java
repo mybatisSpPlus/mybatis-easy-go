@@ -1,6 +1,4 @@
-package com.github.mybatis.easy.go.actionAnnotation;
-
-import com.github.mybatis.easy.go.functionAnnotation._FullJoin_Source;
+package com.github.mybatis.easy.go.methodAnnotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,6 +11,5 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.SOURCE)
-public @interface _FullJoin {
-    Class source() default _FullJoin_Source.class;
+public @interface _LeftJoin {
 }

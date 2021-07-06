@@ -2,9 +2,9 @@ package com.github.mybatis.easy.go.actions;
 
 import com.github.mybatis.easy.go.Action;
 import com.github.mybatis.easy.go.MetaMethods;
-import com.github.mybatis.easy.go.actionAnnotation._Where;
 import com.github.mybatis.easy.go.exception.SelfCheckException;
 import com.github.mybatis.easy.go.meta.Field;
+import com.github.mybatis.easy.go.methodAnnotation._Where;
 
 import java.util.HashMap;
 import java.util.Map;

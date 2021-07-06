@@ -1,11 +1,12 @@
 package com.github.mybatis.easy.go;
 
-import com.github.mybatis.easy.go.actionAnnotation.FunctionBag;
 import com.github.mybatis.easy.go.actions.*;
-import com.github.mybatis.easy.go.functionAnnotation.*;
 import com.github.mybatis.easy.go.meta.Field;
 import com.github.mybatis.easy.go.meta.Order;
 import com.github.mybatis.easy.go.meta.Table;
+import com.github.mybatis.easy.go.methodAnnotation.*;
+import com.github.mybatis.easy.go.sourceAnnotation.FunctionBag;
+import com.github.mybatis.easy.go.sourceAnnotation.FunctionSource;
 
 /**
  * @author zhouyu74748585@hotmail.com
@@ -14,7 +15,7 @@ import com.github.mybatis.easy.go.meta.Table;
 @FunctionBag
 public class ActionFunctionSource {
 
-    @_Select_Source(requiredClass = {Select.class})
+    @FunctionSource(targetAnnotation = _Select.class, requiredClass = {Select.class})
     public static Select select(Action action) {
         Select select = new Select();
         action.getBuilders().getActionTree().add(select);
@@ -22,7 +23,7 @@ public class ActionFunctionSource {
         return select;
     }
 
-    @_Select_Source(requiredClass = {Select.class, Field.class})
+    @FunctionSource(targetAnnotation = _Select.class, requiredClass = {Select.class, Field.class})
     public static Select select(Action action, Field... fields) {
         Select select = new Select(fields);
         action.getBuilders().getActionTree().add(select);
@@ -30,7 +31,7 @@ public class ActionFunctionSource {
         return select;
     }
 
-    @_Select_Source(requiredClass = {Select.class})
+    @FunctionSource(targetAnnotation = _Select.class, requiredClass = {Select.class})
     public static Select select(Action action, String... fieldNames) {
         Select select = new Select(QueryBuilderHelper.fieldNameToField(fieldNames));
         action.getBuilders().getActionTree().add(select);
@@ -38,7 +39,7 @@ public class ActionFunctionSource {
         return select;
     }
 
-    @_From_Source(requiredClass = {From.class, Table.class})
+    @FunctionSource(targetAnnotation = _From.class, requiredClass = {From.class, Table.class})
     public static From from(Action action, Table table) {
         From from = new From(table);
         action.getBuilders().getActionTree().add(from);
@@ -46,7 +47,7 @@ public class ActionFunctionSource {
         return from;
     }
 
-    @_From_Source(requiredClass = {From.class})
+    @FunctionSource(targetAnnotation = _From.class, requiredClass = {From.class})
     public static From from(Action action, String tableName) {
         Table table = QueryBuilderHelper.tableNameToTable(tableName);
         From from = new From(table);
@@ -55,7 +56,7 @@ public class ActionFunctionSource {
         return from;
     }
 
-    @_Set_Source(requiredClass = {Set.class})
+    @FunctionSource(targetAnnotation = _Set.class, requiredClass = {Set.class})
     public static Set set(Action action) {
         Set set = new Set();
         action.getBuilders().getActionTree().add(set);
@@ -63,7 +64,7 @@ public class ActionFunctionSource {
         return set;
     }
 
-    @_Where_Source(requiredClass = {Where.class, Condition.class})
+    @FunctionSource(targetAnnotation = _Where.class, requiredClass = {Where.class, Condition.class})
     public static Where where(Action action, Condition... condition) {
         Where where = new Where(condition);
         action.getBuilders().getActionTree().add(where);
@@ -71,7 +72,7 @@ public class ActionFunctionSource {
         return where;
     }
 
-    @_Union_Source(requiredClass = {Union.class})
+    @FunctionSource(targetAnnotation = _Union.class, requiredClass = {Union.class})
     public static Union union(Action action) {
         Union union = new Union();
         action.getBuilders().getActionTree().add(union);
@@ -79,7 +80,7 @@ public class ActionFunctionSource {
         return union;
     }
 
-    @_UnionAll_Source(requiredClass = {UnionAll.class})
+    @FunctionSource(targetAnnotation = _UnionAll.class, requiredClass = {UnionAll.class})
     public static UnionAll unionAll(Action action) {
         UnionAll unionAll = new UnionAll();
         action.getBuilders().getActionTree().add(unionAll);
@@ -87,7 +88,7 @@ public class ActionFunctionSource {
         return unionAll;
     }
 
-    @_CrossJoin_Source(requiredClass = {CrossJoin.class, Table.class})
+    @FunctionSource(targetAnnotation = _CrossJoin.class, requiredClass = {CrossJoin.class, Table.class})
     public static CrossJoin crossJoin(Action action, Table table) {
         CrossJoin crossJoin = new CrossJoin(table);
         action.getBuilders().getActionTree().add(crossJoin);
@@ -95,7 +96,7 @@ public class ActionFunctionSource {
         return crossJoin;
     }
 
-    @_CrossJoin_Source(requiredClass = {CrossJoin.class})
+    @FunctionSource(targetAnnotation = _CrossJoin.class, requiredClass = {CrossJoin.class})
     public static CrossJoin crossJoin(Action action, String tableName) {
         CrossJoin crossJoin = new CrossJoin(QueryBuilderHelper.tableNameToTable(tableName));
         action.getBuilders().getActionTree().add(crossJoin);
@@ -103,7 +104,7 @@ public class ActionFunctionSource {
         return crossJoin;
     }
 
-    @_LeftJoin_Source(requiredClass = {LeftJoin.class, Table.class})
+    @FunctionSource(targetAnnotation = _LeftJoin.class, requiredClass = {LeftJoin.class, Table.class})
     public static LeftJoin leftJoin(Action action, Table table) {
         LeftJoin leftJoin = new LeftJoin(table);
         action.getBuilders().getActionTree().add(leftJoin);
@@ -111,7 +112,7 @@ public class ActionFunctionSource {
         return leftJoin;
     }
 
-    @_LeftJoin_Source(requiredClass = {LeftJoin.class})
+    @FunctionSource(targetAnnotation = _LeftJoin.class, requiredClass = {LeftJoin.class})
     public static LeftJoin leftJoin(Action action, String tableName) {
         LeftJoin leftJoin = new LeftJoin(QueryBuilderHelper.tableNameToTable(tableName));
         action.getBuilders().getActionTree().add(leftJoin);
@@ -119,7 +120,7 @@ public class ActionFunctionSource {
         return leftJoin;
     }
 
-    @_InnerJoin_Source(requiredClass = {InnerJoin.class, Table.class})
+    @FunctionSource(targetAnnotation = _InnerJoin.class, requiredClass = {InnerJoin.class, Table.class})
     public static InnerJoin innerJoin(Action action, Table table) {
         InnerJoin innerJoin = new InnerJoin(table);
         action.getBuilders().getActionTree().add(innerJoin);
@@ -127,7 +128,7 @@ public class ActionFunctionSource {
         return innerJoin;
     }
 
-    @_InnerJoin_Source(requiredClass = {InnerJoin.class})
+    @FunctionSource(targetAnnotation = _InnerJoin.class, requiredClass = {InnerJoin.class})
     public static InnerJoin innerJoin(Action action, String tableName) {
         InnerJoin innerJoin = new InnerJoin(QueryBuilderHelper.tableNameToTable(tableName));
         action.getBuilders().getActionTree().add(innerJoin);
@@ -135,7 +136,7 @@ public class ActionFunctionSource {
         return innerJoin;
     }
 
-    @_RightJoin_Source(requiredClass = {RightJoin.class, Table.class})
+    @FunctionSource(targetAnnotation = _RightJoin.class, requiredClass = {RightJoin.class, Table.class})
     public static RightJoin rightJoin(Action action, Table table) {
         RightJoin rightJoin = new RightJoin(table);
         action.getBuilders().getActionTree().add(rightJoin);
@@ -143,7 +144,7 @@ public class ActionFunctionSource {
         return rightJoin;
     }
 
-    @_RightJoin_Source(requiredClass = {RightJoin.class})
+    @FunctionSource(targetAnnotation = _RightJoin.class, requiredClass = {RightJoin.class})
     public static RightJoin rightJoin(Action action, String tableName) {
         RightJoin rightJoin = new RightJoin(QueryBuilderHelper.tableNameToTable(tableName));
         action.getBuilders().getActionTree().add(rightJoin);
@@ -151,7 +152,7 @@ public class ActionFunctionSource {
         return rightJoin;
     }
 
-    @_FullJoin_Source(requiredClass = {FullJoin.class, Table.class})
+    @FunctionSource(targetAnnotation = _FullJoin.class, requiredClass = {FullJoin.class, Table.class})
     public static FullJoin fullJoin(Action action, Table table) {
         FullJoin fullJoin = new FullJoin(table);
         action.getBuilders().getActionTree().add(fullJoin);
@@ -159,7 +160,7 @@ public class ActionFunctionSource {
         return fullJoin;
     }
 
-    @_FullJoin_Source(requiredClass = {FullJoin.class})
+    @FunctionSource(targetAnnotation = _FullJoin.class, requiredClass = {FullJoin.class})
     public static FullJoin fullJoin(Action action, String tableName) {
         FullJoin fullJoin = new FullJoin(QueryBuilderHelper.tableNameToTable(tableName));
         action.getBuilders().getActionTree().add(fullJoin);
@@ -167,7 +168,7 @@ public class ActionFunctionSource {
         return fullJoin;
     }
 
-    @_On_Source(requiredClass = {On.class, Condition.class})
+    @FunctionSource(targetAnnotation = _On.class, requiredClass = {On.class, Condition.class})
     public static On on(Action action, Condition... conditions) {
         On on = new On(conditions);
         action.getBuilders().getActionTree().add(on);
@@ -175,7 +176,7 @@ public class ActionFunctionSource {
         return on;
     }
 
-    @_GroupBy_Source(requiredClass = {GroupBy.class, Field.class})
+    @FunctionSource(targetAnnotation = _GroupBy.class, requiredClass = {GroupBy.class, Field.class})
     public static GroupBy groupBy(Action action, Field... fields) {
         GroupBy groupBy = new GroupBy(fields);
         action.getBuilders().getActionTree().add(groupBy);
@@ -183,7 +184,7 @@ public class ActionFunctionSource {
         return groupBy;
     }
 
-    @_GroupBy_Source(requiredClass = {GroupBy.class})
+    @FunctionSource(targetAnnotation = _GroupBy.class, requiredClass = {GroupBy.class})
     public static GroupBy groupBy(Action action, String... fieldNames) {
         GroupBy groupBy = new GroupBy(QueryBuilderHelper.fieldNameToField(fieldNames));
         action.getBuilders().getActionTree().add(groupBy);
@@ -191,7 +192,7 @@ public class ActionFunctionSource {
         return groupBy;
     }
 
-    @_Having_Source(requiredClass = {Having.class, Condition.class})
+    @FunctionSource(targetAnnotation = _Having.class, requiredClass = {Having.class, Condition.class})
     public static Having having(Action action, Condition... condition) {
         Having having = new Having(condition);
         action.getBuilders().getActionTree().add(having);
@@ -199,7 +200,7 @@ public class ActionFunctionSource {
         return having;
     }
 
-    @_OrderBy_Source(requiredClass = {Orders.class, Order.class})
+    @FunctionSource(targetAnnotation = _OrderBy.class, requiredClass = {Orders.class, Order.class})
     public static Orders orderBy(Action action, Order... order) {
         Orders orders = new Orders(order);
         action.getBuilders().getActionTree().add(orders);
@@ -207,7 +208,7 @@ public class ActionFunctionSource {
         return orders;
     }
 
-    @_Limit_Source(requiredClass = {Limit.class})
+    @FunctionSource(targetAnnotation = _Limit.class, requiredClass = {Limit.class})
     public static Limit limit(Action action, int limit, int offset) {
         Limit limit1 = new Limit(limit, offset);
         action.getBuilders().getActionTree().add(limit1);
@@ -215,7 +216,7 @@ public class ActionFunctionSource {
         return limit1;
     }
 
-    @_Limit_Source(requiredClass = {Limit.class})
+    @FunctionSource(targetAnnotation = _Limit.class, requiredClass = {Limit.class})
     public static Limit limit(Action action, int limit) {
         Limit limit1 = new Limit(limit);
         action.getBuilders().getActionTree().add(limit1);
@@ -223,7 +224,7 @@ public class ActionFunctionSource {
         return limit1;
     }
 
-    @_Limit_Source(requiredClass = {Limit.class})
+    @FunctionSource(targetAnnotation = _Limit.class, requiredClass = {Limit.class})
     public static Limit limit(Action action, Limit limit) {
         action.getBuilders().getActionTree().add(limit);
         limit.setBuilders(action.getBuilders());
