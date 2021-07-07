@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.github.mybatis.easy.go.ActionFunctionSource.*;
+import static com.github.mybatis.easy.go.ActionMethodSource.*;
 import static com.github.mybatis.easy.go.ConditionMethods.emptyCondition;
 import static com.github.mybatis.easy.go.MetaMethods.allField;
 import static com.github.mybatis.easy.go.MetaMethods.field;
@@ -235,7 +235,7 @@ public class ActionMethods {
         Object idValue = setValues.get(idName);
         setValues.remove(idName);
         Where where = where(
-                ActionFunctionSource.set(
+                ActionMethodSource.set(
                         ActionMethods.update(tableName)
                 ).setFieldNameValue(setValues), field(idName).eq(idValue));
         return where.executeUpdate();
@@ -294,9 +294,9 @@ public class ActionMethods {
         String tableName = getTable(tClass);
         Where where = where(from(select(allField()), tableName), condition != null ? condition : emptyCondition());
         if (orders != null && orders.length > 0) {
-            return ActionFunctionSource.limit(orderBy(where, orders), length != null ? limit(length) : noLimit()).executeListSelect(tClass);
+            return ActionMethodSource.limit(orderBy(where, orders), length != null ? limit(length) : noLimit()).executeListSelect(tClass);
         } else {
-            return ActionFunctionSource.limit(where, length != null ? limit(length) : noLimit()).executeListSelect(tClass);
+            return ActionMethodSource.limit(where, length != null ? limit(length) : noLimit()).executeListSelect(tClass);
         }
     }
 

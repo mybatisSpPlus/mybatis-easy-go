@@ -152,10 +152,8 @@ public class AnnotationProcessor extends AbstractProcessor {
         ListBuffer<JCTree.JCStatement> statements = new ListBuffer<>();
         List<JCTree.JCExpression> expressions = List.of(treeMaker.Ident(names.fromString("this")));
         List<JCTree.JCVariableDecl> newParam = List.nil();
-        for (JCTree.JCVariableDecl param : jcm.params) {
-            if (param.name.toString().equals("action")) {
-                continue;
-            }
+        for (int i = 1; i < jcm.params.size(); i++) {
+            JCTree.JCVariableDecl param = jcm.params.get(i);
             newParam = newParam.append((JCTree.JCVariableDecl) param.clone());
             expressions = expressions.append(treeMaker.Ident(names.fromString(param.name.toString())));
         }

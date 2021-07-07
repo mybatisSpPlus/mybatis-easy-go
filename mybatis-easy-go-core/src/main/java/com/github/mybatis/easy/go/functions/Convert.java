@@ -6,6 +6,8 @@ import com.github.mybatis.easy.go.meta.Field;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * 字符集转换
+ *
  * @author zhouyu74748585@hotmail.com
  * @date 2021/4/13 9:29
  */

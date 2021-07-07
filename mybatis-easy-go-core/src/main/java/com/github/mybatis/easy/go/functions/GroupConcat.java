@@ -18,6 +18,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * 分组拼接字符串
+ *
  * @author zhouyu74748585@hotmail.com
  * @date 2021/4/12 21:40
  */

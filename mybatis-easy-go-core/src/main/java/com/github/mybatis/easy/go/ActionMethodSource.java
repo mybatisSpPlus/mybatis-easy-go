@@ -13,7 +13,7 @@ import com.github.mybatis.easy.go.sourceAnnotation.FunctionSource;
  * @date 2021/4/18 8:36
  */
 @FunctionBag
-public class ActionFunctionSource {
+public class ActionMethodSource {
 
     @FunctionSource(targetAnnotation = _Select.class, requiredClass = {Select.class})
     public static Select select(Action action) {

@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * 自定义函数
+ *
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/4/29 18:12
  */

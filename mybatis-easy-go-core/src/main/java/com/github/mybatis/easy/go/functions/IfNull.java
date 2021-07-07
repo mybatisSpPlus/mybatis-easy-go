@@ -5,6 +5,8 @@ import com.github.mybatis.easy.go.exception.SelfCheckException;
 import com.github.mybatis.easy.go.meta.Field;
 
 /**
+ * 判断是否为null
+ *
  * @author zhouyu4034@sefonsoft.com
  * @date 2021/5/28 10:33
  */

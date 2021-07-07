@@ -6,6 +6,8 @@ import com.github.mybatis.easy.go.meta.Alias;
 import com.github.mybatis.easy.go.meta.Field;
 
 /**
+ * 计数
+ *
  * @author zhouyu74748585@hotmail.com
  * @date 2021/4/12 21:39
  */

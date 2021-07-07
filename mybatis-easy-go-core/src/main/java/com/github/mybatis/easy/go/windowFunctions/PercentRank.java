@@ -1,15 +1,11 @@
-package com.github.mybatis.easy.go.functions;
+package com.github.mybatis.easy.go.windowFunctions;
 
 import com.github.mybatis.easy.go.Function;
 import com.github.mybatis.easy.go.exception.SelfCheckException;
+import com.github.mybatis.easy.go.methodAnnotation._Over;
 
-/**
- * 获取当前时间
- *
- * @author zhouyu74748585@hotmail.com
- * @date 2021/4/13 9:28
- */
-public class Now extends Function {
+@_Over
+public class PercentRank extends Function {
     @Override
     public void selfCheck() throws SelfCheckException {
 

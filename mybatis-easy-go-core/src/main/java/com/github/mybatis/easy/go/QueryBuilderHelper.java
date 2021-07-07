@@ -7,6 +7,7 @@ import com.github.mybatis.easy.go.mappingAnnotation.TABLE;
 import com.github.mybatis.easy.go.meta.Alias;
 import com.github.mybatis.easy.go.meta.ConstantField;
 import com.github.mybatis.easy.go.meta.Table;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 
@@ -406,6 +407,6 @@ public class QueryBuilderHelper {
     }
 
     public static <T> ArrayList<T> arrays(T... ts) {
-        return new ArrayList<>(Arrays.asList(ts));
+        return Lists.newArrayList(ts);
     }
 }

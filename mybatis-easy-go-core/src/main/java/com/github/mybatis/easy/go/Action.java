@@ -386,7 +386,7 @@ public abstract class Action {
      * @throws Exception
      */
     public long getCount() throws Exception {
-        From count = ActionFunctionSource.from(select(count(constantField(1)).as("countNum")), this.asTable("PAGE_TEMP"));
+        From count = ActionMethodSource.from(select(count(constantField(1)).as("countNum")), this.asTable("PAGE_TEMP"));
         List<Map<String, Object>> countMap = getMapper().executeQuery(count.getStepGenerator().toStep(printSql, setParameter));
         long total = Long.parseLong(countMap.get(0).get("countNum").toString());
         return total;
@@ -401,7 +401,7 @@ public abstract class Action {
      * @throws Exception
      */
     public List<Map<String, Object>> getPageData(int pageIndex, int pageSize) throws Exception {
-        Limit data = ActionFunctionSource.limit(ActionFunctionSource.from(select(allField()), this.asTable("PAGE_TEMP")), pageSize, (pageIndex - 1) * pageSize);
+        Limit data = ActionMethodSource.limit(ActionMethodSource.from(select(allField()), this.asTable("PAGE_TEMP")), pageSize, (pageIndex - 1) * pageSize);
         List<Map<String, Object>> map = getMapper().executeQuery(data.getStepGenerator().toStep(printSql, setParameter));
         cleanNull(map);
         return map;
