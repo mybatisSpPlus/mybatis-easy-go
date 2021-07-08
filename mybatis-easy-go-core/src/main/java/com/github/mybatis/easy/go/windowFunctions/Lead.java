@@ -4,6 +4,9 @@ import com.github.mybatis.easy.go.Function;
 import com.github.mybatis.easy.go.exception.SelfCheckException;
 import com.github.mybatis.easy.go.methodAnnotation._Over;
 
+/**
+ * 用于统计窗口内往下第n行值
+ */
 @_Over
 public class Lead extends Function {
     @Override
