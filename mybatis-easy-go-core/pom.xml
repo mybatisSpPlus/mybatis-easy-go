@@ -39,7 +39,25 @@
         <dependency>
             <groupId>io.github.mybatisSpPlus</groupId>
             <artifactId>mybatis-easy-go-processors</artifactId>
+            <scope>compile</scope>
             <version>0.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                    <compilerArgs >
+                        <arg>--add-exports=mybatis-easy-go-processors/com.github.mybatis.easy.go.methodAnnotation=ALL-UNNAMED</arg>
+                    </compilerArgs >
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

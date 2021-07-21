@@ -32,7 +32,7 @@ import java.util.*;
  * @date 2021/4/16 21:04
  */
 @SupportedAnnotationTypes("com.github.mybatis.easy.go.methodAnnotation.*")
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
+@SupportedSourceVersion(SourceVersion.RELEASE_11)
 public class AnnotationProcessor extends AbstractProcessor {
 
     // 打印log
