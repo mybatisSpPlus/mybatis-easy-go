@@ -219,10 +219,10 @@ public class AnnotationProcessor extends AbstractProcessor {
             JCTree.JCImport jcImport = treeMaker.Import(treeMaker.Select(
                     ident, names.fromString(className)), false);
             if (!trees.contains(jcImport)) {
-                trees.add(0, jcImport);
+                trees.add(1, jcImport);
             }
             jccu.defs = List.from(trees);
-
+            messager.printMessage(Diagnostic.Kind.NOTE, "jcImport:" + jccu.defs);
 
         }
 
