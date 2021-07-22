@@ -129,7 +129,6 @@ public class AnnotationProcessor extends AbstractProcessor {
                                 }
                                 classHashSet.add(((JCTree.JCMethodDecl) method).sym.owner.type.toString());
                                 JCTree.JCMethodDecl jcm = cloneMethod((JCTree.JCMethodDecl) method);
-                                messager.printMessage(Diagnostic.Kind.NOTE, "jcm:" + jcm);
                                 jcClassDecl.defs = jcClassDecl.defs.append(jcm);
                             }
                             for (String aClass : classHashSet) {
@@ -190,8 +189,6 @@ public class AnnotationProcessor extends AbstractProcessor {
         return action;
     }
 
-    ;
-
     private void addImportInfo(Element element, String packagePath, String className) {
         Trees _trees = Trees.instance(processingEnv);
         TreePath treePath = _trees.getPath(element);
@@ -222,8 +219,6 @@ public class AnnotationProcessor extends AbstractProcessor {
                 trees.add(1, jcImport);
             }
             jccu.defs = List.from(trees);
-            messager.printMessage(Diagnostic.Kind.NOTE, "jcImport:" + jccu.defs);
-
         }
 
     }
