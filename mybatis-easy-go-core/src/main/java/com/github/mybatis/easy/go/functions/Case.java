@@ -1,6 +1,5 @@
 package com.github.mybatis.easy.go.functions;
 
-import com.github.mybatis.easy.go.Condition;
 import com.github.mybatis.easy.go.Function;
 import com.github.mybatis.easy.go.exception.SelfCheckException;
 
@@ -14,14 +13,19 @@ import java.util.List;
  * @date 2021/4/19 17:37
  */
 public class Case extends Function {
-    List<Condition> when = new ArrayList<>();
+    Object caseCondition;
+    List<Object> when = new ArrayList<>();
     List<Object> thenValue = new ArrayList<>();
     Object elseValue;
 
     public Case() {
     }
 
-    public Case when(Condition when) {
+    public Case(Object caseCondition) {
+        this.caseCondition = caseCondition;
+    }
+
+    public Case when(Object when) {
         this.when.add(when);
         return this;
     }
@@ -45,11 +49,11 @@ public class Case extends Function {
         return this;
     }
 
-    public List<Condition> getWhen() {
+    public List<Object> getWhen() {
         return when;
     }
 
-    public void setWhen(List<Condition> when) {
+    public void setWhen(List<Object> when) {
         this.when = when;
     }
 
@@ -59,6 +63,14 @@ public class Case extends Function {
 
     public void setThenValue(List<Object> thenValue) {
         this.thenValue = thenValue;
+    }
+
+    public Object getCaseCondition() {
+        return caseCondition;
+    }
+
+    public void setCaseCondition(Object caseCondition) {
+        this.caseCondition = caseCondition;
     }
 
     @Override

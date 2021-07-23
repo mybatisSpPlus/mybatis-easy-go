@@ -18,6 +18,10 @@ public class FunctionMethods {
         return new Case();
     }
 
+    public static Case caze(Object caseCondition) {
+        return new Case(caseCondition);
+    }
+
     /**
      * 计数方法
      *
