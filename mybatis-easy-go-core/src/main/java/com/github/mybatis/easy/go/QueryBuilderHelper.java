@@ -89,7 +89,7 @@ public class QueryBuilderHelper {
                 }
                 result = (T) value.toString();
             } else {
-                result = clazz.newInstance();
+                result = clazz.getConstructor().newInstance();
                 setProperties(result, properties);
             }
 
@@ -162,9 +162,9 @@ public class QueryBuilderHelper {
                         declaredField.set(entity, new BigDecimal(value.toString()).longValue());
                     }
                 } else if (Float.class.isAssignableFrom(fieldType) || fieldType == float.class) {
-                    declaredField.set(entity, new Float(value.toString()));
+                    declaredField.set(entity, Float.parseFloat(value.toString()));
                 } else if (Double.class.isAssignableFrom(fieldType) || fieldType == double.class) {
-                    declaredField.set(entity, new Double(value.toString()));
+                    declaredField.set(entity, Double.parseDouble(value.toString()));
                 } else if (BigDecimal.class.isAssignableFrom(fieldType)) {
                     declaredField.set(entity, new BigDecimal(value.toString()));
                 } else if (String.class.isAssignableFrom(fieldType)) {
