@@ -6,8 +6,7 @@ import com.github.mybatis.easy.go.actions.InsertInto;
 import com.github.mybatis.easy.go.actions.Window;
 import com.github.mybatis.easy.go.meta.Field;
 import com.github.mybatis.easy.go.supportAnnotation.DatabaseVersion;
-import com.github.mybatis.easy.go.windowFunctions.Over;
-import com.github.mybatis.easy.go.windowFunctions.OverWindow;
+import com.github.mybatis.easy.go.windowFunctions.*;
 
 import java.util.List;
 
@@ -23,17 +22,72 @@ public class Mysql5StepGenerator extends MysqlLikeStepGenerator {
     }
 
     @Override
-    public void OverWindowToStep(OverWindow function) throws Exception {
-       throw new UnsupportedOperationException("window functions are unsupported in version 5.X");
-    }
-
-    @Override
-    public void OverToStep(Over function) throws Exception {
+    public void RowNumberToStep() {
         throw new UnsupportedOperationException("window functions are unsupported in version 5.X");
     }
 
     @Override
-    public void WindowToStep(Window window) throws Exception {
+    public void RankToStep() {
+        throw new UnsupportedOperationException("window functions are unsupported in version 5.X");
+    }
+
+    @Override
+    public void PercentRankToStep() {
+        throw new UnsupportedOperationException("window functions are unsupported in version 5.X");
+    }
+
+    @Override
+    public void NthValueToStep(NthValue function)  {
+        throw new UnsupportedOperationException("window functions are unsupported in version 5.X");
+    }
+
+    @Override
+    public void NtileToStep(Ntile function) {
+        throw new UnsupportedOperationException("window functions are unsupported in version 5.X");
+    }
+
+    @Override
+    public void LeadToStep(Lead function)  {
+        throw new UnsupportedOperationException("window functions are unsupported in version 5.X");
+    }
+
+    @Override
+    public void LastValueToStep(LastValue function)  {
+        throw new UnsupportedOperationException("window functions are unsupported in version 5.X");
+    }
+
+    @Override
+    public void LagToStep(Lag function)  {
+        throw new UnsupportedOperationException("window functions are unsupported in version 5.X");
+    }
+
+    @Override
+    public void FirstValueToStep(FirstValue function)  {
+        throw new UnsupportedOperationException("window functions are unsupported in version 5.X");
+    }
+
+    @Override
+    public void DenseRankToStep() {
+        throw new UnsupportedOperationException("window functions are unsupported in version 5.X");
+    }
+
+    @Override
+    public void CumeDistToStep() {
+        throw new UnsupportedOperationException("window functions are unsupported in version 5.X");
+    }
+
+    @Override
+    public void OverWindowToStep(OverWindow function)  {
+       throw new UnsupportedOperationException("window functions are unsupported in version 5.X");
+    }
+
+    @Override
+    public void OverToStep(Over function)  {
+        throw new UnsupportedOperationException("window functions are unsupported in version 5.X");
+    }
+
+    @Override
+    public void WindowToStep(Window window)  {
         throw new UnsupportedOperationException("window functions are unsupported in version 5.X");
     }
 }
