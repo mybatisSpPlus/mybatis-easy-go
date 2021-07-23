@@ -16,6 +16,14 @@ public class Ntile extends Function {
         this.groupCount = groupCount;
     }
 
+    public int getGroupCount() {
+        return groupCount;
+    }
+
+    public void setGroupCount(int groupCount) {
+        this.groupCount = groupCount;
+    }
+
     @Override
     public void selfCheck() throws SelfCheckException {
 
