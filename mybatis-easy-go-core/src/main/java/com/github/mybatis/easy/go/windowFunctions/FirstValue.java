@@ -2,6 +2,7 @@ package com.github.mybatis.easy.go.windowFunctions;
 
 import com.github.mybatis.easy.go.Function;
 import com.github.mybatis.easy.go.exception.SelfCheckException;
+import com.github.mybatis.easy.go.meta.Field;
 import com.github.mybatis.easy.go.methodAnnotation._Over;
 
 /**
@@ -9,6 +10,21 @@ import com.github.mybatis.easy.go.methodAnnotation._Over;
  */
 @_Over
 public class FirstValue extends Function {
+
+    Field field;
+
+    public FirstValue(Field field) {
+        this.field = field;
+    }
+
+    public Field getField() {
+        return field;
+    }
+
+    public void setField(Field field) {
+        this.field = field;
+    }
+
     @Override
     public void selfCheck() throws SelfCheckException {
 

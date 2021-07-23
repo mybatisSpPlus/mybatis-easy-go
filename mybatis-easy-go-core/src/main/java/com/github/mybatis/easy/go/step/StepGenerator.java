@@ -253,6 +253,11 @@ public class StepGenerator {
         }
     }
 
+    public void WindowToStep(Window window) {
+
+
+    }
+
     public void SetToStep(Set set) throws Exception {
         steps.add(new Step("SET"));
         for (Map.Entry<Field, Object> entry : set.getFieldValue().entrySet()) {
@@ -357,6 +362,9 @@ public class StepGenerator {
                 break;
             case "Where":
                 WhereToStep((Where) action);
+                break;
+            case "Window":
+                WindowToStep((Window) action);
                 break;
             default:
                 throw new Exception("action :" + name + " not supported");

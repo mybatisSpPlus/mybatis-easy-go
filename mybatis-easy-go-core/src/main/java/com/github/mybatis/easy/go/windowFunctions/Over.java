@@ -2,12 +2,13 @@ package com.github.mybatis.easy.go.windowFunctions;
 
 import com.github.mybatis.easy.go.Function;
 import com.github.mybatis.easy.go.QueryBuilderHelper;
+import com.github.mybatis.easy.go.exception.SelfCheckException;
 import com.github.mybatis.easy.go.meta.Field;
 import com.github.mybatis.easy.go.meta.Order;
 
 import java.util.List;
 
-public class Over extends Field {
+public class Over extends Function {
 
     Function windowFunction;
 
@@ -23,17 +24,17 @@ public class Over extends Field {
 
     String end;
 
-    public Over partitionBy(String... fieldNames) {
+    public Over partitions(String... fieldNames) {
         partitions = QueryBuilderHelper.fieldNameToField(fieldNames);
         return this;
     }
 
-    public Over partitionBy(Field... fields) {
+    public Over partitions(Field... fields) {
         partitions = QueryBuilderHelper.arrays(fields);
         return this;
     }
 
-    public Over orderBy(Order... orders) {
+    public Over orders(Order... orders) {
         this.orders = QueryBuilderHelper.arrays(orders);
         return this;
     }
@@ -85,5 +86,10 @@ public class Over extends Field {
 
     public String getEnd() {
         return end;
+    }
+
+    @Override
+    public void selfCheck() throws SelfCheckException {
+
     }
 }

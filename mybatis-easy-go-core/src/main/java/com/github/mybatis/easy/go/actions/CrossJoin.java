@@ -9,6 +9,7 @@ import com.github.mybatis.easy.go.methodAnnotation.*;
  */
 @_Set
 @_Where
+@_Window
 @_Union
 @_UnionAll
 @_CrossJoin

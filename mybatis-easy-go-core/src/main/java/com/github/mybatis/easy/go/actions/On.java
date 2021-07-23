@@ -19,6 +19,7 @@ import static com.github.mybatis.easy.go.QueryBuilderHelper.arrays;
  */
 @_Set
 @_Where
+@_Window
 @_Union
 @_UnionAll
 @_CrossJoin

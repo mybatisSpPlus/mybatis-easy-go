@@ -9,6 +9,9 @@ import com.github.mybatis.easy.go.sourceAnnotation.FunctionBag;
 import com.github.mybatis.easy.go.sourceAnnotation.FunctionSource;
 
 /**
+ * 此类中的方法会追缴到具有目标注解的类里面，
+ * 但是类型类型必要和方法的第一个参数相匹配
+ *
  * @author zhouyu74748585@hotmail.com
  * @date 2021/4/18 8:36
  */
@@ -70,6 +73,14 @@ public class ActionMethodSource {
         action.getBuilders().getActionTree().add(where);
         where.setBuilders(action.getBuilders());
         return where;
+    }
+
+    @FunctionSource(targetAnnotation = _Window.class, requiredClass = {Window.class})
+    public static Window window(Action action, String windowAlias) {
+        Window window = new Window(windowAlias);
+        action.getBuilders().getActionTree().add(window);
+        window.setBuilders(action.getBuilders());
+        return window;
     }
 
     @FunctionSource(targetAnnotation = _Union.class, requiredClass = {Union.class})

@@ -9,6 +9,13 @@ import com.github.mybatis.easy.go.methodAnnotation._Over;
  */
 @_Over
 public class Ntile extends Function {
+
+    int groupCount;
+
+    public Ntile(int groupCount) {
+        this.groupCount = groupCount;
+    }
+
     @Override
     public void selfCheck() throws SelfCheckException {
 

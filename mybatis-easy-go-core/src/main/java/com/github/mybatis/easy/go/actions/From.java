@@ -11,6 +11,7 @@ import com.github.mybatis.easy.go.methodAnnotation.*;
  * @date 2021/4/12 14:58
  */
 @_Where
+@_Window
 @_Union
 @_UnionAll
 @_CrossJoin
