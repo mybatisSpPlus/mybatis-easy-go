@@ -38,7 +38,7 @@ public class MybatisConfig {
         properties.setProperty("Sybase", "sybase");
         properties.setProperty("Hana", "hana");
         databaseIdProvider.setProperties(properties);
-        Action.dbTypeToStepGenerator.put("mysql", Lists.newArrayList(MysqlStepGenerator.class));
+        Action.dbTypeToStepGenerator.put("mysql", Lists.newArrayList(Mysql5StepGenerator.class,Mysql8StepGenerator.class));
         Action.dbTypeToStepGenerator.put("postgresql", Lists.newArrayList(PgStepGenerator.class));
         Action.dbTypeToStepGenerator.put("oracle", Lists.newArrayList(Oracle10GStepGenerator.class, Oracle11GStepGenerator.class));
         Action.dbTypeToStepGenerator.put("dm", Lists.newArrayList(DmStepGenerator.class));

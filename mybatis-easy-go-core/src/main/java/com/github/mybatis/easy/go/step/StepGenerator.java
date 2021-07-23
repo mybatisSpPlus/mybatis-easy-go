@@ -8,10 +8,14 @@ import com.github.mybatis.easy.go.conditions.*;
 import com.github.mybatis.easy.go.functions.*;
 import com.github.mybatis.easy.go.meta.*;
 import com.github.mybatis.easy.go.supportAnnotation.UnSupportProperty;
+import com.github.mybatis.easy.go.windowFunctions.*;
+import com.github.mybatis.easy.go.windowFunctions.frame.*;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -253,9 +257,11 @@ public class StepGenerator {
         }
     }
 
-    public void WindowToStep(Window window) {
-
-
+    public void WindowToStep(Window window) throws Exception {
+        steps.add(new Step("WINDOW "));
+        steps.add(new Step(window.getWindowAlias()));
+        steps.add(new Step("AS("));
+        overInfoToStep(window.getPartitions(), window.getOrders(), window.isUseRanger(), window.isUseRows(), window.getStart(), window.getEnd());
     }
 
     public void SetToStep(Set set) throws Exception {
@@ -800,6 +806,110 @@ public class StepGenerator {
         valueToStep(mod.getValueB());
     }
 
+    public void OverWindowToStep(OverWindow function) throws Exception {
+        functionToStep(function.getWindowFunction());
+        steps.add(new Step("OVER"));
+        steps.add(new Step(function.getWindowAlias()));
+    }
+
+    public void OverToStep(Over function) throws Exception {
+        functionToStep(function.getWindowFunction());
+        steps.add(new Step("OVER("));
+        overInfoToStep(function.getPartitions(), function.getOrders(), function.isUseRanger(), function.isUseRows(), function.getStart(), function.getEnd());
+    }
+
+    private void overInfoToStep(List<Field> partitions, List<Order> orders, boolean useRanger, boolean useRows, Frame start, Frame end) throws Exception {
+        if (partitions !=null&& partitions.size()>0) {
+            steps.add(new Step("PARTITION BY"));
+            for (Field partition : partitions) {
+                fieldToStep(partition);
+                steps.add(new Step(","));
+            }
+            steps.removeLast();
+        }
+        if (orders !=null&& orders.size()>0){
+            steps.add(new Step("ORDER BY"));
+            for (Order order : orders) {
+                orderToStep(order);
+                steps.add(new Step(","));
+            }
+            steps.removeLast();
+        }
+        if (useRanger || useRows) {
+            if (useRows) {
+                steps.add(new Step("ROWS BETWEEN"));
+            } else if (useRanger) {
+                steps.add(new Step("RANGER BETWEEN"));
+            }
+            frameToStep(start);
+            steps.add(new Step("AND"));
+            frameToStep(end);
+        }
+        steps.add(new Step(")"));
+    }
+
+    public void RowNumberToStep() {
+        steps.add(new Step("ROW_NUMBER()"));
+    }
+
+    public void RankToStep() {
+        steps.add(new Step("RANK()"));
+    }
+
+    public void PercentRankToStep() {
+        steps.add(new Step("PERCENT_RANK()"));
+    }
+
+    public void NthValueToStep(NthValue function) throws Exception {
+        steps.add(new Step("NTH_VALUE("));
+        fieldToStep(function.getField());
+        steps.add(new Step(","));
+        steps.add(new Step().setStepValue(function.getIndex()));
+        steps.add(new Step(")"));
+    }
+
+    public void NtileToStep(Ntile function) {
+        steps.add(new Step("NTILE("));
+        steps.add(new Step().setStepValue(function.getGroupCount()));
+        steps.add(new Step(")"));
+    }
+
+    public void LeadToStep(Lead function) throws Exception {
+        steps.add(new Step("LEAD("));
+        fieldToStep(function.getField());
+        steps.add(new Step(","));
+        steps.add(new Step().setStepValue(function.getRowCount()));
+        steps.add(new Step(")"));
+    }
+
+    public void LastValueToStep(LastValue function) throws Exception {
+        steps.add(new Step("LAST_VALUE("));
+        fieldToStep(function.getField());
+        steps.add(new Step(")"));
+    }
+
+    public void LagToStep(Lag function) throws Exception {
+        steps.add(new Step("LAG("));
+        fieldToStep(function.getField());
+        steps.add(new Step(","));
+        steps.add(new Step().setStepValue(function.getRowCount()));
+        steps.add(new Step(")"));
+    }
+
+    public void FirstValueToStep(FirstValue function) throws Exception {
+        steps.add(new Step("FIRST_VALUE("));
+        fieldToStep(function.getField());
+        steps.add(new Step(")"));
+    }
+
+    public void DenseRankToStep() {
+        steps.add(new Step("DENSE_RANK()"));
+    }
+
+    public void CumeDistToStep() {
+        steps.add(new Step("CUME_DIST()"));
+    }
+
     public void CustomFunctionToStep(CustomFunction customFunction) throws Exception {
         steps.add(new Step(customFunction.getFunctionName() + "("));
         if (customFunction.getParameters().size() > 0) {
@@ -833,11 +943,20 @@ public class StepGenerator {
             case "Count":
                 CountToStep((Count) function);
                 break;
+            case "CumeDist":
+                CumeDistToStep();
+                break;
             case "CustomFunction":
                 CustomFunctionToStep((CustomFunction) function);
                 break;
             case "Divide":
                 DivideToStep((Divide) function);
+                break;
+            case "DenseRank":
+                DenseRankToStep();
+                break;
+            case "FirstValue":
+                FirstValueToStep((FirstValue) function);
                 break;
             case "Format":
                 FormatToStep((Format) function);
@@ -851,8 +970,15 @@ public class StepGenerator {
             case "IfNull":
                 IfNullToStep((IfNull) function);
                 break;
+            case "Lag":
+                LagToStep((Lag) function);
+            case "LastValue":
+                LastValueToStep((LastValue) function);
             case "Lcase":
                 LcaseToStep((Lcase) function);
+                break;
+            case "Lead":
+                LeadToStep((Lead) function);
                 break;
             case "Len":
                 LenToStep((Len) function);
@@ -878,6 +1004,24 @@ public class StepGenerator {
             case "Now":
                 NowToStep();
                 break;
+            case "Ntile":
+                NtileToStep((Ntile)function);
+                break;
+            case "NthValue":
+                NthValueToStep((NthValue)function);
+                break;
+            case "Over":
+                OverToStep((Over)function);
+                break;
+            case "OverWindow":
+                OverWindowToStep((OverWindow)function);
+                break;
+            case "PercentRank":
+                PercentRankToStep();
+                break;
+            case "Rank":
+                RankToStep();
+                break;
             case "Right":
                 RightToStep((Right) function);
                 break;
@@ -886,6 +1030,9 @@ public class StepGenerator {
                 break;
             case "Round":
                 RoundToStep((Round) function);
+                break;
+            case "RowNumber":
+                RowNumberToStep();
                 break;
             case "Substr":
                 SubstrToStep((Substr) function);
@@ -903,6 +1050,8 @@ public class StepGenerator {
                 throw new Exception("function :" + name + " not supported");
         }
     }
+
+
 
     public void valueToStep(Object value) throws Exception {
         if (value instanceof Field) {
@@ -990,6 +1139,22 @@ public class StepGenerator {
         fieldToStep(order.getField());
         if (order.isDesc()) {
             steps.add(new Step("DESC"));
+        }
+    }
+
+    public void frameToStep(Frame frame){
+        if (frame instanceof CurrentRow){
+            steps.add(new Step("CURRENT ROW"));
+        }else if (frame instanceof Following){
+            steps.add(new Step().setStepValue(((Following) frame).getRows()));
+            steps.add(new Step("FOLLOWING"));
+        }else if (frame instanceof Preceding){
+            steps.add(new Step().setStepValue(((Preceding) frame).getRows()));
+            steps.add(new Step("PRECEDING"));
+        }else if (frame instanceof UnboundedFollowing){
+            steps.add(new Step("UNBOUNDED FOLLOWING"));
+        }else if (frame instanceof UnboundedPreceding){
+            steps.add(new Step("UNBOUNDED PRECEDING"));
         }
     }
 

@@ -9,6 +9,7 @@ import com.github.mybatis.easy.go.methodAnnotation._Limit;
 import com.github.mybatis.easy.go.methodAnnotation._OrderBy;
 import com.github.mybatis.easy.go.methodAnnotation._Union;
 import com.github.mybatis.easy.go.methodAnnotation._UnionAll;
+import com.github.mybatis.easy.go.windowFunctions.frame.Frame;
 
 import java.util.List;
 
@@ -31,9 +32,9 @@ public class Window extends Action {
 
     boolean useRanger;
 
-    String start;
+    Frame start;
 
-    String end;
+    Frame end;
 
     public Window(String windowAlias) {
         this.windowAlias = windowAlias;
@@ -68,7 +69,7 @@ public class Window extends Action {
         return this;
     }
 
-    public Window between(String start, String end) {
+    public Window between(Frame start, Frame end) {
         this.start = start;
         this.end = end;
         return this;
@@ -106,20 +107,28 @@ public class Window extends Action {
         this.useRanger = useRanger;
     }
 
-    public String getStart() {
+    public Frame getStart() {
         return start;
     }
 
-    public void setStart(String start) {
+    public void setStart(Frame start) {
         this.start = start;
     }
 
-    public String getEnd() {
+    public Frame getEnd() {
         return end;
     }
 
-    public void setEnd(String end) {
+    public void setEnd(Frame end) {
         this.end = end;
+    }
+
+    public String getWindowAlias() {
+        return windowAlias;
+    }
+
+    public void setWindowAlias(String windowAlias) {
+        this.windowAlias = windowAlias;
     }
 
     @Override

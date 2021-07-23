@@ -5,6 +5,7 @@ import com.github.mybatis.easy.go.QueryBuilderHelper;
 import com.github.mybatis.easy.go.exception.SelfCheckException;
 import com.github.mybatis.easy.go.meta.Field;
 import com.github.mybatis.easy.go.meta.Order;
+import com.github.mybatis.easy.go.windowFunctions.frame.Frame;
 
 import java.util.List;
 
@@ -20,9 +21,9 @@ public class Over extends Function {
 
     boolean useRanger;
 
-    String start;
+    Frame start;
 
-    String end;
+    Frame end;
 
     public Over partitions(String... fieldNames) {
         partitions = QueryBuilderHelper.fieldNameToField(fieldNames);
@@ -49,7 +50,7 @@ public class Over extends Function {
         return this;
     }
 
-    public Over between(String start, String end) {
+    public Over between(Frame start, Frame end) {
         this.start = start;
         this.end = end;
         return this;
@@ -79,12 +80,12 @@ public class Over extends Function {
         return useRanger;
     }
 
-    public String getStart() {
+    public Frame getStart() {
         return start;
     }
 
 
-    public String getEnd() {
+    public Frame getEnd() {
         return end;
     }
 

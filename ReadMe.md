@@ -32,6 +32,7 @@ maven pom 中添加依赖
 import static ActionMethods.*;
 import static ConditionMethods.*;
 import static FunctionMethods.*;
+import static WindowFunctionMethods.*;
 import static MetaMethods.*;
 ```
 
@@ -78,6 +79,13 @@ public List<String> subQueryDemo(）{
     return result;
 }
 ```
+
+#### 窗口函数的使用
+``` java
+
+
+```
+
 #### 插入
 
 ``` java
