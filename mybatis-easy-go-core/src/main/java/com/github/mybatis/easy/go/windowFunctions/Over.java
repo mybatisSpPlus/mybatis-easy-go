@@ -5,10 +5,13 @@ import com.github.mybatis.easy.go.QueryBuilderHelper;
 import com.github.mybatis.easy.go.exception.SelfCheckException;
 import com.github.mybatis.easy.go.meta.Field;
 import com.github.mybatis.easy.go.meta.Order;
+import com.github.mybatis.easy.go.step.Mysql5StepGenerator;
+import com.github.mybatis.easy.go.supportAnnotation.UnSupport;
 import com.github.mybatis.easy.go.windowFunctions.frame.Frame;
 
 import java.util.List;
 
+@UnSupport(unSupportGenerator = {Mysql5StepGenerator.class})
 public class Over extends Function {
 
     Function windowFunction;

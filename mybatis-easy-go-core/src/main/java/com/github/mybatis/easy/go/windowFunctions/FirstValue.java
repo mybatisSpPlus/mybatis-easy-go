@@ -4,11 +4,14 @@ import com.github.mybatis.easy.go.Function;
 import com.github.mybatis.easy.go.exception.SelfCheckException;
 import com.github.mybatis.easy.go.meta.Field;
 import com.github.mybatis.easy.go.methodAnnotation._Over;
+import com.github.mybatis.easy.go.step.Mysql5StepGenerator;
+import com.github.mybatis.easy.go.supportAnnotation.UnSupport;
 
 /**
  * 取分组内排序后，截止到当前行，第一个值
  */
 @_Over
+@UnSupport(unSupportGenerator = {Mysql5StepGenerator.class})
 public class FirstValue extends Function {
 
     Field field;

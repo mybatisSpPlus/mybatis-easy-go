@@ -9,6 +9,8 @@ import com.github.mybatis.easy.go.methodAnnotation._Limit;
 import com.github.mybatis.easy.go.methodAnnotation._OrderBy;
 import com.github.mybatis.easy.go.methodAnnotation._Union;
 import com.github.mybatis.easy.go.methodAnnotation._UnionAll;
+import com.github.mybatis.easy.go.step.Mysql5StepGenerator;
+import com.github.mybatis.easy.go.supportAnnotation.UnSupport;
 import com.github.mybatis.easy.go.windowFunctions.frame.Frame;
 
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.List;
 @_UnionAll
 @_OrderBy
 @_Limit
+@UnSupport(unSupportGenerator = {Mysql5StepGenerator.class})
 public class Window extends Action {
 
     String windowAlias;

@@ -7,6 +7,7 @@ import com.github.mybatis.easy.go.actions.*;
 import com.github.mybatis.easy.go.conditions.*;
 import com.github.mybatis.easy.go.functions.*;
 import com.github.mybatis.easy.go.meta.*;
+import com.github.mybatis.easy.go.supportAnnotation.UnSupport;
 import com.github.mybatis.easy.go.supportAnnotation.UnSupportProperty;
 import com.github.mybatis.easy.go.windowFunctions.*;
 import com.github.mybatis.easy.go.windowFunctions.frame.*;
@@ -1166,6 +1167,14 @@ public class StepGenerator {
     private void checkUnSupport(Class generatorClass, Class objClazz, Object obj) throws IllegalAccessException {
         String objName = obj.getClass().getSimpleName();
         String dbName = generatorClass.getSimpleName().split("Step")[0];
+        UnSupport unSupport= (UnSupport) objClazz.getAnnotation(UnSupport.class);
+        if (unSupport!=null){
+            for (Class aClass : unSupport.unSupportGenerator()) {
+                if (aClass==generatorClass){
+                    throw new UnsupportedOperationException(objClazz.getName() + " is unsupported in " + objName + " with " + dbName + ". Please check the Query");
+                }
+            }
+        }
         for (java.lang.reflect.Field declaredField : objClazz.getDeclaredFields()) {
             UnSupportProperty usp = declaredField.getAnnotation(UnSupportProperty.class);
             if (usp == null) {

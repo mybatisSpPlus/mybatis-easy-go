@@ -2,10 +2,13 @@ package com.github.mybatis.easy.go.windowFunctions;
 
 import com.github.mybatis.easy.go.Function;
 import com.github.mybatis.easy.go.exception.SelfCheckException;
+import com.github.mybatis.easy.go.step.Mysql5StepGenerator;
+import com.github.mybatis.easy.go.supportAnnotation.UnSupport;
 
 /**
  * 与window对象组合使用，传入window的别名
  */
+@UnSupport(unSupportGenerator = {Mysql5StepGenerator.class})
 public class OverWindow extends Function {
 
     Function windowFunction;
