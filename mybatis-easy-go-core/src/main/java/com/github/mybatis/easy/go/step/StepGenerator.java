@@ -49,12 +49,15 @@ public class StepGenerator {
 
     public LinkedList<Step> toStep(boolean printSql, boolean setParameter) throws Exception {
         steps.clear();
+        long start=System.currentTimeMillis();
         for (Action action : actions) {
             actionToStep(action);
         }
         if (printSql) {
             logger.info(toSql(setParameter));
         }
+        long cost=System.currentTimeMillis()-start;
+        logger.info("sql generate cost :"+cost+" ms");
         return steps;
     }
 
@@ -973,8 +976,10 @@ public class StepGenerator {
                 break;
             case "Lag":
                 LagToStep((Lag) function);
+                break;
             case "LastValue":
                 LastValueToStep((LastValue) function);
+                break;
             case "Lcase":
                 LcaseToStep((Lcase) function);
                 break;
