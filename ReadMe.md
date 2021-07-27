@@ -9,7 +9,7 @@ maven pom 中添加依赖
 <dependency>
   <groupId>io.github.mybatisSpPlus</groupId>
   <artifactId>mybatis-easy-go-core</artifactId>
-  <version>0.1</version>
+  <version>0.2</version>
 </dependency>
 ```
 
