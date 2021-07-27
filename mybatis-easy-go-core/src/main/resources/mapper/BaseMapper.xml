@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.github.mybatis.easy.go.spring.BaseMapper">
-
-    <sql id="steps">
-        <foreach collection="steps" item="step">
-            <choose>
-                <when test="step.stepName!=null">
-                    ${step.stepName}
-                </when>
-                <otherwise>
-                    #{step.stepValue}
-                </otherwise>
-            </choose>
-        </foreach>
-    </sql>
-
-    <sql id="stepsForFetch">
+    <!--查询模板-->
+    <select id="executeQuery" resultType="map">
+        ${sql}
+    </select>
+    <select id="executeFetchQuery" resultType="map" resultSetType="FORWARD_ONLY" fetchSize="10000">
         <!--fetch调用的方法无法指定参数名-->
         <foreach collection="collection" item="step">
             <choose>
@@ -27,29 +17,21 @@
                 </otherwise>
             </choose>
         </foreach>
-    </sql>
-
-    <!--查询模板-->
-    <select id="executeQuery" resultType="map">
-        <include refid="steps"></include>
-    </select>
-    <select id="executeFetchQuery" resultType="map" resultSetType="FORWARD_ONLY" fetchSize="10000">
-        <include refid="stepsForFetch"></include>
     </select>
     <!--插入模板-->
     <insert id="executeInsert">
-        <include refid="steps"></include>
+        ${sql}
     </insert>
     <!--更新模板-->
     <update id="executeUpdate">
-        <include refid="steps"></include>
+        ${sql}
     </update>
     <!--删除模板-->
     <delete id="executeDelete">
-        <include refid="steps"></include>
+        ${sql}
     </delete>
     <!--不确定请求类型的模板-->
     <update id="execute">
-        <include refid="steps"></include>
+        ${sql}
     </update>
 </mapper>

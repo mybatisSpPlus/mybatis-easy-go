@@ -4,6 +4,7 @@ import com.github.mybatis.easy.go.step.Step;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,15 +15,15 @@ import java.util.Map;
 @Mapper
 public interface BaseMapper {
 
-    List<Map<String, Object>> executeQuery(@Param("steps") List<Step> steps);
+    List<Map<String, Object>> executeQuery(@Param("sql") String sql, @Param("params") HashMap<String, Object> params);
 
     List<Map<String, Object>> executeFetchQuery(@Param("steps") List<Step> steps);
 
-    int executeUpdate(@Param("steps") List<Step> steps);
+    int executeUpdate(@Param("sql") String sql, @Param("params") HashMap<String, Object> params);
 
-    int executeInsert(@Param("steps") List<Step> steps);
+    int executeInsert(@Param("sql") String sql, @Param("params") HashMap<String, Object> params);
 
-    int executeDelete(@Param("steps") List<Step> steps);
+    int executeDelete(@Param("sql") String sql, @Param("params") HashMap<String, Object> params);
 
-    void execute(@Param("steps") List<Step> steps);
+    void execute(@Param("sql") String sql, @Param("params") HashMap<String, Object> params);
 }

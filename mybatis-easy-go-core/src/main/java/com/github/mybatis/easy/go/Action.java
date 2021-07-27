@@ -7,7 +7,6 @@ import com.github.mybatis.easy.go.meta.Result;
 import com.github.mybatis.easy.go.meta.Table;
 import com.github.mybatis.easy.go.spring.BaseMapper;
 import com.github.mybatis.easy.go.spring.BeanHelper;
-import com.github.mybatis.easy.go.step.Step;
 import com.github.mybatis.easy.go.step.StepGenerator;
 import com.github.mybatis.easy.go.supportAnnotation.DatabaseVersion;
 import org.apache.commons.lang3.StringUtils;
@@ -53,6 +52,7 @@ public abstract class Action {
     /**
      * 是否将参数设置到sql中
      */
+    @Deprecated
     private boolean setParameter;
 
     /**
@@ -111,7 +111,6 @@ public abstract class Action {
      */
     public void execute() throws Exception {
         List<Action> actions = builders.getActionTree();
-        List<Step> steps = getStepGenerator().toStep(printSql, setParameter);
         if (actions.size() > 0) {
             Action start = actions.get(0);
             if (start instanceof Select) {
@@ -123,7 +122,8 @@ public abstract class Action {
             } else if (start instanceof InsertInto) {
                 executeInsert();
             } else {
-                getMapper().execute(steps);
+                Object[] sqlParams = getStepGenerator().toMybatisSql(printSql);
+                getMapper().execute((String) sqlParams[0], (HashMap<String, Object>) sqlParams[1]);
             }
         }
     }
@@ -135,7 +135,8 @@ public abstract class Action {
      * @throws Exception
      */
     public int executeUpdate() throws Exception {
-        return getMapper().executeUpdate(getStepGenerator().toStep(printSql, setParameter));
+        Object[] sqlParams = getStepGenerator().toMybatisSql(printSql);
+        return getMapper().executeUpdate((String) sqlParams[0], (HashMap<String, Object>) sqlParams[1]);
     }
 
     /**
@@ -145,7 +146,8 @@ public abstract class Action {
      * @throws Exception
      */
     public int executeInsert() throws Exception {
-        return getMapper().executeInsert(getStepGenerator().toStep(printSql, setParameter));
+        Object[] sqlParams = getStepGenerator().toMybatisSql(printSql);
+        return getMapper().executeInsert((String) sqlParams[0], (HashMap<String, Object>) sqlParams[1]);
     }
 
     /**
@@ -155,7 +157,8 @@ public abstract class Action {
      * @throws Exception
      */
     public int executeDelete() throws Exception {
-        return getMapper().executeDelete(getStepGenerator().toStep(printSql, setParameter));
+        Object[] sqlParams = getStepGenerator().toMybatisSql(printSql);
+        return getMapper().executeDelete((String) sqlParams[0], (HashMap<String, Object>) sqlParams[1]);
     }
 
     /**
@@ -165,7 +168,8 @@ public abstract class Action {
      * @throws Exception
      */
     public Result executeSelect() throws Exception {
-        List<Map<String, Object>> map = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
+        Object[] sqlParams = getStepGenerator().toMybatisSql(printSql);
+        List<Map<String, Object>> map = getMapper().executeQuery((String) sqlParams[0], (HashMap<String, Object>) sqlParams[1]);
         cleanNull(map);
         return new Result(map);
     }
@@ -177,7 +181,7 @@ public abstract class Action {
      * @throws Exception
      */
     public void executeFetchSelect(ResultHandler<Map<String, Object>> handler) throws Exception {
-        getSessionTemplate().select("BaseMapper.executeFetchQuery", getStepGenerator().toStep(printSql, setParameter), handler);
+        getSessionTemplate().select("BaseMapper.executeFetchQuery", getStepGenerator().toStep(), handler);
     }
 
     /**
@@ -189,7 +193,8 @@ public abstract class Action {
      * @throws Exception
      */
     public <T> T executeOneSelect(Class<T> tClass) throws Exception {
-        List<Map<String, Object>> map = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
+        Object[] sqlParams = getStepGenerator().toMybatisSql(printSql);
+        List<Map<String, Object>> map = getMapper().executeQuery((String) sqlParams[0], (HashMap<String, Object>) sqlParams[1]);
         cleanNull(map);
         return new Result(map).convertToOne(tClass);
     }
@@ -204,7 +209,8 @@ public abstract class Action {
      * @throws Exception
      */
     public <T> T executeOneSelect(Class<T> tClass, BiFunction<Class<T>, Map<String, Object>, T> function) throws Exception {
-        List<Map<String, Object>> map = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
+        Object[] sqlParams = getStepGenerator().toMybatisSql(printSql);
+        List<Map<String, Object>> map = getMapper().executeQuery((String) sqlParams[0], (HashMap<String, Object>) sqlParams[1]);
         cleanNull(map);
         return new Result(map).convertToOne(tClass, function);
     }
@@ -219,7 +225,8 @@ public abstract class Action {
      * @throws Exception
      */
     public <T> T executeOneSelect(String typeName, BiFunction<String, Map<String, Object>, T> function) throws Exception {
-        List<Map<String, Object>> map = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
+        Object[] sqlParams = getStepGenerator().toMybatisSql(printSql);
+        List<Map<String, Object>> map = getMapper().executeQuery((String) sqlParams[0], (HashMap<String, Object>) sqlParams[1]);
         cleanNull(map);
         return new Result(map).convertToOne(typeName, function);
     }
@@ -233,7 +240,8 @@ public abstract class Action {
      * @throws Exception
      */
     public <T> T executeOneSelect(Function<Map<String, Object>, T> function) throws Exception {
-        List<Map<String, Object>> map = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
+        Object[] sqlParams = getStepGenerator().toMybatisSql(printSql);
+        List<Map<String, Object>> map = getMapper().executeQuery((String) sqlParams[0], (HashMap<String, Object>) sqlParams[1]);
         cleanNull(map);
         return new Result(map).convertToOne(function);
     }
@@ -247,7 +255,8 @@ public abstract class Action {
      * @throws Exception
      */
     public <T> List<T> executeListSelect(Class<T> tClass) throws Exception {
-        List<Map<String, Object>> map = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
+        Object[] sqlParams = getStepGenerator().toMybatisSql(printSql);
+        List<Map<String, Object>> map = getMapper().executeQuery((String) sqlParams[0], (HashMap<String, Object>) sqlParams[1]);
         cleanNull(map);
         return new Result(map).convertToList(tClass);
     }
@@ -262,7 +271,8 @@ public abstract class Action {
      * @throws Exception
      */
     public <T> List<T> executeListSelect(Class<T> tClass, BiFunction<Class<T>, List<Map<String, Object>>, List<T>> function) throws Exception {
-        List<Map<String, Object>> map = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
+        Object[] sqlParams = getStepGenerator().toMybatisSql(printSql);
+        List<Map<String, Object>> map = getMapper().executeQuery((String) sqlParams[0], (HashMap<String, Object>) sqlParams[1]);
         cleanNull(map);
         return new Result(map).convertToList(tClass, function);
     }
@@ -277,7 +287,8 @@ public abstract class Action {
      * @throws Exception
      */
     public <T> List<T> executeListSelect(String typeName, BiFunction<String, List<Map<String, Object>>, List<T>> function) throws Exception {
-        List<Map<String, Object>> map = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
+        Object[] sqlParams = getStepGenerator().toMybatisSql(printSql);
+        List<Map<String, Object>> map = getMapper().executeQuery((String) sqlParams[0], (HashMap<String, Object>) sqlParams[1]);
         cleanNull(map);
         return new Result(map).convertToList(typeName, function);
     }
@@ -291,7 +302,8 @@ public abstract class Action {
      * @throws Exception
      */
     public <T> List<T> executeListSelect(Function<List<Map<String, Object>>, List<T>> function) throws Exception {
-        List<Map<String, Object>> map = getMapper().executeQuery(getStepGenerator().toStep(printSql, setParameter));
+        Object[] sqlParams = getStepGenerator().toMybatisSql(printSql);
+        List<Map<String, Object>> map = getMapper().executeQuery((String) sqlParams[0], (HashMap<String, Object>) sqlParams[1]);
         cleanNull(map);
         return new Result(map).convertToList(function);
     }
@@ -387,7 +399,8 @@ public abstract class Action {
      */
     public long getCount() throws Exception {
         From count = ActionMethodSource.from(select(count(constantField(1)).as("countNum")), this.asTable("PAGE_TEMP"));
-        List<Map<String, Object>> countMap = getMapper().executeQuery(count.getStepGenerator().toStep(printSql, setParameter));
+        Object[] sqlParams = count.getStepGenerator().toMybatisSql(printSql);
+        List<Map<String, Object>> countMap = getMapper().executeQuery((String) sqlParams[0], (HashMap<String, Object>) sqlParams[1]);
         long total = Long.parseLong(countMap.get(0).get("countNum").toString());
         return total;
     }
@@ -402,7 +415,8 @@ public abstract class Action {
      */
     public List<Map<String, Object>> getPageData(int pageIndex, int pageSize) throws Exception {
         Limit data = ActionMethodSource.limit(ActionMethodSource.from(select(allField()), this.asTable("PAGE_TEMP")), pageSize, (pageIndex - 1) * pageSize);
-        List<Map<String, Object>> map = getMapper().executeQuery(data.getStepGenerator().toStep(printSql, setParameter));
+        Object[] sqlParams = data.getStepGenerator().toMybatisSql(printSql);
+        List<Map<String, Object>> map = getMapper().executeQuery((String) sqlParams[0], (HashMap<String, Object>) sqlParams[1]);
         cleanNull(map);
         return map;
     }
@@ -502,10 +516,12 @@ public abstract class Action {
         return this;
     }
 
+    @Deprecated
     public boolean isSetParameter() {
         return setParameter;
     }
 
+    @Deprecated
     public Action setSetParameter(boolean setParameter) {
         this.setParameter = setParameter;
         return this;

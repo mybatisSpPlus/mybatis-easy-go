@@ -11,12 +11,11 @@ import com.github.mybatis.easy.go.supportAnnotation.UnSupport;
 import com.github.mybatis.easy.go.supportAnnotation.UnSupportProperty;
 import com.github.mybatis.easy.go.windowFunctions.*;
 import com.github.mybatis.easy.go.windowFunctions.frame.*;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -43,22 +42,43 @@ public class StepGenerator {
         dialect = "";
     }
 
-    public LinkedList<Step> toStep() throws Exception {
-        return toStep(false, false);
-    }
 
-    public LinkedList<Step> toStep(boolean printSql, boolean setParameter) throws Exception {
+    public LinkedList<Step> toStep() throws Exception {
         steps.clear();
-        long start=System.currentTimeMillis();
         for (Action action : actions) {
             actionToStep(action);
         }
-        if (printSql) {
-            logger.info(toSql(setParameter));
-        }
-        long cost=System.currentTimeMillis()-start;
-        logger.info("sql generate cost :"+cost+" ms");
         return steps;
+    }
+
+    public Object[] toMybatisSql() throws Exception {
+        return toMybatisSql(false);
+    }
+
+    public Object[] toMybatisSql(boolean printSql) throws Exception {
+        long start = System.currentTimeMillis();
+        if (steps.size() == 0) {
+            toStep();
+        }
+        StringBuffer sb = new StringBuffer();
+        HashMap<String, Object> params = new HashMap<>();
+        int index = 0;
+        for (Step step : steps) {
+            if (StringUtils.isNotBlank(step.getStepName())) {
+                sb.append(step.getStepName());
+            } else {
+                sb.append("#{params.p" + index + "}");
+                params.put("p" + index, step.getStepValue());
+                index++;
+            }
+            sb.append(" ");
+        }
+        long cost = System.currentTimeMillis() - start;
+        logger.info("sql generate cost:" + cost + " ms");
+        if (printSql) {
+            logger.info("sql:" + sb);
+        }
+        return new Object[]{sb.toString(), params};
     }
 
     public String toSql() throws Exception {
@@ -66,6 +86,7 @@ public class StepGenerator {
     }
 
     public String toSql(boolean setParameter) throws Exception {
+        long start = System.currentTimeMillis();
         if (steps.size() == 0) {
             toStep();
         }
@@ -86,6 +107,8 @@ public class StepGenerator {
             }
             sb.append(" ");
         }
+        long cost = System.currentTimeMillis() - start;
+        logger.info("sql generate cost :" + cost + " ms");
         return sb.toString();
     }
 
