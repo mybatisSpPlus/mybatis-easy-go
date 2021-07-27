@@ -10,7 +10,7 @@
         </license>
     </licenses>
     <scm>
-        <tag>v0.1</tag>
+        <tag>T0.2</tag>
         <url>git@github.com:mybatisSpPlus/mybatis-easy-go.git</url>
         <connection>scm:git:git@github.com:mybatisSpPlus/mybatis-easy-go.git</connection>
         <developerConnection>scm:git:git@github.com:mybatisSpPlus/mybatis-easy-go.git</developerConnection>
@@ -82,10 +82,21 @@
                         <version>2.9.1</version>
                         <configuration>
                             <javadocExecutable>
-                                /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/bin/javadoc
+                                /Library/Java/JavaVirtualMachines/adoptopenjdk-11-openj9.jdk/Contents/Home/bin/javadoc
                             </javadocExecutable>
                             <additionalJOptions>
                                 <additionalJOption>-Xdoclint:none</additionalJOption>
+                                <additionalJOption>--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED
+                                </additionalJOption>
+                                <additionalJOption>--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED
+                                </additionalJOption>
+                                <additionalJOption>--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED
+                                </additionalJOption>
+                                <additionalJOption>--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED
+                                </additionalJOption>
+                                <additionalJOption>
+                                    --add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED
+                                </additionalJOption>
                             </additionalJOptions>
                         </configuration>
                         <executions>
