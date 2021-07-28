@@ -43,16 +43,13 @@ public class StepGenerator {
     }
 
 
+
     public LinkedList<Step> toStep() throws Exception {
         steps.clear();
         for (Action action : actions) {
             actionToStep(action);
         }
         return steps;
-    }
-
-    public Object[] toMybatisSql() throws Exception {
-        return toMybatisSql(false);
     }
 
     public Object[] toMybatisSql(boolean printSql) throws Exception {
@@ -74,9 +71,9 @@ public class StepGenerator {
             sb.append(" ");
         }
         long cost = System.currentTimeMillis() - start;
-        logger.info("sql generate cost:" + cost + " ms");
+        logger.debug("sql generate cost:" + cost + " ms");
         if (printSql) {
-            logger.info("sql:" + sb);
+            logger.debug("sql:" + sb);
         }
         return new Object[]{sb.toString(), params};
     }
