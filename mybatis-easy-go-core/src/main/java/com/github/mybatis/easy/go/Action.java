@@ -181,7 +181,7 @@ public abstract class Action {
      * @throws Exception
      */
     public void executeFetchSelect(ResultHandler<Map<String, Object>> handler) throws Exception {
-        getSessionTemplate().select("BaseMapper.executeFetchQuery", getStepGenerator().toStep(), handler);
+        getSessionTemplate().select("com.github.mybatis.easy.go.spring.BaseMapper.executeFetchQuery", getStepGenerator().toStep(), handler);
     }
 
     /**
