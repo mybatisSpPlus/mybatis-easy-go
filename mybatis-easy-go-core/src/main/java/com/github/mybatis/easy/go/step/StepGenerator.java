@@ -44,7 +44,7 @@ public class StepGenerator {
 
 
 
-    public LinkedList<Step> toStep() throws Exception {
+    public final LinkedList<Step> toStep() throws Exception {
         steps.clear();
         for (Action action : actions) {
             actionToStep(action);
@@ -52,7 +52,7 @@ public class StepGenerator {
         return steps;
     }
 
-    public Object[] toMybatisSql(boolean printSql) throws Exception {
+    public final Object[] toMybatisSql(boolean printSql) throws Exception {
         long start = System.currentTimeMillis();
         if (steps.size() == 0) {
             toStep();
@@ -78,11 +78,11 @@ public class StepGenerator {
         return new Object[]{sb.toString(), params};
     }
 
-    public String toSql() throws Exception {
+    public final String toSql() throws Exception {
         return toSql(false);
     }
 
-    public String toSql(boolean setParameter) throws Exception {
+    public final String toSql(boolean setParameter) throws Exception {
         long start = System.currentTimeMillis();
         if (steps.size() == 0) {
             toStep();
@@ -313,15 +313,7 @@ public class StepGenerator {
         steps.add(new Step("UNION ALL"));
     }
 
-    public void SubActionBeginToStep() {
-        steps.add(new Step("("));
-    }
-
-    public void SubActionEndToStep() {
-        steps.add(new Step(")"));
-    }
-
-    public void actionToStep(Action action) throws Exception {
+    public final void actionToStep(Action action) throws Exception {
         action.selfCheck();
         checkUnSupport(action);
         String name = action.getClass().getSimpleName();
@@ -368,12 +360,6 @@ public class StepGenerator {
                 break;
             case "Set":
                 SetToStep((Set) action);
-                break;
-            case "SubActionBegin":
-                SubActionBeginToStep();
-                break;
-            case "SubActionEnd":
-                SubActionEndToStep();
                 break;
             case "Select":
                 SelectToStep((Select) action);
@@ -542,7 +528,7 @@ public class StepGenerator {
         steps.add(new Step("'" + regx.getValue().toString() + "'"));
     }
 
-    public void conditionToStep(Condition condition) throws Exception {
+    public final void conditionToStep(Condition condition) throws Exception {
         condition.selfCheck();
         checkUnSupport(condition);
         String name = condition.getClass().getSimpleName();
@@ -759,9 +745,6 @@ public class StepGenerator {
         steps.add(new Step(")"));
     }
 
-    public void NowToStep() throws Exception {
-        steps.add(new Step("NOW()"));
-    }
 
     public void SubstrToStep(Substr substr) throws Exception {
         steps.add(new Step("SUBSTR("));
@@ -830,6 +813,7 @@ public class StepGenerator {
         valueToStep(mod.getValueB());
     }
 
+    //窗口函数部分
     public void OverWindowToStep(OverWindow function) throws Exception {
         functionToStep(function.getWindowFunction());
         steps.add(new Step("OVER"));
@@ -933,6 +917,90 @@ public class StepGenerator {
     public void CumeDistToStep() {
         steps.add(new Step("CUME_DIST()"));
     }
+    //日期函数部分
+
+    private void AddTimeToStep(AddTime function) throws Exception {
+        steps.add(new Step("ADDTIME("));
+        fieldToStep(function.getDate());
+        steps.add(new Step(","));
+        valueToStep(function.getExpr());
+        steps.add(new Step(")"));
+    }
+
+    private void SubTimeToStep(SubTime function) throws Exception {
+        steps.add(new Step("SUBTIME("));
+        fieldToStep(function.getDate());
+        steps.add(new Step(","));
+        valueToStep(function.getExpr());
+        steps.add(new Step(")"));
+    }
+
+    private void DateDiffToStep(DateDiff function) throws Exception {
+        steps.add(new Step("DATEDIFF("));
+        fieldToStep(function.getDate1());
+        steps.add(new Step(","));
+        fieldToStep(function.getDate2());
+        steps.add(new Step(")"));
+    }
+
+
+    public void NowToStep() throws Exception {
+        steps.add(new Step("NOW()"));
+    }
+
+    private void YearToStep(Year function) throws Exception {
+        steps.add(new Step("YEAR("));
+        fieldToStep(function.getData());
+        steps.add(new Step(")"));
+    }
+
+
+    private void MonthToStep(Month function) throws Exception {
+        steps.add(new Step("MONTH("));
+        fieldToStep(function.getData());
+        steps.add(new Step(")"));
+    }
+
+    private void WeekDayToStep(WeekDay function) throws Exception {
+        steps.add(new Step("WEEKDAY("));
+        fieldToStep(function.getData());
+        steps.add(new Step(")"));
+    }
+
+    private void WeekToStep(Week function) throws Exception {
+        steps.add(new Step("WEEK("));
+        fieldToStep(function.getData());
+        steps.add(new Step(")"));
+    }
+
+
+    private void SecondToStep(Second function) throws Exception {
+        steps.add(new Step("SECOND("));
+        fieldToStep(function.getData());
+        steps.add(new Step(")"));
+    }
+
+
+    private void MinuteToStep(Minute function) throws Exception {
+        steps.add(new Step("MINUTE("));
+        fieldToStep(function.getData());
+        steps.add(new Step(")"));
+    }
+
+    private void HourToStep(Hour function) throws Exception {
+        steps.add(new Step("HOUR("));
+        fieldToStep(function.getData());
+        steps.add(new Step(")"));
+    }
+
+    private void DayToStep(Day function) throws Exception {
+        steps.add(new Step("DAY("));
+        fieldToStep(function.getData());
+        steps.add(new Step(")"));
+    }
+
+
+
 
     public void CustomFunctionToStep(CustomFunction customFunction) throws Exception {
         steps.add(new Step(customFunction.getFunctionName() + "("));
@@ -946,11 +1014,14 @@ public class StepGenerator {
         steps.add(new Step(")"));
     }
 
-    public void functionToStep(Function function) throws Exception {
+    public final void functionToStep(Function function) throws Exception {
         String name = function.getClass().getSimpleName();
         switch (name) {
             case "Add":
                 AddToStep((Add) function);
+                break;
+            case "AddTime":
+                AddTimeToStep((AddTime) function);
                 break;
             case "Avg":
                 AvgToStep((Avg) function);
@@ -973,6 +1044,12 @@ public class StepGenerator {
             case "CustomFunction":
                 CustomFunctionToStep((CustomFunction) function);
                 break;
+            case "Day":
+                DayToStep((Day) function);
+                break;
+            case "DateDiff":
+                DateDiffToStep((DateDiff) function);
+                break;
             case "Divide":
                 DivideToStep((Divide) function);
                 break;
@@ -987,6 +1064,9 @@ public class StepGenerator {
                 break;
             case "GroupConcat":
                 GroupConcatToStep((GroupConcat) function);
+                break;
+            case "Hour":
+                HourToStep((Hour) function);
                 break;
             case "Instr":
                 InstrToStep((Instr) function);
@@ -1021,8 +1101,14 @@ public class StepGenerator {
             case "Min":
                 MinToStep((Min) function);
                 break;
+            case "Minute":
+                MinuteToStep((Minute) function);
+                break;
             case "Mod":
                 ModToStep((Mod) function);
+                break;
+            case "Month":
+                MonthToStep((Month) function);
                 break;
             case "Multiply":
                 MultiplyToStep((Multiply) function);
@@ -1060,8 +1146,14 @@ public class StepGenerator {
             case "RowNumber":
                 RowNumberToStep();
                 break;
+            case "Second":
+                SecondToStep((Second) function);
+                break;
             case "Substr":
                 SubstrToStep((Substr) function);
+                break;
+            case "SubTime":
+                SubTimeToStep((SubTime) function);
                 break;
             case "Sum":
                 SumToStep((Sum) function);
@@ -1072,14 +1164,22 @@ public class StepGenerator {
             case "Ucase":
                 UcaseToStep((Ucase) function);
                 break;
+            case "Week":
+                WeekToStep((Week) function);
+                break;
+            case "WeekDay":
+                WeekDayToStep((WeekDay) function);
+                break;
+            case "Year":
+                YearToStep((Year) function);
+                break;
             default:
                 throw new Exception("function :" + name + " not supported");
         }
     }
 
 
-
-    public void valueToStep(Object value) throws Exception {
+    public final void valueToStep(Object value) throws Exception {
         if (value instanceof Field) {
             fieldToStep((Field) value);
         } else if (value instanceof Table) {
@@ -1091,7 +1191,7 @@ public class StepGenerator {
         }
     }
 
-    public void fieldToStep(Field field) throws Exception {
+    public final void fieldToStep(Field field) throws Exception {
         field.selfCheck();
         checkUnSupport(field);
         if (StringUtils.isNotBlank(field.getSpecialPrefix())) {
@@ -1132,7 +1232,7 @@ public class StepGenerator {
         steps.add(new Step(dialect + alias.getName() + dialect));
     }
 
-    public void tableToStep(Table table) throws Exception {
+    public final void tableToStep(Table table) throws Exception {
         table.selfCheck();
         checkUnSupport(table);
         if (StringUtils.isNotBlank(table.getSpecialPrefix())) {

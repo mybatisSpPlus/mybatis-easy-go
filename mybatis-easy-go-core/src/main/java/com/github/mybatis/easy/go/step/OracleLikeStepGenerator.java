@@ -58,29 +58,18 @@ public class OracleLikeStepGenerator extends StepGenerator {
 
     List<Step> createPageTable(LinkedList<Step> tableStep, int limit, int offset) {
         List<Step> pageTableSteps = new ArrayList<>();
-        pageTableSteps.add(new Step("SELECT"));
-        pageTableSteps.add(new Step("*"));
-        pageTableSteps.add(new Step("FROM"));
-        pageTableSteps.add(new Step("("));
-        pageTableSteps.add(new Step("SELECT"));
+        pageTableSteps.add(new Step("SELECT * FROM ( SELECT"));
         pageTableSteps.add(new Step(dialect + "PAGE_TMP_TABLE" + dialect));
-        pageTableSteps.add(new Step("."));
-        pageTableSteps.add(new Step("*"));
-        pageTableSteps.add(new Step(","));
-        pageTableSteps.add(new Step("ROWNUM"));
+        pageTableSteps.add(new Step(".*,ROWNUM"));
         pageTableSteps.add(new Step(dialect + "RN_TMP" + dialect));
-        pageTableSteps.add(new Step("FROM"));
-        pageTableSteps.add(new Step("("));
+        pageTableSteps.add(new Step("FROM ("));
         //将要分页的数据加入此处
         pageTableSteps.addAll(tableStep);
         pageTableSteps.add(new Step(")"));
         pageTableSteps.add(new Step(dialect + "PAGE_TMP_TABLE" + dialect));
-        pageTableSteps.add(new Step("WHERE"));
-        pageTableSteps.add(new Step("ROWNUM"));
-        pageTableSteps.add(new Step("<="));
+        pageTableSteps.add(new Step("WHERE ROWNUM <="));
         pageTableSteps.add(new Step().setStepValue(offset + limit));
-        pageTableSteps.add(new Step(")"));
-        pageTableSteps.add(new Step("WHERE"));
+        pageTableSteps.add(new Step(") WHERE"));
         pageTableSteps.add(new Step(dialect + "RN_TMP" + dialect));
         pageTableSteps.add(new Step(">"));
         pageTableSteps.add(new Step().setStepValue(offset));
@@ -91,17 +80,12 @@ public class OracleLikeStepGenerator extends StepGenerator {
         List<Step> pageTableSteps = new ArrayList<>();
         pageTableSteps.add(new Step("SELECT"));
         pageTableSteps.add(new Step(dialect + "PAGE_TMP_TABLE" + dialect));
-        pageTableSteps.add(new Step("."));
-        pageTableSteps.add(new Step("*"));
-        pageTableSteps.add(new Step("FROM"));
-        pageTableSteps.add(new Step("("));
+        pageTableSteps.add(new Step(".* FROM ("));
         //将要分页的数据加入此处
         pageTableSteps.addAll(tableStep);
         pageTableSteps.add(new Step(")"));
         pageTableSteps.add(new Step(dialect + "PAGE_TMP_TABLE" + dialect));
-        pageTableSteps.add(new Step("WHERE"));
-        pageTableSteps.add(new Step("ROWNUM"));
-        pageTableSteps.add(new Step("<="));
+        pageTableSteps.add(new Step("WHERE ROWNUM <="));
         pageTableSteps.add(new Step().setStepValue(limit));
         return pageTableSteps;
     }

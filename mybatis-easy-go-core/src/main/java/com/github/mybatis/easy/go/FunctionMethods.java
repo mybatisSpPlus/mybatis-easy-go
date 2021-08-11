@@ -356,6 +356,109 @@ public class FunctionMethods {
     }
 
     /**
+     * 时间增加操作
+     * @param date 时间字段
+     * @param expr 增加的时间表达式
+     * @return
+     */
+    public static AddTime addTime(Field date,Object expr){
+        return new AddTime(date,expr);
+    }
+
+    /**
+     * 时间减操作
+     * @param date 时间字段
+     * @param expr 减的时间表达式
+     * @return
+     */
+    public static SubTime subTime(Field date,Object expr){
+        return new SubTime(date,expr);
+    }
+
+    /**
+     * 求日期间隔
+     * @param date1 第一个时间
+     * @param date2 第二个时间
+     * @return
+     */
+    public static DateDiff dateDiff(Field date1,Field date2){
+        return new DateDiff(date1,date2);
+    }
+
+    /**
+     * 求日期的年部分
+     * @param date 日期
+     * @return
+     */
+    public static Year year(Field date){
+        return new Year(date);
+    }
+
+    /**
+     * 求日期的月部分
+     * @param date 日期
+     * @return
+     */
+    public static Month month(Field date){
+        return new Month(date);
+    }
+
+    /**
+     * 求日期是当年的第几周
+     * @param date 日期
+     * @return
+     */
+    public static Week week(Field date){
+        return new Week(date);
+    }
+
+    /**
+     * 求日期是星期的第几天。从0开始
+     * @param date
+     * @return
+     */
+    public static WeekDay weekDay(Field date){
+        return new WeekDay(date);
+    }
+
+    /**
+     * 求日期的日期部分
+     * @param date 日期
+     * @return
+     */
+    public static Day day(Field date){
+        return new Day(date);
+    }
+
+    /**
+     * 求日期的小时部分
+     * @param date 日期
+     * @return
+     */
+    public static Hour hour(Field date){
+        return new Hour(date);
+    }
+
+    /**
+     * 求日期的分钟部分
+     * @param date 日期
+     * @return
+     */
+    public static Minute minute(Field date){
+        return new Minute(date);
+    }
+
+    /**
+     * 求日期的秒部分
+     * @param date 日期
+     * @return
+     */
+    public static Second second(Field date){
+        return new Second(date);
+    }
+
+
+    /**
      * 调用自定义函数
      *
      * @param functionName 函数名称
